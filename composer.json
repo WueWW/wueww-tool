@@ -17,6 +17,7 @@
     },
     "require-dev": {
         "sensiolabs/security-checker": "^6.0",
+        "symfony/maker-bundle": "^1.12",
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
