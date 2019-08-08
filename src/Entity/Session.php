@@ -37,6 +37,17 @@ class Session
      */
     private $owner;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $proposedDetails;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"})
+     */
+    private $acceptedDetails;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +97,30 @@ class Session
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getProposedDetails(): ?SessionDetail
+    {
+        return $this->proposedDetails;
+    }
+
+    public function setProposedDetails(SessionDetail $proposedDetails): self
+    {
+        $this->proposedDetails = $proposedDetails;
+
+        return $this;
+    }
+
+    public function getAcceptedDetails(): ?SessionDetail
+    {
+        return $this->acceptedDetails;
+    }
+
+    public function setAcceptedDetails(?SessionDetail $acceptedDetails): self
+    {
+        $this->acceptedDetails = $acceptedDetails;
 
         return $this;
     }
