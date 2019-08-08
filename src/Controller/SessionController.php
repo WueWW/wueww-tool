@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\DTO\SessionWithDetail;
 use App\Entity\Session;
-use App\Form\SessionType;
+use App\Form\SessionWithDetailType;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +31,16 @@ class SessionController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $session = new Session();
-        $session->setOwner($this->getUser());
+        $sessionWithDetail = new SessionWithDetail();
 
-        $form = $this->createForm(SessionType::class, $session);
+        $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session = (new Session())
+                ->setOwner($this->getUser())
+                ->applyDetails($sessionWithDetail);
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
             $entityManager->flush();
@@ -45,7 +49,7 @@ class SessionController extends AbstractController
         }
 
         return $this->render('session/new.html.twig', [
-            'session' => $session,
+            'session' => $sessionWithDetail,
             'form' => $form->createView(),
         ]);
     }
@@ -65,17 +69,20 @@ class SessionController extends AbstractController
      */
     public function edit(Request $request, Session $session): Response
     {
-        $form = $this->createForm(SessionType::class, $session);
+        $sessionWithDetail = $session->toSessionWithDetail();
+
+        $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session->applyDetails($sessionWithDetail);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('session_index');
         }
 
         return $this->render('session/edit.html.twig', [
-            'session' => $session,
+            'session' => $sessionWithDetail,
             'form' => $form->createView(),
         ]);
     }

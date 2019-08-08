@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\DTO\SessionWithDetail;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -47,6 +48,11 @@ class Session
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"})
      */
     private $acceptedDetails;
+
+    public function __construct()
+    {
+        $this->setProposedDetails(new SessionDetail());
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +127,45 @@ class Session
     public function setAcceptedDetails(?SessionDetail $acceptedDetails): self
     {
         $this->acceptedDetails = $acceptedDetails;
+
+        return $this;
+    }
+
+    public function toSessionWithDetail(): SessionWithDetail
+    {
+        return (new SessionWithDetail())
+            ->setId($this->getId())
+            ->setStart($this->getStart())
+            ->setStop($this->getStop())
+            ->setCancelled($this->getCancelled())
+            ->setTitle($this->getProposedDetails()->getTitle())
+            ->setShortDescription($this->getProposedDetails()->getShortDescription())
+            ->setLongDescription($this->getProposedDetails()->getLongDescription())
+            ->setLocationName($this->getProposedDetails()->getLocationName())
+            ->setLocationLat($this->getProposedDetails()->getLocationLat())
+            ->setLocationLng($this->getProposedDetails()->getLocationLng())
+            ->setLink($this->getProposedDetails()->getLink());
+    }
+
+    public function applyDetails(SessionWithDetail $sessionWithDetail): self
+    {
+        if ($this->getProposedDetails() === $this->getAcceptedDetails()) {
+            $this->setProposedDetails(new SessionDetail());
+        }
+
+        $this
+            ->setStart($sessionWithDetail->getStart())
+            ->setStop($sessionWithDetail->getStop())
+            ->setCancelled($sessionWithDetail->getCancelled());
+
+        $this->getProposedDetails()
+            ->setTitle($sessionWithDetail->getTitle())
+            ->setShortDescription($sessionWithDetail->getShortDescription())
+            ->setLongDescription($sessionWithDetail->getLongDescription())
+            ->setLocationName($sessionWithDetail->getLocationName())
+            ->setLocationLat($sessionWithDetail->getLocationLat())
+            ->setLocationLng($sessionWithDetail->getLocationLng())
+            ->setLink($sessionWithDetail->getLink());
 
         return $this;
     }
