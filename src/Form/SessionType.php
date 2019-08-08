@@ -15,7 +15,6 @@ class SessionType extends AbstractType
             ->add('start')
             ->add('stop')
             ->add('cancelled')
-            ->add('owner')
         ;
     }
 

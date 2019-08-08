@@ -31,6 +31,8 @@ class SessionController extends AbstractController
     public function new(Request $request): Response
     {
         $session = new Session();
+        $session->setOwner($this->getUser());
+
         $form = $this->createForm(SessionType::class, $session);
         $form->handleRequest($request);
 
