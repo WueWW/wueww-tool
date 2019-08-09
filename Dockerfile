@@ -25,9 +25,9 @@ FROM php:7.3-apache
 
 ENV APACHE_DOCUMENT_ROOT /app/public
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-RUN sed -ri -e 's!Options Indexes FollowSymLinks!FallbackResource /index.php!' /etc/apache2/apache2.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf && \
+    sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
+    sed -ri -e 's!Options Indexes FollowSymLinks!FallbackResource /index.php!' /etc/apache2/apache2.conf
 
 COPY --from=builder /app /app
 WORKDIR /app
@@ -37,4 +37,5 @@ RUN bin/console doctrine:database:create -n && \
     bin/console doctrine:fixtures:load -n
 
 ENV APP_ENV=prod
-RUN bin/console cache:warmup -n
+RUN bin/console cache:warmup -n && \
+    chown -R www-data. var/
