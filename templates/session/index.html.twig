@@ -6,20 +6,20 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Start</th>
-                <th>Stop</th>
-                <th>Cancelled</th>
-                <th>actions</th>
+                <th>Datum</th>
+                <th>Beginn</th>
+                <th>Ende</th>
+                <th>Titel</th>
+                <th>Aktionen</th>
             </tr>
         </thead>
         <tbody>
         {% for session in sessions %}
             <tr>
-                <td>{{ session.id }}</td>
-                <td>{{ session.start ? session.start|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ session.stop ? session.stop|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ session.cancelled ? 'Yes' : 'No' }}</td>
+                <td>{{ session.start|date('Y-m-d') }}</td>
+                <td>{{ session.start|date('H:i') }}</td>
+                <td>{{ session.stop ? session.stop|date('H:i') : '-' }}</td>
+                <td>{{ session.proposedDetails.title }}</td>
                 <td>
                     <a href="{{ path('session_show', {'id': session.id}) }}">show</a>
                     <a href="{{ path('session_edit', {'id': session.id}) }}">edit</a>
