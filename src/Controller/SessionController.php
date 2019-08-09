@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\DTO\SessionWithDetail;
 use App\Entity\Session;
+use App\Entity\User;
 use App\Form\SessionWithDetailType;
-use App\Repository\SessionRepository;
+use App\Service\SessionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,15 @@ class SessionController extends AbstractController
     /**
      * @Route("/", name="session_index", methods={"GET"})
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function index(SessionService $sessionService): Response
     {
-        return $this->render('session/index.html.twig', [
-            'sessions' => $sessionRepository->findAll(),
-        ]);
+        if ($this->isGranted(User::ROLE_EDITOR)) {
+            $sessions = $sessionService->findAll();
+        } else {
+            $sessions = $sessionService->findByUser($this->getUser());
+        }
+
+        return $this->render('session/index.html.twig', ['sessions' => $sessions,]);
     }
 
     /**
