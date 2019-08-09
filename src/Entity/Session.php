@@ -132,6 +132,11 @@ class Session
         return $this;
     }
 
+    public function isAccepted(): bool
+    {
+        return $this->acceptedDetails === $this->proposedDetails;
+    }
+
     public function toSessionWithDetail(): SessionWithDetail
     {
         return (new SessionWithDetail())

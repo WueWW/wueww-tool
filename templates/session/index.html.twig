@@ -10,6 +10,7 @@
                 <th>Beginn</th>
                 <th>Ende</th>
                 <th>Titel</th>
+                <th>Freigabe</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
@@ -20,6 +21,14 @@
                 <td>{{ session.start|date('H:i') }}</td>
                 <td>{{ session.stop ? session.stop|date('H:i') : '-' }}</td>
                 <td>{{ session.proposedDetails.title }}</td>
+                <td>
+                    {% if session.cancelled %}
+                    {% elseif session.accepted %}
+                        <i class="fa fa-check" title="freigegeben"></i>
+                    {% else %}
+                        <i class="fa fa-hourglass-2" title="warten auf Freigabe"></i>
+                    {% endif %}
+                </td>
                 <td class="session-actions">
                     <a class="btn btn-outline-secondary btn-sm" title="anzeigen" href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
                     {% if not session.cancelled %}
@@ -33,7 +42,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">Keine Sessions gefunden.</td>
+                <td colspan="6">Keine Sessions gefunden.</td>
             </tr>
         {% endfor %}
         </tbody>
