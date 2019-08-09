@@ -8,23 +8,51 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ session.id }}</td>
-            </tr>
-            <tr>
-                <th>Start</th>
+                <th>Beginn</th>
                 <td>{{ session.start ? session.start|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Stop</th>
+                <th>Ende</th>
                 <td>{{ session.stop ? session.stop|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Cancelled</th>
-                <td>{{ session.cancelled ? 'Yes' : 'No' }}</td>
+                <th>Abgesagt?</th>
+                <td>{{ session.cancelled ? 'Ja' : 'Nein' }}</td>
             </tr>
         </tbody>
+        <tbody>
+        <tr>
+            <th>Titel</th>
+            <td>{{ session.proposedDetails.title }}</td>
+        </tr>
+        <tr>
+            <th>Kurzbeschreibung</th>
+            <td>{{ session.proposedDetails.shortDescription }}</td>
+        </tr>
+        <tr>
+            <th>Langbeschreibung</th>
+            <td>{{ session.proposedDetails.longDescription }}</td>
+        </tr>
+        <tr>
+            <th>Veranstaltungsort</th>
+            <td>{{ session.proposedDetails.locationName }}</td>
+        </tr>
+        <tr>
+            <th>Link</th>
+            <td><a href="{{ session.proposedDetails.link }}" target="_blank">{{ session.proposedDetails.link }}</a></td>
+        </tr>
+        </tbody>
     </table>
+
+    {% if session.accepted %}
+        <div class="alert alert-success" role="alert">
+            Diese Session ist bereits freigegeben.
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Diese Session wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
+        </div>
+    {% endif %}
 
     <a href="{{ path('session_index') }}">zurück zur Sessionliste</a>
 
