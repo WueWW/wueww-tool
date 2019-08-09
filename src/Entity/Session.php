@@ -135,9 +135,9 @@ class Session
     {
         return (new SessionWithDetail())
             ->setId($this->getId())
+            ->setDate($this->getStart())
             ->setStart($this->getStart())
             ->setStop($this->getStop())
-            ->setCancelled($this->getCancelled())
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
             ->setLongDescription($this->getProposedDetails()->getLongDescription())
@@ -153,10 +153,19 @@ class Session
             $this->setProposedDetails(new SessionDetail());
         }
 
+        $start = (new \DateTime())
+            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
+            ->setTime($sessionWithDetail->getStart()->format('H'), $sessionWithDetail->getStart()->format('i'));
+
+        $stop = $sessionWithDetail->getStop() === null ? null : (
+        (new \DateTime())
+            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
+            ->setTime($sessionWithDetail->getStop()->format('H'), $sessionWithDetail->getStop()->format('i'))
+        );
+
         $this
-            ->setStart($sessionWithDetail->getStart())
-            ->setStop($sessionWithDetail->getStop())
-            ->setCancelled($sessionWithDetail->getCancelled());
+            ->setStart($start)
+            ->setStop($stop);
 
         $this->getProposedDetails()
             ->setTitle($sessionWithDetail->getTitle())

@@ -14,17 +14,17 @@ class SessionWithDetail
     /**
      * @var \DateTimeInterface
      */
+    private $date;
+
+    /**
+     * @var \DateTimeInterface
+     */
     private $start;
 
     /**
      * @var \DateTimeInterface|null
      */
     private $stop;
-
-    /**
-     * @var boolean|null
-     */
-    private $cancelled;
 
     /**
      * @var string|null
@@ -72,6 +72,17 @@ class SessionWithDetail
         return $this;
     }
 
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): SessionWithDetail
+    {
+        $this->date = $date;
+        return $this;
+    }
+
     public function getStart(): ?\DateTimeInterface
     {
         return $this->start;
@@ -91,17 +102,6 @@ class SessionWithDetail
     public function setStop(?\DateTimeInterface $stop): SessionWithDetail
     {
         $this->stop = $stop;
-        return $this;
-    }
-
-    public function getCancelled(): ?bool
-    {
-        return $this->cancelled;
-    }
-
-    public function setCancelled(bool $cancelled): SessionWithDetail
-    {
-        $this->cancelled = $cancelled;
         return $this;
     }
 

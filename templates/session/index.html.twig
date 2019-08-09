@@ -23,6 +23,7 @@
                 <td>
                     <a href="{{ path('session_show', {'id': session.id}) }}">show</a>
                     <a href="{{ path('session_edit', {'id': session.id}) }}">edit</a>
+                    {{ include('session/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
