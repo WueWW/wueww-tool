@@ -51,6 +51,7 @@ class Session
 
     public function __construct()
     {
+        $this->setCancelled(false);
         $this->setProposedDetails(new SessionDetail());
     }
 

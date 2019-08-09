@@ -3,6 +3,7 @@
 
 namespace App\DTO;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SessionWithDetail
 {
@@ -13,11 +14,13 @@ class SessionWithDetail
 
     /**
      * @var \DateTimeInterface
+     * @Assert\NotBlank()
      */
     private $date;
 
     /**
      * @var \DateTimeInterface
+     * @Assert\NotBlank()
      */
     private $start;
 
@@ -28,6 +31,8 @@ class SessionWithDetail
 
     /**
      * @var string|null
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 30, maxMessage = "Der Titel darf max. 30 Zeichen lang sein")
      */
     private $title;
 
@@ -43,6 +48,7 @@ class SessionWithDetail
 
     /**
      * @var string|null
+     * @Assert\NotBlank()
      */
     private $locationName;
 
@@ -77,7 +83,7 @@ class SessionWithDetail
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): SessionWithDetail
+    public function setDate(?\DateTimeInterface $date): SessionWithDetail
     {
         $this->date = $date;
         return $this;
@@ -88,7 +94,7 @@ class SessionWithDetail
         return $this->start;
     }
 
-    public function setStart(\DateTimeInterface $start): SessionWithDetail
+    public function setStart(?\DateTimeInterface $start): SessionWithDetail
     {
         $this->start = $start;
         return $this;
