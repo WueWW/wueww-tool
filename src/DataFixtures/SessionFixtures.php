@@ -13,13 +13,17 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        /** @var User $reporter */
-        $reporter = $this->getReference(UserFixture::REPORTER_USER_REF);
+        /** @var User $reporter1 */
+        $reporter1 = $this->getReference(UserFixture::REPORTER1_USER_REF);
 
-        $manager->persist($this->createSessionNichtFreigegeben($reporter));
-        $manager->persist($this->createSessionFreigegeben($reporter));
-        $manager->persist($this->createSessionFreigegebenUndGeaendert($reporter));
-        $manager->persist($this->createSessionCancelled($reporter));
+        $manager->persist($this->createSessionNichtFreigegeben($reporter1));
+        $manager->persist($this->createSessionFreigegeben($reporter1));
+        $manager->persist($this->createSessionFreigegebenUndGeaendert($reporter1));
+        $manager->persist($this->createSessionCancelled($reporter1));
+
+        /** @var User $reporter2 */
+        $reporter2 = $this->getReference(UserFixture::REPORTER2_USER_REF);
+        $manager->persist($this->createSessionFreigegeben($reporter2));
 
         $manager->flush();
     }
