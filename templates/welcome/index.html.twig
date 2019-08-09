@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1>Hej!</h1>
+
+        <p class="lead">
+            Willkommen im WueWW Tool. Als Veranstalter kannst du hier deine eigenen Sessions einstellen.
+        </p>
+    </div>
+
+    <p>
+        Vermutlich möchtest du direkt zur <a href="{{ path('session_index') }}">Sessionliste</a>.
+    </p>
+{% endblock %}
