@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/session")
@@ -94,12 +95,36 @@ class SessionController extends AbstractController
 
     /**
      * @Route("/{id}", name="session_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
      */
     public function delete(Request $request, Session $session): Response
     {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
         if ($this->isCsrfTokenValid('delete'.$session->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($session);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('session_index');
+    }
+
+    /**
+     * @Route("/{id}", name="session_cancel", methods={"POST"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
+     */
+    public function cancel(Request $request, Session $session): Response
+    {
+        if ($this->isCsrfTokenValid('cancel'.$session->getId(), $request->request->get('_token'))) {
+            $session->setCancelled(true);
+
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
         }
 

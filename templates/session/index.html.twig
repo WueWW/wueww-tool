@@ -15,15 +15,20 @@
         </thead>
         <tbody>
         {% for session in sessions %}
-            <tr>
+            <tr class="{% if session.cancelled %}session-cancelled{% endif %}">
                 <td>{{ session.start|date('Y-m-d') }}</td>
                 <td>{{ session.start|date('H:i') }}</td>
                 <td>{{ session.stop ? session.stop|date('H:i') : '-' }}</td>
                 <td>{{ session.proposedDetails.title }}</td>
-                <td>
+                <td class="session-actions">
                     <a class="btn btn-outline-secondary btn-sm" title="anzeigen" href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
+                    {% if not session.cancelled %}
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten" href="{{ path('session_edit', {'id': session.id}) }}"><i class="fa fa-pencil"></i></a>
+                    {{ include('session/_cancel_form.html.twig') }}
+                    {% endif %}
+                    {% if is_granted('ROLE_EDITOR') %}
                     {{ include('session/_delete_form.html.twig') }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

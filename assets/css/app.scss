@@ -1,15 +1,23 @@
 .container.narrow {
-    max-width: 23rem;
-    margin: 10rem auto 0;
-    box-shadow: 0 0 15px rgba(0, 0, 0, .15);
-    padding: 2rem;
+  max-width: 23rem;
+  margin: 10rem auto 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+  padding: 2rem;
 }
 
 .navbar + .container {
-    margin-top: 6rem;
+  margin-top: 6rem;
 }
 
 .btn-sm {
-    width: 2.3em;
-    height: 2.3em;
+  width: 2.3em;
+  height: 2.3em;
+}
+
+tr.session-cancelled td {
+  text-decoration: line-through;
+
+  &.session-actions {
+    text-decoration: none;
+  }
 }
