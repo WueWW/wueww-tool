@@ -33,11 +33,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Keine Sessions gefunden.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('session_new') }}">Create new</a>
+    <a class="btn btn-success" href="{{ path('session_new') }}">Neue Session vorschlagen</a>
 {% endblock %}
