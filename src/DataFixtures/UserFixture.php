@@ -27,6 +27,7 @@ class UserFixture extends Fixture
         $editor = new User();
         $editor->setEmail('editor@example.org');
         $editor->setPassword($this->passwordEncoder->encodePassword($editor, 'editor_password'));
+        $editor->setRoles([User::ROLE_EDITOR]);
         $manager->persist($editor);
 
         $reporter = new User();
