@@ -39,13 +39,13 @@ class Session
     private $owner;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(nullable=false)
      */
     private $proposedDetails;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $acceptedDetails;
 
