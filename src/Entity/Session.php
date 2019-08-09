@@ -184,4 +184,9 @@ class Session
 
         return $this;
     }
+
+    public function accept()
+    {
+        $this->setAcceptedDetails($this->getProposedDetails());
+    }
 }

@@ -7,18 +7,18 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Beginn</th>
-                <td>{{ session.start ? session.start|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Ende</th>
-                <td>{{ session.stop ? session.stop|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Abgesagt?</th>
-                <td>{{ session.cancelled ? 'Ja' : 'Nein' }}</td>
-            </tr>
+        <tr>
+            <th>Beginn</th>
+            <td>{{ session.start ? session.start|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Ende</th>
+            <td>{{ session.stop ? session.stop|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Abgesagt?</th>
+            <td>{{ session.cancelled ? 'Ja' : 'Nein' }}</td>
+        </tr>
         </tbody>
         <tbody>
         <tr>
@@ -27,11 +27,11 @@
         </tr>
         <tr>
             <th>Kurzbeschreibung</th>
-            <td>{{ session.proposedDetails.shortDescription }}</td>
+            <td>{{ session.proposedDetails.shortDescription | nl2br }}</td>
         </tr>
         <tr>
             <th>Langbeschreibung</th>
-            <td>{{ session.proposedDetails.longDescription }}</td>
+            <td>{{ session.proposedDetails.longDescription | nl2br }}</td>
         </tr>
         <tr>
             <th>Veranstaltungsort</th>
@@ -49,8 +49,20 @@
             Diese Session ist bereits freigegeben.
         </div>
     {% else %}
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info clearfix" role="alert">
             Diese Session wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
+
+            {% if is_granted('ROLE_EDITOR') %}
+                <form class="inline pull-right" method="post" action="{{ path('session_accept', {'id': session.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ session.id) }}">
+                    <button class="btn btn-primary"><i class="fa fa-check"></i> Session freigeben</button>
+                </form>
+
+                <p>
+                    <i class="fa fa-envelope"></i> <a href="mailto:{{ session.owner.email }}">E-Mail an Veranstalter senden</a>.
+                </p>
+            {% endif %}
+
         </div>
     {% endif %}
 

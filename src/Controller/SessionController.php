@@ -130,4 +130,27 @@ class SessionController extends AbstractController
 
         return $this->redirectToRoute('session_index');
     }
+
+    /**
+     * @Route("/{id}/accept", name="session_accept", methods={"POST"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
+     */
+    public function accept(Request $request, Session $session): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('accept'.$session->getId(), $request->request->get('_token'))) {
+            $session->accept();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('session_index');
+    }
+
 }
