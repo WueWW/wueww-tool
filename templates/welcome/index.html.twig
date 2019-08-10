@@ -7,9 +7,35 @@
         <p class="lead">
             Willkommen im WueWW Tool. Als Veranstalter kannst du hier deine eigenen Sessions einstellen.
         </p>
+
+        <p>
+            Sobald du ein Benutzerkonto hast, kannst du zunächst die Veranstalterangaben vervollständigen und
+            dann auch schon die erste Session vorschlagen.  Die von dir erfassten Daten werden kurzfristig nach
+            Überprüfung freigeschaltet und stehen dann so im Veranstaltungskalender.
+            Selbstverständlich kannst du die Daten zu jedem Zeitpunkt auch wieder ändern.
+        </p>
     </div>
 
-    <p>
-        Vermutlich möchtest du direkt zur <a href="{{ path('session_index') }}">Sessionliste</a>.
-    </p>
+    <div class="row">
+        <div class="col-sm">
+            <h2>Du warst schonmal hier?</h2>
+
+            <p>
+                Dann möchtest du vermutlich direkt zur <a href="{{ path('session_index') }}">Sessionliste</a>.
+            </p>
+        </div>
+
+        <div class="col-sm">
+            <h2>Neu hier?</h2>
+
+            <p>
+                Dann ist der nächste Schritt, dass du dir ein Benutzerkonto anlegst und die Email-Adresse
+                anschließend bestätigst.
+            </p>
+
+            <a class="btn btn-primary" href="#">Benutzerkonto anlegen</a>
+        </div>
+    </div>
+
+    <p></p>
 {% endblock %}
