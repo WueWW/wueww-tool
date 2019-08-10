@@ -6,6 +6,7 @@ use App\DTO\SessionWithDetail;
 use App\DTO\UserRegistration;
 use App\Form\SessionWithDetailType;
 use App\Form\UserRegistrationType;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class UserRegistrationController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, UserService $userService): Response
     {
         $userRegistration = new UserRegistration();
 
@@ -26,6 +27,7 @@ class UserRegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userService->registerUser($userRegistration);
         }
 
         return $this->render('user_registration/index.html.twig', [

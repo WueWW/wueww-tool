@@ -6,7 +6,7 @@ use App\DTO\SessionWithDetail;
 use App\Entity\Session;
 use App\Entity\User;
 use App\Form\SessionWithDetailType;
-use App\Service\SessionService;
+use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +20,15 @@ class SessionController extends AbstractController
 {
     /**
      * @Route("/", name="session_index", methods={"GET"})
+     * @param SessionRepository $sessionRepository
+     * @return Response
      */
-    public function index(SessionService $sessionService): Response
+    public function index(SessionRepository $sessionRepository): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
-            $sessions = $sessionService->findAll();
+            $sessions = $sessionRepository->findAll();
         } else {
-            $sessions = $sessionService->findByUser($this->getUser());
+            $sessions = $sessionRepository->findByUser($this->getUser());
         }
 
         return $this->render('session/index.html.twig', ['sessions' => $sessions,]);
@@ -34,6 +36,8 @@ class SessionController extends AbstractController
 
     /**
      * @Route("/new", name="session_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -62,6 +66,8 @@ class SessionController extends AbstractController
 
     /**
      * @Route("/{id}", name="session_show", methods={"GET"})
+     * @param Session $session
+     * @return Response
      */
     public function show(Session $session): Response
     {
@@ -72,6 +78,9 @@ class SessionController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="session_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
      */
     public function edit(Request $request, Session $session): Response
     {
