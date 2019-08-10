@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\Token;
 use App\Entity\User;
 use Twig\Environment;
 
@@ -27,13 +28,16 @@ class MailerService
         $this->mailer = $swiftMailer;
     }
 
-    public function sendUserRegistrationMail(User $user)
+    public function sendUserRegistrationMail(User $user, Token $token)
     {
         $message = (new \Swift_Message('Deine Registrierung beim WueWW Tool'))
             ->setFrom(self::FROM_ADDRESS)
             ->setTo($user->getEmail())
             ->setBody(
-                $this->twig->render('emails/user_registration.txt.twig', []),
+                $this->twig->render('emails/user_registration.txt.twig', [
+                    'user' => $user,
+                    'token' => $token->getToken(),
+                ]),
                 'text/plain'
             );
 

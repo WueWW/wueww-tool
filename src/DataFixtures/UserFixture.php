@@ -29,16 +29,19 @@ class UserFixture extends Fixture
         $editor->setEmail('editor@example.org');
         $editor->setPassword($this->passwordEncoder->encodePassword($editor, 'editor_password'));
         $editor->setRoles([User::ROLE_EDITOR]);
+        $editor->setRegistrationComplete(true);
         $manager->persist($editor);
 
         $reporter1 = new User();
         $reporter1->setEmail('reporter1@example.org');
         $reporter1->setPassword($this->passwordEncoder->encodePassword($reporter1, 'reporter1_password'));
+        $reporter1->setRegistrationComplete(true);
         $manager->persist($reporter1);
 
         $reporter2 = new User();
         $reporter2->setEmail('reporter2@example.org');
         $reporter2->setPassword($this->passwordEncoder->encodePassword($reporter2, 'reporter2_password'));
+        $reporter2->setRegistrationComplete(true);
         $manager->persist($reporter2);
 
         $manager->flush();

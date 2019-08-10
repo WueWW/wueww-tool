@@ -38,13 +38,24 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Session", mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Session", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $sessions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Token", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $tokens;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $registrationComplete;
 
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->tokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,6 +163,57 @@ class User implements UserInterface
                 $session->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Token[]
+     */
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    public function addToken(Token $token): self
+    {
+        if (!$this->tokens->contains($token)) {
+            $this->tokens[] = $token;
+            $token->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function createToken(): Token
+    {
+        $token = Token::generate();
+        $this->addToken($token);
+        
+        return $token;
+    }
+
+    public function removeToken(Token $token): self
+    {
+        if ($this->tokens->contains($token)) {
+            $this->tokens->removeElement($token);
+            // set the owning side to null (unless already changed)
+            if ($token->getOwner() === $this) {
+                $token->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRegistrationComplete(): ?bool
+    {
+        return $this->registrationComplete;
+    }
+
+    public function setRegistrationComplete(bool $registrationComplete): self
+    {
+        $this->registrationComplete = $registrationComplete;
 
         return $this;
     }

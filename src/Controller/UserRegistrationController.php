@@ -6,6 +6,7 @@ use App\DTO\SessionWithDetail;
 use App\DTO\UserRegistration;
 use App\Form\SessionWithDetailType;
 use App\Form\UserRegistrationType;
+use App\Service\Exception\UsernameNotUniqueException;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,11 +28,28 @@ class UserRegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userService->registerUser($userRegistration);
+            try {
+                $userService->registerUser($userRegistration);
+            } catch (UsernameNotUniqueException $ex) {
+                $this->addFlash('danger', 'Diese E-Mail Adresse ist bereits in Verwendung.');
+            }
         }
 
         return $this->render('user_registration/index.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/user/registration/{token}", name="finish_registration")
+     * @param string $token
+     * @param UserService $userService
+     * @return Response
+     */
+    public function finish(string $token, UserService $userService): Response
+    {
+        $userService->finishRegistration($token);
+        $this->addFlash('success', 'Deine E-Mail Adresse wurde erfolgreich bestätigt. Du kannst dich jetzt anmelden.');
+        return $this->redirectToRoute('app_login');
     }
 }
