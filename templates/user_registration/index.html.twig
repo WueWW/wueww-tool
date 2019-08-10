@@ -1,0 +1,14 @@
+{% extends 'narrow.html.twig' %}
+
+{% block body %}
+    <p>
+        Hej, sehr schön, dass du dich hier im WueWW Tool anmelden möchtest.
+    </p>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Benutzerkonto anlegen</button>
+    {{ form_end(form) }}
+
+
+{% endblock %}
