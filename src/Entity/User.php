@@ -48,6 +48,7 @@ class User implements UserInterface
     private $tokens;
 
     /**
+     * @var boolean
      * @ORM\Column(type="boolean")
      */
     private $registrationComplete;
@@ -206,7 +207,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRegistrationComplete(): ?bool
+    public function isRegistrationComplete(): bool
     {
         return $this->registrationComplete;
     }
