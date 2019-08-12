@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\DTO\FinishPasswordReset;
+use App\DTO\StartPasswordReset;
 use App\DTO\UserRegistration;
 use App\Entity\User;
 use App\Repository\TokenRepository;
@@ -76,6 +78,34 @@ class UserService
         $user->removeToken($tokenEntity);
         $user->setRegistrationComplete(true);
 
+        $this->repository->save($user);
+    }
+
+    public function startPasswordReset(StartPasswordReset $startPasswordReset)
+    {
+        $user = $this->repository->findOneBy(['email' => $startPasswordReset->getEmail()]);
+
+        if ($user === null) {
+            return;
+        }
+
+        $token = $user->createToken();
+        $this->repository->save($user);
+
+        $this->mailerService->sendPasswordResetMail($user, $token);
+    }
+
+    public function finishPasswordReset(FinishPasswordReset $dto)
+    {
+        $tokenEntity = $this->tokenRepository->findOneBy(['token' => $dto->getToken()]);
+
+        if ($tokenEntity === null) {
+            throw new TokenNotFoundException();
+        }
+
+        $user = $tokenEntity->getOwner();
+        $user->removeToken($tokenEntity);
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
         $this->repository->save($user);
     }
 }
