@@ -30,6 +30,11 @@ class UserRegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $userService->registerUser($userRegistration);
+                $this->addFlash(
+                    'success',
+                    'Dein Benutzerkonto wurde angelegt. Bitte klicke jetzt auf den Link, den wir dir eben per E-Mail gesendet haben.'
+                );
+                return $this->redirectToRoute('app_login');
             } catch (UsernameNotUniqueException $ex) {
                 $this->addFlash('danger', 'Diese E-Mail Adresse ist bereits in Verwendung.');
             }
