@@ -39,7 +39,7 @@ class Session
     private $owner;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
      */
     private $proposedDetails;

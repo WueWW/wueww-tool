@@ -53,6 +53,18 @@ class User implements UserInterface
      */
     private $registrationComplete;
 
+    /**
+     * @var OrganizationDetail
+     * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=false)
+     */
+    private $proposedOrganizationDetails;
+
+    /**
+     * @var OrganizationDetail
+     * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $acceptedOrganizationDetails;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -217,5 +229,41 @@ class User implements UserInterface
         $this->registrationComplete = $registrationComplete;
 
         return $this;
+    }
+
+    public function getProposedOrganizationDetails(): ?OrganizationDetail
+    {
+        return $this->proposedOrganizationDetails;
+    }
+
+    public function setProposedOrganizationDetails(?OrganizationDetail $proposedOrganizationDetails): self
+    {
+        $this->proposedOrganizationDetails = $proposedOrganizationDetails;
+
+        return $this;
+    }
+
+    public function getAcceptedOrganizationDetails(): ?OrganizationDetail
+    {
+        return $this->acceptedOrganizationDetails;
+    }
+
+    public function setAcceptedOrganizationDetails(?OrganizationDetail $acceptedOrganizationDetails): self
+    {
+        $this->acceptedOrganizationDetails = $acceptedOrganizationDetails;
+
+        return $this;
+    }
+
+    public function ensureEditableOrganizationDetails(): void
+    {
+        if ($this->proposedOrganizationDetails === null) {
+            $this->proposedOrganizationDetails = new OrganizationDetail();
+            return;
+        }
+
+        if ($this->proposedOrganizationDetails === $this->acceptedOrganizationDetails) {
+            $this->proposedOrganizationDetails = $this->acceptedOrganizationDetails->editableClone();
+        }
     }
 }

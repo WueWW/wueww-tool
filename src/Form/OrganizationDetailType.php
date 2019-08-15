@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\OrganizationDetail;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class OrganizationDetailType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('title', TextType::class, [
+                'label' => 'Name',
+                'required' => true,
+            ])
+            ->add('shortDescription', TextareaType::class, [
+                'label' => 'Kurzbeschreibung',
+                'required' => false,
+            ])
+            ->add('longDescription', TextareaType::class, [
+                'label' => 'Langbeschreibung',
+                'required' => false,
+            ])
+            ->add('link', TextType::class, [
+                'label' => 'Link zur Homepage',
+                'required' => false,
+            ])
+            ->add('facebookUrl', TextType::class, [
+                'label' => 'Link zur Facebook-Seite',
+                'required' => false,
+            ])
+            ->add('twitterUrl', TextType::class, [
+                'label' => 'Link zum Twitter-Profil',
+                'required' => false,
+            ])
+            ->add('youtubeUrl', TextType::class, [
+                'label' => 'Link zu Youtube-Profil',
+                'required' => false,
+            ])
+            ->add('instagramUrl', TextType::class, [
+                'label' => 'Link zum Instagram-Profil',
+                'required' => false,
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => OrganizationDetail::class,
+        ]);
+    }
+}
