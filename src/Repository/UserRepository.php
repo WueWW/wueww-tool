@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -22,12 +22,30 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
-     * @throws UniqueConstraintViolationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function save(User $user)
+    public function save(User $user): void
     {
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findAllReporters(): array
+    {
+        /** @var User[] $result */
+        $result = $this->createQueryBuilder('u')
+            ->leftJoin('u.proposedOrganizationDetails', 'odp')
+            ->leftJoin('u.acceptedOrganizationDetails', 'oda')
+            ->getQuery()
+            ->execute();
+
+        return array_filter($result, (function (User $user) {
+            return !$user->isEditor();
+        }));
     }
 
     // /**

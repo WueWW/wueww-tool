@@ -95,7 +95,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -122,7 +122,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -202,7 +202,7 @@ class User implements UserInterface
     {
         $token = Token::generate();
         $this->addToken($token);
-        
+
         return $token;
     }
 
@@ -265,5 +265,20 @@ class User implements UserInterface
         if ($this->proposedOrganizationDetails === $this->acceptedOrganizationDetails) {
             $this->proposedOrganizationDetails = $this->acceptedOrganizationDetails->editableClone();
         }
+    }
+
+    public function isEditor(): bool
+    {
+        return in_array(self::ROLE_EDITOR, $this->getRoles());
+    }
+
+    public function isAccepted(): bool
+    {
+        return $this->acceptedOrganizationDetails === $this->proposedOrganizationDetails;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->proposedOrganizationDetails ? $this->proposedOrganizationDetails->getTitle() : null;
     }
 }
