@@ -26,9 +26,9 @@
                         <i class="fa fa-hourglass-2" title="warten auf Freigabe"></i>
                     {% endif %}
                 </td>
-                <td class="session-actions">
-                    {#<a class="btn btn-outline-secondary btn-sm" title="anzeigen" href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
-                    {% if not session.cancelled %}
+                <td class="organization-actions">
+                    <a class="btn btn-outline-secondary btn-sm" title="anzeigen" href="{{ path('organization_show', {'id': organization.id}) }}"><i class="fa fa-eye"></i></a>
+                    {#{% if not session.cancelled %}
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten" href="{{ path('session_edit', {'id': session.id}) }}"><i class="fa fa-pencil"></i></a>
                     {{ include('session/_cancel_form.html.twig') }}
                     {% endif %}

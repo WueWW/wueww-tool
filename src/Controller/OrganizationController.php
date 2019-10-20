@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Session;
 use App\Entity\User;
 use App\Repository\SessionRepository;
 use App\Repository\UserRepository;
@@ -26,6 +27,18 @@ class OrganizationController extends AbstractController
         $organizations = $userRepository->findAllReporters();
 
         return $this->render('organization/index.html.twig', ['organizations' => $organizations,]);
+    }
+
+    /**
+     * @Route("/{id}", name="organization_show", methods={"GET"})
+     * @param User $user
+     * @return Response
+     */
+    public function show(User $user): Response
+    {
+        return $this->render('organization/show.html.twig', [
+            'organization' => $user,
+        ]);
     }
 
 }

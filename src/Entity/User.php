@@ -274,7 +274,8 @@ class User implements UserInterface
 
     public function isAccepted(): bool
     {
-        return $this->acceptedOrganizationDetails === $this->proposedOrganizationDetails;
+        return $this->proposedOrganizationDetails !== null &&
+            $this->acceptedOrganizationDetails === $this->proposedOrganizationDetails;
     }
 
     public function getTitle(): ?string

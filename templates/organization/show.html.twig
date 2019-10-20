@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Organisator{% endblock %}
+
+{% block body %}
+    <h1>Organisator</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>E-Mail</th>
+            <td>{{ organization.email }}</td>
+        </tr>
+        </tbody>
+        {% if organization.proposedOrganizationDetails %}
+            <tbody>
+            <tr>
+                <th>Titel</th>
+                <td>{{ organization.proposedOrganizationDetails.title }}</td>
+            </tr>
+            <tr>
+                <th>Kurzbeschreibung</th>
+                <td>{{ organization.proposedOrganizationDetails.shortDescription | nl2br }}</td>
+            </tr>
+            <tr>
+                <th>Langbeschreibung</th>
+                <td>{{ organization.proposedOrganizationDetails.longDescription | nl2br }}</td>
+            </tr>
+            <tr>
+                <th>Link zur Homepage</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.link }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.link }}</a></td>
+            </tr>
+            <tr>
+                <th>Link zur Facebook-Seite</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.facebookUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.facebookUrl }}</a></td>
+            </tr>
+            <tr>
+                <th>Link zum Twitter-Profil</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.twitterUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.twitterUrl }}</a></td>
+            </tr>
+            <tr>
+                <th>Link zu Youtube-Profil</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.youtubeUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.youtubeUrl }}</a></td>
+            </tr>
+            <tr>
+                <th>Link zum Instagram-Profil</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
+            </tr>
+            </tbody>
+        {% endif %}
+    </table>
+
+    {% if not organization.proposedOrganizationDetails %}
+        <div class="alert alert-info clearfix" role="alert">
+            Dieser Organisator hat bisher keine Detailinformationen zu seiner Organisation erfasst.
+        </div>
+    {% elseif organization.accepted %}
+        <div class="alert alert-success" role="alert">
+            Dieser Organisator ist bereits freigegeben.
+        </div>
+    {% else %}
+        <div class="alert alert-info clearfix" role="alert">
+            Dieser Organisator wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
+            bisher nicht freigegeben.
+
+            {#<form class="inline pull-right" method="post" action="{{ path('organization_accept', {'id': organization.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
+                <button class="btn btn-primary"><i class="fa fa-check"></i> Organisator freigeben</button>
+            </form>#}
+
+            <p>
+                <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.email }}">E-Mail an Veranstalter
+                    senden</a>.
+            </p>
+
+        </div>
+    {% endif %}
+
+    <a href="{{ path('organization_index') }}">zurück zur Liste der Organisatoren</a>
+
+{% endblock %}
