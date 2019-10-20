@@ -68,10 +68,10 @@
             Dieser Organisator wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
             bisher nicht freigegeben.
 
-            {#<form class="inline pull-right" method="post" action="{{ path('organization_accept', {'id': organization.id}) }}">
+            <form class="inline pull-right" method="post" action="{{ path('organization_accept', {'id': organization.id}) }}">
                 <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
                 <button class="btn btn-primary"><i class="fa fa-check"></i> Organisator freigeben</button>
-            </form>#}
+            </form>
 
             <p>
                 <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.email }}">E-Mail an Veranstalter

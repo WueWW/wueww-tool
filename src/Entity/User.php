@@ -282,4 +282,9 @@ class User implements UserInterface
     {
         return $this->proposedOrganizationDetails ? $this->proposedOrganizationDetails->getTitle() : null;
     }
+
+    public function accept()
+    {
+        $this->setAcceptedOrganizationDetails($this->proposedOrganizationDetails);
+    }
 }
