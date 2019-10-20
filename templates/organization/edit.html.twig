@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Organisator bearbeiten</h1>
+
+    {{ include('organization/_form.html.twig') }}
+
+    <a href="{{ path('organization_index') }}">zurück zur Liste der Organisatoren</a>
+{% endblock %}

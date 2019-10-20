@@ -4,7 +4,9 @@
 namespace App\Controller;
 
 
+use App\Entity\Session;
 use App\Entity\User;
+use App\Form\OrganizationDetailType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +54,39 @@ class OrganizationController extends AbstractController
 
         return $this->render('organization/show.html.twig', [
             'organization' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
+     */
+    public function edit(Request $request, User $user): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($user->isEditor()) {
+            throw new BadRequestHttpException('Referenced User is not of reporter-type');
+        }
+
+        $user->ensureEditableOrganizationDetails();
+
+        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('organization_index');
+        }
+
+        return $this->render('organization/edit.html.twig', [
+            'organization' => $user,
+            'form' => $form->createView(),
         ]);
     }
 

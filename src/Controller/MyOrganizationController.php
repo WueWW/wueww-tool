@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\OrganizationDetail;
 use App\Entity\User;
 use App\Form\OrganizationDetailType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
