@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -45,9 +46,38 @@ class OrganizationController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        if ($user->isEditor()) {
+            throw new BadRequestHttpException('Referenced User is not of reporter-type');
+        }
+
         return $this->render('organization/show.html.twig', [
             'organization' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="organization_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($user->isEditor()) {
+            throw new BadRequestHttpException('Referenced User is not of reporter-type');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('organization_index');
     }
 
     /**
@@ -60,6 +90,10 @@ class OrganizationController extends AbstractController
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
+        }
+
+        if ($user->isEditor()) {
+            throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
         if ($this->isCsrfTokenValid('accept'.$user->getId(), $request->request->get('_token'))) {

@@ -1,0 +1,5 @@
+<form class="inline" method="post" action="{{ path('organization_delete', {'id': organization.id}) }}" onsubmit="return confirm('Bist du sicher, dass du den Organisator (inkl. aller seiner evtl. vorhandenen Sessions) löschen möchtest?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ organization.id) }}">
+    <button class="btn btn-sm btn-outline-danger" title="löschen"><i class="fa fa-trash"></i></button>
+</form>
