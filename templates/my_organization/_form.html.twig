@@ -1,4 +1,14 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Speichern</button>
+{{ form_widget(form) }}
+
+{% if form.vars.value.id %}
+    <div class="form-group">
+        <label>Aktuelles Logo</label>
+        <img class="logo_preview" src="{{ path('logo_download', { id: form.vars.value.id}) }}"
+             alt="Aktuelle hinterlegtes Logo"/>
+    </div>
+{% endif %}
+
+<button class="btn btn-primary">Speichern</button>
+
 {{ form_end(form) }}

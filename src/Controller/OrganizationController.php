@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\OrganizationDetail;
 use App\Entity\Session;
 use App\Entity\User;
 use App\Form\OrganizationDetailType;
@@ -11,6 +12,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -107,7 +109,7 @@ class OrganizationController extends AbstractController
             throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
@@ -132,7 +134,7 @@ class OrganizationController extends AbstractController
             throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
-        if ($this->isCsrfTokenValid('accept'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('accept' . $user->getId(), $request->request->get('_token'))) {
             $user->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -142,4 +144,23 @@ class OrganizationController extends AbstractController
         return $this->redirectToRoute('organization_index');
     }
 
+    /**
+     * @Route("/logo/{id}", name="logo_download", methods={"GET"})
+     * @param OrganizationDetail $organizationDetail
+     * @return Response
+     */
+    public function logoDownload(OrganizationDetail $organizationDetail): Response
+    {
+        if ($organizationDetail->getLogoBlob() === null) {
+            return Response::create('', Response::HTTP_NOT_FOUND);
+        }
+
+        return new StreamedResponse(function () use ($organizationDetail) {
+            fpassthru($organizationDetail->getLogoBlob());
+            exit();
+        }, 200, [
+            'Content-Transfer-Encoding', 'binary',
+            'Content-type' => 'image/jpeg',
+        ]);
+    }
 }

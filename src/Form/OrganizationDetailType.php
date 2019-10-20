@@ -4,10 +4,14 @@ namespace App\Form;
 
 use App\Entity\OrganizationDetail;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class OrganizationDetailType extends AbstractType
 {
@@ -45,10 +49,22 @@ class OrganizationDetailType extends AbstractType
             ->add('instagramUrl', TextType::class, [
                 'label' => 'Link zum Instagram-Profil',
                 'required' => false,
+            ])
+            ->add('logo', FileType::class, [
+                'label' => 'Neues Logo (JPG)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => ['image/jpeg'],
+                        'mimeTypesMessage' => 'Bitte stelle ein Bild im JPEG-Format zur Verfügung.',
+                    ])
+                ]
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public
+    function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => OrganizationDetail::class,

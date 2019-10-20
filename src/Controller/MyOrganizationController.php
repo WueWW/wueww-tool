@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\OrganizationDetailType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,6 +27,13 @@ class MyOrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $logoFile */
+            $logoFile = $form['logo']->getData();
+
+            if ($logoFile) {
+                $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash(
