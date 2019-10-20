@@ -23,7 +23,11 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path('session_index') }}">Sessions <span class="sr-only">(aktiv)</span></a>
             </li>
-            {% if not is_granted('ROLE_EDITOR') %}
+            {% if is_granted('ROLE_EDITOR') %}
+                <li>
+                    <a class="nav-link" href="{{ path('organization_index') }}">Organisatoren</a>
+                </li>
+            {% else %}
                 <li>
                     <a class="nav-link" href="{{ path('my_organization') }}">Meine Organisation</a>
                 </li>
