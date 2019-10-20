@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\OrganizationDetailType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -75,12 +76,21 @@ class OrganizationController extends AbstractController
             throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
+        $currentLogoId = $user->getProposedOrganizationDetails() ? $user->getProposedOrganizationDetails()->getId() : null;
         $user->ensureEditableOrganizationDetails();
-
-        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails());
+        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
+            'currentLogoId' => $currentLogoId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $logoFile */
+            $logoFile = $form['logo']->getData();
+
+            if ($logoFile) {
+                $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
+            }
+
             $user->accept();
             $this->getDoctrine()->getManager()->flush();
 

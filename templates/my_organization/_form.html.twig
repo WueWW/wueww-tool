@@ -1,10 +1,10 @@
 {{ form_start(form) }}
 {{ form_widget(form) }}
 
-{% if form.vars.value.id %}
+{% if form.vars.currentLogoId %}
     <div class="form-group">
         <label>Aktuelles Logo</label>
-        <img class="logo_preview" src="{{ path('logo_download', { id: form.vars.value.id}) }}"
+        <img class="logo_preview" src="{{ path('logo_download', { id: form.vars.currentLogoId}) }}"
              alt="Aktuelle hinterlegtes Logo"/>
     </div>
 {% endif %}

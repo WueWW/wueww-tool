@@ -21,9 +21,13 @@ class MyOrganizationController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+        $currentLogoId = $user->getProposedOrganizationDetails() ? $user->getProposedOrganizationDetails()->getId() : null;
+
         $user->ensureEditableOrganizationDetails();
 
-        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails());
+        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
+            'currentLogoId' => $currentLogoId
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,6 +44,9 @@ class MyOrganizationController extends AbstractController
                 'success',
                 'Die Änderungen wurden gespeichert und zum Review eingereicht.'
             );
+
+            // force redirect, so form is re-created with correct currentLogoId option, ... hack'ady'hack
+            return $this->redirectToRoute('my_organization');
         }
 
         return $this->render('my_organization/edit.html.twig', [

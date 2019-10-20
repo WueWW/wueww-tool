@@ -51,6 +51,20 @@
                 <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
             </tr>
+            <tr>
+                <th>Logo</th>
+                <td>
+                    {% if organization.proposedOrganizationDetails.logoBlob %}
+                        <a href="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}">
+                            <img class="logo_preview"
+                                 src="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}"
+                                 alt="Aktuelle hinterlegtes Logo"/>
+                        </a>
+                    {% else %}
+                        <em>Es ist kein Logo hinterlegt.</em>
+                    {% endif %}
+                </td>
+            </tr>
             </tbody>
         {% endif %}
     </table>
@@ -68,7 +82,8 @@
             Dieser Organisator wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
             bisher nicht freigegeben.
 
-            <form class="inline pull-right" method="post" action="{{ path('organization_accept', {'id': organization.id}) }}">
+            <form class="inline pull-right" method="post"
+                  action="{{ path('organization_accept', {'id': organization.id}) }}">
                 <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
                 <button class="btn btn-primary"><i class="fa fa-check"></i> Organisator freigeben</button>
             </form>
