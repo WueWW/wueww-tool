@@ -60,7 +60,7 @@ class OrganizationController extends AbstractController
     /**
      * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
      * @param Request $request
-     * @param Session $session
+     * @param User $user
      * @return Response
      */
     public function edit(Request $request, User $user): Response
@@ -79,6 +79,7 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->accept();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('organization_index');
