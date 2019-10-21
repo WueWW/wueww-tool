@@ -91,6 +91,11 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session->applyDetails($sessionWithDetail);
+
+            if ($this->isGranted(User::ROLE_EDITOR)) {
+                $session->accept();
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('session_index');
