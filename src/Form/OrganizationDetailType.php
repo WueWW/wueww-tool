@@ -22,6 +22,10 @@ class OrganizationDetailType extends AbstractType
                 'label' => 'Name',
                 'required' => true,
             ])
+            ->add('contactName', TextType::class, [
+                'label' => 'Ansprechpartner (wird nicht veröffentlicht)',
+                'required' => true,
+            ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung',
                 'required' => false,

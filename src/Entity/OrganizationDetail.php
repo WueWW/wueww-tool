@@ -22,6 +22,11 @@ class OrganizationDetail
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $contactName;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $shortDescription;
@@ -74,6 +79,18 @@ class OrganizationDetail
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getContactName(): ?string
+    {
+        return $this->contactName;
+    }
+
+    public function setContactName(string $contactName): self
+    {
+        $this->contactName = $contactName;
 
         return $this;
     }
