@@ -36,8 +36,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
     private function createSessionNichtFreigegeben(User $reporter): Session
     {
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable("2019-04-01 14:00"))
-            ->setStop(new \DateTimeImmutable("2019-04-01 16:00"))
+            ->setStart(new \DateTimeImmutable("2020-04-20 14:00"))
+            ->setStop(new \DateTimeImmutable("2020-04-20 16:00"))
             ->setCancelled(false)
             ->setOwner($reporter);
 
@@ -62,8 +62,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable("2019-04-02 14:00"))
-            ->setStop(new \DateTimeImmutable("2019-04-02 16:00"))
+            ->setStart(new \DateTimeImmutable("2020-04-21 14:00"))
+            ->setStop(new \DateTimeImmutable("2020-04-21 16:00"))
             ->setCancelled(false)
             ->setOwner($reporter)
             ->setAcceptedDetails($detail)
@@ -89,8 +89,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable("2019-04-02 14:00"))
-            ->setStop(new \DateTimeImmutable("2019-04-02 16:00"))
+            ->setStart(new \DateTimeImmutable("2020-04-24 14:00"))
+            ->setStop(new \DateTimeImmutable("2020-04-24 16:00"))
             ->setCancelled(false)
             ->setOwner($reporter)
             ->setAcceptedDetails($detailAccepted)
@@ -109,8 +109,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable("2019-04-02 14:00"))
-            ->setStop(new \DateTimeImmutable("2019-04-02 16:00"))
+            ->setStart(new \DateTimeImmutable("2020-04-26 14:00"))
+            ->setStop(new \DateTimeImmutable("2020-04-26 16:00"))
             ->setCancelled(true)
             ->setOwner($reporter)
             ->setAcceptedDetails($detail)
