@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\DTO\SessionWithDetail;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,11 +20,24 @@ class SessionWithDetailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateType::class, [
+            ->add('date', ChoiceType::class, [
                 'label' => 'Datum',
-                'widget' => 'single_text',
-                'html5' => false,
-            ])
+                'choices' => [
+                    'Montag, 20. April 2020' => '2020-04-20',
+                    'Dienstag, 21. April 2020' => '2020-04-21',
+                    'Mittwoch, 22. April 2020' => '2020-04-22',
+                    'Donnerstag, 23. April 2020' => '2020-04-23',
+                    'Freitag, 24. April 2020' => '2020-04-24',
+                    'Samstag, 25. April 2020' => '2020-04-25',
+                    'Sonntag, 26. April 2020' => '2020-04-26',
+                    'Montag, 27. April 2020' => '2020-04-27',
+                ]
+            ]);
+
+        $builder->get('date')
+            ->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
+
+        $builder
             ->add('start', TimeType::class, [
                 'label' => 'Beginn',
                 'widget' => 'single_text',
