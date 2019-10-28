@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationDetailRepository")
@@ -18,16 +19,19 @@ class OrganizationDetail
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $contactName;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll")
      */
     private $shortDescription;
 
@@ -76,7 +80,7 @@ class OrganizationDetail
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -88,7 +92,7 @@ class OrganizationDetail
         return $this->contactName;
     }
 
-    public function setContactName(string $contactName): self
+    public function setContactName(?string $contactName): self
     {
         $this->contactName = $contactName;
 

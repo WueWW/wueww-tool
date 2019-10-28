@@ -38,6 +38,7 @@ class SessionWithDetail
 
     /**
      * @var string|null
+     * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll")
      */
     private $shortDescription;
 
