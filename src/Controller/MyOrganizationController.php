@@ -21,7 +21,8 @@ class MyOrganizationController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $currentLogoId = $user->getProposedOrganizationDetails() ? $user->getProposedOrganizationDetails()->getId() : null;
+        $currentLogoId = $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
+            ? $user->getProposedOrganizationDetails()->getId() : null;
 
         $user->ensureEditableOrganizationDetails();
 

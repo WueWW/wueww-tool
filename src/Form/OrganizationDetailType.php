@@ -55,7 +55,7 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
             ])
             ->add('logo', FileType::class, [
-                'label' => 'Neues Logo (JPG)',
+                'label' => 'Neues Logo hochladen (JPEG-Format)',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
