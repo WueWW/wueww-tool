@@ -4,9 +4,10 @@
 namespace App\Controller;
 
 
+use App\DTO\OrganizationCreate;
 use App\Entity\OrganizationDetail;
-use App\Entity\Session;
 use App\Entity\User;
+use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,6 +39,41 @@ class OrganizationController extends AbstractController
         $organizations = $userRepository->findAllReporters();
 
         return $this->render('organization/index.html.twig', ['organizations' => $organizations,]);
+    }
+
+    /**
+     * @Route("/new", name="organization_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function new(Request $request): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        $organization = new OrganizationCreate();
+
+        $form = $this->createForm(OrganizationCreateType::class, $organization);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = (new User())
+                ->setEmail($organization->getEmail())
+                ->setPassword('!')
+                ->setRegistrationComplete(true);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('organization_edit', ['id' => $user->getId()]);
+        }
+
+        return $this->render('organization/new.html.twig', [
+            'organization' => $organization,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
