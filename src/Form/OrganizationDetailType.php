@@ -29,6 +29,9 @@ class OrganizationDetailType extends AbstractType
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung',
                 'required' => false,
+                'attr' => [
+                    'maxlength' => 250,
+                ]
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'Langbeschreibung',

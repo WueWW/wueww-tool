@@ -51,10 +51,16 @@ class SessionWithDetailType extends AbstractType
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titel',
+                'attr' => [
+                    'maxlength' => 30,
+                ]
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung',
                 'required' => false,
+                'attr' => [
+                    'maxlength' => 250,
+                ]
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'Langbeschreibung',
