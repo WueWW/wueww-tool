@@ -41,6 +41,10 @@ class SessionController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->isGranted(User::ROLE_EDITOR)) {
+            throw new \LogicException('session_new route not expected to be called by editor');
+        }
+
         $sessionWithDetail = new SessionWithDetail();
 
         $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
@@ -63,6 +67,43 @@ class SessionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/organization/{id}/new", name="session_editor_create", methods={"GET","POST"})
+     * @param User $user
+     * @param Request $request
+     * @return Response
+     */
+    public function editorCreate(User $user, Request $request): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        $sessionWithDetail = new SessionWithDetail();
+
+        $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $session = (new Session())
+                ->setOwner($user)
+                ->applyDetails($sessionWithDetail);
+            $session->accept();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($session);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('session_index');
+        }
+
+        return $this->render('session/new.html.twig', [
+            'session' => $sessionWithDetail,
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * @Route("/{id}", name="session_show", methods={"GET"})

@@ -32,6 +32,8 @@
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                        href="{{ path('organization_edit', {'id': organization.id}) }}"><i class="fa fa-pencil"></i></a>
                     {{ include('organization/_delete_form.html.twig') }}
+                    <a class="btn btn-outline-secondary btn-sm" title="Session anlegen"
+                       href="{{ path('session_editor_create', {'id': organization.id}) }}"><i class="fa fa-plus"></i></a>
                 </td>
             </tr>
         {% else %}
