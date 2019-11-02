@@ -71,15 +71,15 @@
 
     {% if not organization.proposedOrganizationDetails %}
         <div class="alert alert-info clearfix" role="alert">
-            Dieser Organisator hat bisher keine Detailinformationen zu seiner Organisation erfasst.
+            Dieser Veranstalter hat bisher keine Detailinformationen erfasst.
         </div>
     {% elseif organization.accepted %}
         <div class="alert alert-success" role="alert">
-            Dieser Organisator ist bereits freigegeben.
+            Dieser Veranstalter ist bereits freigegeben.
         </div>
     {% else %}
         <div class="alert alert-info clearfix" role="alert">
-            Dieser Organisator wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
+            Dieser Veranstalter wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
             bisher nicht freigegeben.
 
             <form class="inline pull-right" method="post"
@@ -96,6 +96,6 @@
         </div>
     {% endif %}
 
-    <a href="{{ path('organization_index') }}">zurück zur Liste der Organisatoren</a>
+    <a href="{{ path('organization_index') }}">zurück zur Liste der Veranstalter</a>
 
 {% endblock %}

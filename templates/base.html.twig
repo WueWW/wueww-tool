@@ -25,11 +25,11 @@
             {% if app.user %}
                 {% if is_granted('ROLE_EDITOR') %}
                     <li>
-                        <a class="nav-link" href="{{ path('organization_index') }}">Organisatoren</a>
+                        <a class="nav-link" href="{{ path('organization_index') }}">Veranstalter</a>
                     </li>
                 {% else %}
                     <li>
-                        <a class="nav-link" href="{{ path('my_organization') }}">Meine Organisation</a>
+                        <a class="nav-link" href="{{ path('my_organization') }}">Veranstalterangaben</a>
                     </li>
                 {% endif %}
             {% endif %}
