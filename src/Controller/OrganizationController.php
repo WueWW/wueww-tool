@@ -76,7 +76,8 @@ class OrganizationController extends AbstractController
             throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
-        $currentLogoId = $user->getProposedOrganizationDetails() ? $user->getProposedOrganizationDetails()->getId() : null;
+        $currentLogoId = $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
+            ? $user->getProposedOrganizationDetails()->getId() : null;
         $user->ensureEditableOrganizationDetails();
         $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
             'currentLogoId' => $currentLogoId
