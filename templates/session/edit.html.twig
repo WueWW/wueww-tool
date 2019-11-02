@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ include('session/_orgdata_missing_info.html.twig') }}
+
     <h1>Session bearbeiten</h1>
 
     {{ include('session/_form.html.twig') }}

@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {{ include('session/_orgdata_missing_info.html.twig') }}
+
     <h1>Sessionliste</h1>
 
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Beginn</th>
-                <th>Ende</th>
-                <th>Titel</th>
-                <th>Freigabe</th>
-                <th>Aktionen</th>
-            </tr>
+        <tr>
+            <th>Datum</th>
+            <th>Beginn</th>
+            <th>Ende</th>
+            <th>Titel</th>
+            <th>Freigabe</th>
+            <th>Aktionen</th>
+        </tr>
         </thead>
         <tbody>
         {% for session in sessions %}
@@ -30,13 +32,15 @@
                     {% endif %}
                 </td>
                 <td class="session-actions">
-                    <a class="btn btn-outline-secondary btn-sm" title="anzeigen" href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
+                    <a class="btn btn-outline-secondary btn-sm" title="anzeigen"
+                       href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
                     {% if not session.cancelled %}
-                    <a class="btn btn-outline-secondary btn-sm" title="bearbeiten" href="{{ path('session_edit', {'id': session.id}) }}"><i class="fa fa-pencil"></i></a>
-                    {{ include('session/_cancel_form.html.twig') }}
+                        <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
+                           href="{{ path('session_edit', {'id': session.id}) }}"><i class="fa fa-pencil"></i></a>
+                        {{ include('session/_cancel_form.html.twig') }}
                     {% endif %}
                     {% if is_granted('ROLE_EDITOR') %}
-                    {{ include('session/_delete_form.html.twig') }}
+                        {{ include('session/_delete_form.html.twig') }}
                     {% endif %}
                 </td>
             </tr>
