@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Organisator{% endblock %}
+{% block title %}Veranstalter{% endblock %}
 
 {% block body %}
-    <h1>Organisator</h1>
+    <h1>Veranstalter</h1>
 
     <table class="table">
         <tbody>
@@ -85,7 +85,7 @@
             <form class="inline pull-right" method="post"
                   action="{{ path('organization_accept', {'id': organization.id}) }}">
                 <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
-                <button class="btn btn-primary"><i class="fa fa-check"></i> Organisator freigeben</button>
+                <button class="btn btn-primary"><i class="fa fa-check"></i> Veranstalter freigeben</button>
             </form>
 
             <p>
