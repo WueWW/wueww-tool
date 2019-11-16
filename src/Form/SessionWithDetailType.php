@@ -19,23 +19,21 @@ class SessionWithDetailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('date', ChoiceType::class, [
-                'label' => 'Datum',
-                'choices' => [
-                    'Montag, 20. April 2020' => '2020-04-20',
-                    'Dienstag, 21. April 2020' => '2020-04-21',
-                    'Mittwoch, 22. April 2020' => '2020-04-22',
-                    'Donnerstag, 23. April 2020' => '2020-04-23',
-                    'Freitag, 24. April 2020' => '2020-04-24',
-                    'Samstag, 25. April 2020' => '2020-04-25',
-                    'Sonntag, 26. April 2020' => '2020-04-26',
-                    'Montag, 27. April 2020' => '2020-04-27',
-                ]
-            ]);
+        $builder->add('date', ChoiceType::class, [
+            'label' => 'Datum',
+            'choices' => [
+                'Montag, 20. April 2020' => '2020-04-20',
+                'Dienstag, 21. April 2020' => '2020-04-21',
+                'Mittwoch, 22. April 2020' => '2020-04-22',
+                'Donnerstag, 23. April 2020' => '2020-04-23',
+                'Freitag, 24. April 2020' => '2020-04-24',
+                'Samstag, 25. April 2020' => '2020-04-25',
+                'Sonntag, 26. April 2020' => '2020-04-26',
+                'Montag, 27. April 2020' => '2020-04-27',
+            ],
+        ]);
 
-        $builder->get('date')
-            ->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
+        $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
 
         $builder
             ->add('start', TimeType::class, [
@@ -53,14 +51,14 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Titel',
                 'attr' => [
                     'maxlength' => 30,
-                ]
+                ],
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 250,
-                ]
+                ],
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'Langbeschreibung',

@@ -43,9 +43,9 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
 
-        return array_filter($result, (function (User $user) {
+        return array_filter($result, function (User $user) {
             return !$user->isEditor();
-        }));
+        });
     }
 
     // /**

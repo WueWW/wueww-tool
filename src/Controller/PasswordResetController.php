@@ -62,7 +62,8 @@ class PasswordResetController extends AbstractController
                 $this->addFlash('danger', 'Beim Zurücksetzen deines Passworts ist ein Problem aufgetreten.');
             }
 
-            return $this->redirectToRoute('app_login');        }
+            return $this->redirectToRoute('app_login');
+        }
 
         return $this->render('password_reset/finish.html.twig', [
             'form' => $form->createView(),

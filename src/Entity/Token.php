@@ -29,8 +29,7 @@ class Token
 
     public static function generate(): self
     {
-        return (new self())
-            ->setToken(\sha1(\random_bytes(64)));
+        return (new self())->setToken(\sha1(\random_bytes(64)));
     }
 
     public function getId(): ?int

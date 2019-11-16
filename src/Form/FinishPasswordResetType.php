@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form;
-
 
 use App\DTO\FinishPasswordReset;
 use Symfony\Component\Form\AbstractType;
@@ -15,17 +13,16 @@ class FinishPasswordResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'Die erfassten Passwörter stimmen nicht überein',
-                'first_options' => [
-                    'label' => 'Neues Passwort:',
-                ],
-                'second_options' => [
-                    'label' => 'Neues Passwort (Wiederholung):',
-                ],
-            ]);
+        $builder->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => 'Die erfassten Passwörter stimmen nicht überein',
+            'first_options' => [
+                'label' => 'Neues Passwort:',
+            ],
+            'second_options' => [
+                'label' => 'Neues Passwort (Wiederholung):',
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

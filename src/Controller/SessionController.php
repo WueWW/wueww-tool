@@ -31,7 +31,7 @@ class SessionController extends AbstractController
             $sessions = $sessionRepository->findByUser($this->getUser());
         }
 
-        return $this->render('session/index.html.twig', ['sessions' => $sessions,]);
+        return $this->render('session/index.html.twig', ['sessions' => $sessions]);
     }
 
     /**
@@ -51,9 +51,7 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = (new Session())
-                ->setOwner($this->getUser())
-                ->applyDetails($sessionWithDetail);
+            $session = (new Session())->setOwner($this->getUser())->applyDetails($sessionWithDetail);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
@@ -86,9 +84,7 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = (new Session())
-                ->setOwner($user)
-                ->applyDetails($sessionWithDetail);
+            $session = (new Session())->setOwner($user)->applyDetails($sessionWithDetail);
             $session->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -103,7 +99,6 @@ class SessionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 
     /**
      * @Route("/{id}", name="session_show", methods={"GET"})
@@ -145,7 +140,9 @@ class SessionController extends AbstractController
                 $session->accept();
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('session_index');
         }
@@ -168,7 +165,7 @@ class SessionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('delete'.$session->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $session->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($session);
             $entityManager->flush();
@@ -189,7 +186,7 @@ class SessionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('cancel'.$session->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('cancel' . $session->getId(), $request->request->get('_token'))) {
             $session->setCancelled(true);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -211,7 +208,7 @@ class SessionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ($this->isCsrfTokenValid('accept'.$session->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('accept' . $session->getId(), $request->request->get('_token'))) {
             $session->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -220,5 +217,4 @@ class SessionController extends AbstractController
 
         return $this->redirectToRoute('session_index');
     }
-
 }

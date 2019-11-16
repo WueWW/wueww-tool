@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form;
-
 
 use App\DTO\UserRegistration;
 use Symfony\Component\Form\AbstractType;

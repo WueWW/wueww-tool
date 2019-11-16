@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\DTO\OrganizationCreate;
 use App\Entity\OrganizationDetail;
@@ -24,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class OrganizationController extends AbstractController
 {
-
     /**
      * @Route("/", name="organization_index", methods={"GET"})
      * @param UserRepository $userRepository
@@ -38,7 +35,7 @@ class OrganizationController extends AbstractController
 
         $organizations = $userRepository->findAllReporters();
 
-        return $this->render('organization/index.html.twig', ['organizations' => $organizations,]);
+        return $this->render('organization/index.html.twig', ['organizations' => $organizations]);
     }
 
     /**
@@ -112,11 +109,13 @@ class OrganizationController extends AbstractController
             throw new BadRequestHttpException('Referenced User is not of reporter-type');
         }
 
-        $currentLogoId = $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
-            ? $user->getProposedOrganizationDetails()->getId() : null;
+        $currentLogoId =
+            $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
+                ? $user->getProposedOrganizationDetails()->getId()
+                : null;
         $user->ensureEditableOrganizationDetails();
         $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
-            'currentLogoId' => $currentLogoId
+            'currentLogoId' => $currentLogoId,
         ]);
         $form->handleRequest($request);
 
@@ -129,7 +128,9 @@ class OrganizationController extends AbstractController
             }
 
             $user->accept();
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('organization_index');
         }
@@ -202,12 +203,13 @@ class OrganizationController extends AbstractController
             return Response::create('', Response::HTTP_NOT_FOUND);
         }
 
-        return new StreamedResponse(function () use ($organizationDetail) {
-            fpassthru($organizationDetail->getLogoBlob());
-            exit();
-        }, 200, [
-            'Content-Transfer-Encoding', 'binary',
-            'Content-type' => 'image/jpeg',
-        ]);
+        return new StreamedResponse(
+            function () use ($organizationDetail) {
+                fpassthru($organizationDetail->getLogoBlob());
+                exit();
+            },
+            200,
+            ['Content-Transfer-Encoding', 'binary', 'Content-type' => 'image/jpeg']
+        );
     }
 }

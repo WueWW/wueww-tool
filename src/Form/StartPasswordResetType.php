@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form;
-
 
 use App\DTO\StartPasswordReset;
 use Symfony\Component\Form\AbstractType;
@@ -14,10 +12,9 @@ class StartPasswordResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('email', EmailType::class, [
-                'label' => 'E-Mail Adresse:',
-            ]);
+        $builder->add('email', EmailType::class, [
+            'label' => 'E-Mail Adresse:',
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

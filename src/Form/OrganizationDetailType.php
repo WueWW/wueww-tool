@@ -31,7 +31,7 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 250,
-                ]
+                ],
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'Langbeschreibung',
@@ -65,8 +65,8 @@ class OrganizationDetailType extends AbstractType
                     new File([
                         'mimeTypes' => ['image/jpeg'],
                         'mimeTypesMessage' => 'Bitte stelle ein Bild im JPEG-Format zur Verfügung.',
-                    ])
-                ]
+                    ]),
+                ],
             ]);
     }
 

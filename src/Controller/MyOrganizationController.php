@@ -21,13 +21,15 @@ class MyOrganizationController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $currentLogoId = $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
-            ? $user->getProposedOrganizationDetails()->getId() : null;
+        $currentLogoId =
+            $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
+                ? $user->getProposedOrganizationDetails()->getId()
+                : null;
 
         $user->ensureEditableOrganizationDetails();
 
         $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
-            'currentLogoId' => $currentLogoId
+            'currentLogoId' => $currentLogoId,
         ]);
         $form->handleRequest($request);
 
@@ -39,12 +41,11 @@ class MyOrganizationController extends AbstractController
                 $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
             }
 
-            $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
-            $this->addFlash(
-                'success',
-                'Die Änderungen wurden gespeichert und zum Review eingereicht.'
-            );
+            $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
 
             // force redirect, so form is re-created with correct currentLogoId option, ... hack'ady'hack
             return $this->redirectToRoute('my_organization');

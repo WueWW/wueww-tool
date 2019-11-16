@@ -160,18 +160,25 @@ class Session
         }
 
         $start = (new \DateTime())
-            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
+            ->setDate(
+                $sessionWithDetail->getDate()->format('Y'),
+                $sessionWithDetail->getDate()->format('m'),
+                $sessionWithDetail->getDate()->format('d')
+            )
             ->setTime($sessionWithDetail->getStart()->format('H'), $sessionWithDetail->getStart()->format('i'));
 
-        $stop = $sessionWithDetail->getStop() === null ? null : (
-        (new \DateTime())
-            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
-            ->setTime($sessionWithDetail->getStop()->format('H'), $sessionWithDetail->getStop()->format('i'))
-        );
+        $stop =
+            $sessionWithDetail->getStop() === null
+                ? null
+                : (new \DateTime())
+                    ->setDate(
+                        $sessionWithDetail->getDate()->format('Y'),
+                        $sessionWithDetail->getDate()->format('m'),
+                        $sessionWithDetail->getDate()->format('d')
+                    )
+                    ->setTime($sessionWithDetail->getStop()->format('H'), $sessionWithDetail->getStop()->format('i'));
 
-        $this
-            ->setStart($start)
-            ->setStop($stop);
+        $this->setStart($start)->setStop($stop);
 
         $this->getProposedDetails()
             ->setTitle($sessionWithDetail->getTitle())
