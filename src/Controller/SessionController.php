@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/session")
+ * @method User getUser()
  */
 class SessionController extends AbstractController
 {

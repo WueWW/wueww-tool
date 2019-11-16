@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @method User getUser()
+ */
 class MyOrganizationController extends AbstractController
 {
     /**
@@ -19,9 +22,9 @@ class MyOrganizationController extends AbstractController
      */
     public function edit(Request $request): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $organization = $user->getOrganizations()->first();
+        $organization = $this->getUser()
+            ->getOrganizations()
+            ->first();
 
         $organization->ensureEditableOrganizationDetails();
 
