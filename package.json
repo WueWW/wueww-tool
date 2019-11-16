@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@prettier/plugin-php": "^0.11.2",
         "@symfony/webpack-encore": "^0.28.0",
         "bootstrap": "^4.3.1",
         "core-js": "^3.4.1",
@@ -7,6 +8,7 @@
         "jquery": "^3.4.1",
         "node-sass": "^4.12.0",
         "popper.js": "^1.15.0",
+        "prettier": "^1.19.1",
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^8.0.0",
         "webpack-notifier": "^1.6.0"
@@ -17,6 +19,11 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "prettier-php": "prettier 'src/**/*.php' --write"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "trailingCommaPHP": "php7.2"
     }
 }
