@@ -33,12 +33,6 @@ class Session
     private $cancelled;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sessions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $owner;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -48,6 +42,12 @@ class Session
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $acceptedDetails;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="sessions", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organization;
 
     public function __construct()
     {
@@ -92,18 +92,6 @@ class Session
     public function setCancelled(bool $cancelled): self
     {
         $this->cancelled = $cancelled;
-
-        return $this;
-    }
-
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): self
-    {
-        $this->owner = $owner;
 
         return $this;
     }
@@ -195,5 +183,17 @@ class Session
     public function accept()
     {
         $this->setAcceptedDetails($this->getProposedDetails());
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(Organization $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 }

@@ -21,14 +21,17 @@ class MyOrganizationController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+        $organization = $user->getOrganizations()->first();
+
         $currentLogoId =
-            $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
-                ? $user->getProposedOrganizationDetails()->getId()
+            $organization->getProposedOrganizationDetails() &&
+            $organization->getProposedOrganizationDetails()->getLogoBlob()
+                ? $organization->getProposedOrganizationDetails()->getId()
                 : null;
 
-        $user->ensureEditableOrganizationDetails();
+        $organization->ensureEditableOrganizationDetails();
 
-        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails(), [
             'currentLogoId' => $currentLogoId,
         ]);
         $form->handleRequest($request);
@@ -38,7 +41,9 @@ class MyOrganizationController extends AbstractController
             $logoFile = $form['logo']->getData();
 
             if ($logoFile) {
-                $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
+                $organization
+                    ->getProposedOrganizationDetails()
+                    ->setLogoBlob(file_get_contents($logoFile->getPathname()));
             }
 
             $this->getDoctrine()

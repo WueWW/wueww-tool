@@ -15,7 +15,7 @@
         <tbody>
         {% for organization in organizations %}
             <tr>
-                <td>{{ organization.email }}</td>
+                <td>{{ organization.owner.email }}</td>
                 <td>{{ organization.title }}</td>
                 <td>
                     {% if not organization.proposedOrganizationDetails %}

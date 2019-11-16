@@ -51,7 +51,11 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = (new Session())->setOwner($this->getUser())->applyDetails($sessionWithDetail);
+            /** @var User $user */
+            $user = $this->getUser();
+            $session = (new Session())
+                ->setOrganization($user->getOrganizations()->first())
+                ->applyDetails($sessionWithDetail);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
@@ -84,7 +88,9 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = (new Session())->setOwner($user)->applyDetails($sessionWithDetail);
+            $session = (new Session())
+                ->setOrganization($user->getOrganizations()->first())
+                ->applyDetails($sessionWithDetail);
             $session->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -107,7 +113,7 @@ class SessionController extends AbstractController
      */
     public function show(Session $session): Response
     {
-        if ($session->getOwner() !== $this->getUser()) {
+        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -124,7 +130,7 @@ class SessionController extends AbstractController
      */
     public function edit(Request $request, Session $session): Response
     {
-        if ($session->getOwner() !== $this->getUser()) {
+        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -182,7 +188,7 @@ class SessionController extends AbstractController
      */
     public function cancel(Request $request, Session $session): Response
     {
-        if ($session->getOwner() !== $this->getUser()) {
+        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 

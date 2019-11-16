@@ -27,7 +27,8 @@ class SessionRepository extends ServiceEntityRepository
     public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.owner = :owner')
+            ->innerJoin('s.organization', 'o')
+            ->andWhere('o.owner = :owner')
             ->setParameter('owner', $user)
             ->getQuery()
             ->getResult();

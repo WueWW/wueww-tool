@@ -3,17 +3,17 @@
 namespace App\Controller;
 
 use App\DTO\OrganizationCreate;
+use App\Entity\Organization;
 use App\Entity\OrganizationDetail;
 use App\Entity\User;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
-use App\Repository\UserRepository;
+use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -24,16 +24,16 @@ class OrganizationController extends AbstractController
 {
     /**
      * @Route("/", name="organization_index", methods={"GET"})
-     * @param UserRepository $userRepository
+     * @param OrganizationRepository $organizationRepository
      * @return Response
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(OrganizationRepository $organizationRepository): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        $organizations = $userRepository->findAllReporters();
+        $organizations = $organizationRepository->findAll();
 
         return $this->render('organization/index.html.twig', ['organizations' => $organizations]);
     }
@@ -49,72 +49,67 @@ class OrganizationController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $organization = new OrganizationCreate();
+        $organizationCreateDTO = new OrganizationCreate();
 
-        $form = $this->createForm(OrganizationCreateType::class, $organization);
+        $form = $this->createForm(OrganizationCreateType::class, $organizationCreateDTO);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $organization = new Organization();
             $user = (new User())
-                ->setEmail($organization->getEmail())
+                ->setEmail($organizationCreateDTO->getEmail())
                 ->setPassword('!')
-                ->setRegistrationComplete(true);
+                ->setRegistrationComplete(true)
+                ->addOrganization($organization);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('organization_edit', ['id' => $user->getId()]);
+            return $this->redirectToRoute('organization_edit', ['id' => $organization->getId()]);
         }
 
         return $this->render('organization/new.html.twig', [
-            'organization' => $organization,
+            'organization' => $organizationCreateDTO,
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="organization_show", methods={"GET"})
-     * @param User $user
+     * @param Organization $organization
      * @return Response
      */
-    public function show(User $user): Response
+    public function show(Organization $organization): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        if ($user->isEditor()) {
-            throw new BadRequestHttpException('Referenced User is not of reporter-type');
-        }
-
         return $this->render('organization/show.html.twig', [
-            'organization' => $user,
+            'organization' => $organization,
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
      * @param Request $request
-     * @param User $user
+     * @param Organization $organization
      * @return Response
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, Organization $organization): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        if ($user->isEditor()) {
-            throw new BadRequestHttpException('Referenced User is not of reporter-type');
-        }
-
         $currentLogoId =
-            $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
-                ? $user->getProposedOrganizationDetails()->getId()
+            $organization->getProposedOrganizationDetails() &&
+            $organization->getProposedOrganizationDetails()->getLogoBlob()
+                ? $organization->getProposedOrganizationDetails()->getId()
                 : null;
-        $user->ensureEditableOrganizationDetails();
-        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
+        $organization->ensureEditableOrganizationDetails();
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails(), [
             'currentLogoId' => $currentLogoId,
         ]);
         $form->handleRequest($request);
@@ -124,10 +119,12 @@ class OrganizationController extends AbstractController
             $logoFile = $form['logo']->getData();
 
             if ($logoFile) {
-                $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
+                $organization
+                    ->getProposedOrganizationDetails()
+                    ->setLogoBlob(file_get_contents($logoFile->getPathname()));
             }
 
-            $user->accept();
+            $organization->accept();
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
@@ -136,7 +133,7 @@ class OrganizationController extends AbstractController
         }
 
         return $this->render('organization/edit.html.twig', [
-            'organization' => $user,
+            'organization' => $organization,
             'form' => $form->createView(),
         ]);
     }
@@ -144,22 +141,18 @@ class OrganizationController extends AbstractController
     /**
      * @Route("/{id}", name="organization_delete", methods={"DELETE"})
      * @param Request $request
-     * @param User $user
+     * @param Organization $organization
      * @return Response
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, Organization $organization): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        if ($user->isEditor()) {
-            throw new BadRequestHttpException('Referenced User is not of reporter-type');
-        }
-
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $organization->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
+            $entityManager->remove($organization);
             $entityManager->flush();
         }
 
@@ -169,21 +162,17 @@ class OrganizationController extends AbstractController
     /**
      * @Route("/{id}/accept", name="organization_accept", methods={"POST"})
      * @param Request $request
-     * @param User $user
+     * @param Organization $organization
      * @return Response
      */
-    public function accept(Request $request, User $user): Response
+    public function accept(Request $request, Organization $organization): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        if ($user->isEditor()) {
-            throw new BadRequestHttpException('Referenced User is not of reporter-type');
-        }
-
-        if ($this->isCsrfTokenValid('accept' . $user->getId(), $request->request->get('_token'))) {
-            $user->accept();
+        if ($this->isCsrfTokenValid('accept' . $organization->getId(), $request->request->get('_token'))) {
+            $organization->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
