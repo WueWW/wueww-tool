@@ -46,17 +46,21 @@ class SessionController extends AbstractController
             throw new \LogicException('session_new route not expected to be called by editor');
         }
 
-        $sessionWithDetail = new SessionWithDetail();
+        $sessionWithDetail = (new SessionWithDetail())->setOrganization(
+            $this->getUser()
+                ->getOrganizations()
+                ->first()
+        );
 
         $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $this->getUser();
-            $session = (new Session())
-                ->setOrganization($user->getOrganizations()->first())
-                ->applyDetails($sessionWithDetail);
+            $session = (new Session())->applyDetails($sessionWithDetail);
+
+            if ($session->getOrganization()->getOwner() !== $this->getUser()) {
+                throw new AccessDeniedException();
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
@@ -145,6 +149,8 @@ class SessionController extends AbstractController
 
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $session->accept();
+            } elseif ($session->getOrganization()->getOwner() !== $this->getUser()) {
+                throw new AccessDeniedException();
             }
 
             $this->getDoctrine()

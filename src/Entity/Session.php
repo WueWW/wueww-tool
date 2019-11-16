@@ -136,6 +136,7 @@ class Session
             ->setDate($this->getStart())
             ->setStart($this->getStart())
             ->setStop($this->getStop())
+            ->setOrganization($this->getOrganization())
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
             ->setLongDescription($this->getProposedDetails()->getLongDescription())
@@ -176,7 +177,9 @@ class Session
                         (int) $sessionWithDetail->getStop()->format('i')
                     );
 
-        $this->setStart($start)->setStop($stop);
+        $this->setStart($start)
+            ->setStop($stop)
+            ->setOrganization($sessionWithDetail->getOrganization());
 
         $this->getProposedDetails()
             ->setTitle($sessionWithDetail->getTitle())

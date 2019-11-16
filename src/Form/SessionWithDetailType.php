@@ -3,16 +3,18 @@
 namespace App\Form;
 
 use App\DTO\SessionWithDetail;
+use App\Entity\Organization;
+use App\Repository\OrganizationRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SessionWithDetailType extends AbstractType
@@ -68,9 +70,28 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Veranstaltungsort',
             ])
             ->add('link', TextType::class, [
-                'label' => 'Link',
+                'label' => 'Link (weitere Infos, Anmeldung etc.)',
                 'required' => false,
             ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+            /** @var SessionWithDetail $sessionWithDetail */
+            $sessionWithDetail = $formEvent->getData();
+
+            $formEvent->getForm()->add('organization', EntityType::class, [
+                'label' => 'Veranstalter',
+                'class' => Organization::class,
+                'required' => true,
+                'choice_label' => 'title',
+                'placeholder' => null,
+                'query_builder' => function (OrganizationRepository $repo) use ($sessionWithDetail) {
+                    return $repo
+                        ->createQueryBuilder('o')
+                        ->andWhere('o.owner = :owner')
+                        ->setParameter('owner', $sessionWithDetail->getOrganization()->getOwner());
+                },
+            ]);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
