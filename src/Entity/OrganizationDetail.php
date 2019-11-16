@@ -31,14 +31,8 @@ class OrganizationDetail
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll")
-     */
-    private $shortDescription;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $longDescription;
+     * @Assert\Length(max = 500, maxMessage = "Die Beschreibung soll max. 500 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll")     */
+    private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -99,26 +93,14 @@ class OrganizationDetail
         return $this;
     }
 
-    public function getShortDescription(): ?string
+    public function getDescription(): ?string
     {
-        return $this->shortDescription;
+        return $this->description;
     }
 
-    public function setShortDescription(?string $shortDescription): self
+    public function setDescription(?string $description): self
     {
-        $this->shortDescription = $shortDescription;
-
-        return $this;
-    }
-
-    public function getLongDescription(): ?string
-    {
-        return $this->longDescription;
-    }
-
-    public function setLongDescription(?string $longDescription): self
-    {
-        $this->longDescription = $longDescription;
+        $this->description = $description;
 
         return $this;
     }
@@ -199,8 +181,7 @@ class OrganizationDetail
     {
         return (new self())
             ->setTitle($this->getTitle())
-            ->setShortDescription($this->getShortDescription())
-            ->setLongDescription($this->getLongDescription())
+            ->setDescription($this->getDescription())
             ->setLink($this->getLink())
             ->setFacebookUrl($this->getFacebookUrl())
             ->setTwitterUrl($this->getTwitterUrl())

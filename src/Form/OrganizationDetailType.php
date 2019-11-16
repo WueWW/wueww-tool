@@ -26,16 +26,12 @@ class OrganizationDetailType extends AbstractType
                 'label' => 'Ansprechpartner (wird nicht veröffentlicht)',
                 'required' => true,
             ])
-            ->add('shortDescription', TextareaType::class, [
-                'label' => 'Kurzbeschreibung',
+            ->add('description', TextareaType::class, [
+                'label' => 'Beschreibung',
                 'required' => false,
                 'attr' => [
-                    'maxlength' => 250,
+                    'maxlength' => 500,
                 ],
-            ])
-            ->add('longDescription', TextareaType::class, [
-                'label' => 'Langbeschreibung',
-                'required' => false,
             ])
             ->add('link', TextType::class, [
                 'label' => 'Link zur Homepage',
