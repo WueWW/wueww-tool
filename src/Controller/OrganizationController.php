@@ -103,27 +103,11 @@ class OrganizationController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $currentLogoId =
-            $organization->getProposedOrganizationDetails() &&
-            $organization->getProposedOrganizationDetails()->getLogoBlob()
-                ? $organization->getProposedOrganizationDetails()->getId()
-                : null;
         $organization->ensureEditableOrganizationDetails();
-        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails(), [
-            'currentLogoId' => $currentLogoId,
-        ]);
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $logoFile */
-            $logoFile = $form['logo']->getData();
-
-            if ($logoFile) {
-                $organization
-                    ->getProposedOrganizationDetails()
-                    ->setLogoBlob(file_get_contents($logoFile->getPathname()));
-            }
-
             $organization->accept();
             $this->getDoctrine()
                 ->getManager()
@@ -179,26 +163,5 @@ class OrganizationController extends AbstractController
         }
 
         return $this->redirectToRoute('organization_index');
-    }
-
-    /**
-     * @Route("/logo/{id}", name="logo_download", methods={"GET"})
-     * @param OrganizationDetail $organizationDetail
-     * @return Response
-     */
-    public function logoDownload(OrganizationDetail $organizationDetail): Response
-    {
-        if ($organizationDetail->getLogoBlob() === null) {
-            return Response::create('', Response::HTTP_NOT_FOUND);
-        }
-
-        return new StreamedResponse(
-            function () use ($organizationDetail) {
-                fpassthru($organizationDetail->getLogoBlob());
-                exit();
-            },
-            200,
-            ['Content-Transfer-Encoding', 'binary', 'Content-type' => 'image/jpeg']
-        );
     }
 }

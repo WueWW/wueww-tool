@@ -23,37 +23,17 @@ class MyOrganizationController extends AbstractController
         $user = $this->getUser();
         $organization = $user->getOrganizations()->first();
 
-        $currentLogoId =
-            $organization->getProposedOrganizationDetails() &&
-            $organization->getProposedOrganizationDetails()->getLogoBlob()
-                ? $organization->getProposedOrganizationDetails()->getId()
-                : null;
-
         $organization->ensureEditableOrganizationDetails();
 
-        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails(), [
-            'currentLogoId' => $currentLogoId,
-        ]);
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $logoFile */
-            $logoFile = $form['logo']->getData();
-
-            if ($logoFile) {
-                $organization
-                    ->getProposedOrganizationDetails()
-                    ->setLogoBlob(file_get_contents($logoFile->getPathname()));
-            }
-
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
 
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
-
-            // force redirect, so form is re-created with correct currentLogoId option, ... hack'ady'hack
-            return $this->redirectToRoute('my_organization');
         }
 
         return $this->render('my_organization/edit.html.twig', [

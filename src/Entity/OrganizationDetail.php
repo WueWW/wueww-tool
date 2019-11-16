@@ -59,11 +59,6 @@ class OrganizationDetail
      */
     private $instagramUrl;
 
-    /**
-     * @ORM\Column(type="blob", nullable=true)
-     */
-    private $logoBlob;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -165,18 +160,6 @@ class OrganizationDetail
         return $this;
     }
 
-    public function getLogoBlob()
-    {
-        return $this->logoBlob;
-    }
-
-    public function setLogoBlob($logoBlob): self
-    {
-        $this->logoBlob = $logoBlob;
-
-        return $this;
-    }
-
     public function editableClone(): self
     {
         return (new self())
@@ -186,7 +169,6 @@ class OrganizationDetail
             ->setFacebookUrl($this->getFacebookUrl())
             ->setTwitterUrl($this->getTwitterUrl())
             ->setYoutubeUrl($this->getYoutubeUrl())
-            ->setInstagramUrl($this->getInstagramUrl())
-            ->setLogoBlob($this->getLogoBlob());
+            ->setInstagramUrl($this->getInstagramUrl());
     }
 }

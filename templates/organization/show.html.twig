@@ -51,20 +51,6 @@
                 <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
             </tr>
-            <tr>
-                <th>Logo</th>
-                <td>
-                    {% if organization.proposedOrganizationDetails.logoBlob %}
-                        <a href="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}">
-                            <img class="logo_preview"
-                                 src="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}"
-                                 alt="Aktuelle hinterlegtes Logo"/>
-                        </a>
-                    {% else %}
-                        <em>Es ist kein Logo hinterlegt.</em>
-                    {% endif %}
-                </td>
-            </tr>
             </tbody>
         {% endif %}
     </table>
