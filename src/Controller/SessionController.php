@@ -112,6 +112,10 @@ class SessionController extends AbstractController
      */
     public function show(Session $session): Response
     {
+        if ($session->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
         return $this->render('session/show.html.twig', [
             'session' => $session,
         ]);
@@ -125,6 +129,10 @@ class SessionController extends AbstractController
      */
     public function edit(Request $request, Session $session): Response
     {
+        if ($session->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
         $sessionWithDetail = $session->toSessionWithDetail();
 
         $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
@@ -159,6 +167,7 @@ class SessionController extends AbstractController
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
+
         if ($this->isCsrfTokenValid('delete'.$session->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($session);
@@ -176,6 +185,10 @@ class SessionController extends AbstractController
      */
     public function cancel(Request $request, Session $session): Response
     {
+        if ($session->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
         if ($this->isCsrfTokenValid('cancel'.$session->getId(), $request->request->get('_token'))) {
             $session->setCancelled(true);
 
