@@ -1,14 +1,16 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.27.0",
+        "@prettier/plugin-php": "^0.11.2",
+        "@symfony/webpack-encore": "^0.28.0",
         "bootstrap": "^4.3.1",
-        "core-js": "^3.0.0",
+        "core-js": "^3.4.1",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.1",
         "node-sass": "^4.12.0",
         "popper.js": "^1.15.0",
+        "prettier": "^1.19.1",
         "regenerator-runtime": "^0.13.2",
-        "sass-loader": "^7.0.1",
+        "sass-loader": "^8.0.0",
         "webpack-notifier": "^1.6.0"
     },
     "license": "AGPL-3.0-or-later",
@@ -17,6 +19,13 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "prettier-php": "prettier 'src/**/*.php' --write"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "tabWidth": 4,
+        "singleQuote": true,
+        "trailingCommaPHP": "php7.2"
     }
 }

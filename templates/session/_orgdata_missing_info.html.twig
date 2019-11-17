@@ -1,4 +1,4 @@
-{% if not is_granted('ROLE_EDITOR') and (app.user.proposedOrganizationDetails is null or app.user.proposedOrganizationDetails.title == "") %}
+{% if not is_granted('ROLE_EDITOR') and (app.user.organizations.first.proposedOrganizationDetails is null or app.user.organizations.first.proposedOrganizationDetails.title == "") %}
     <div class="alert alert-warning" role="alert">
         <p>
             Aktuell sind die Veranstalterdaten nicht, oder nicht vollständig, erfasst. Diese müssen gepflegt werden,

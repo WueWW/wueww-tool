@@ -38,11 +38,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Session", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $sessions;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Token", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $tokens;
@@ -54,21 +49,14 @@ class User implements UserInterface
     private $registrationComplete;
 
     /**
-     * @var OrganizationDetail
-     * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\Organization", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $proposedOrganizationDetails;
-
-    /**
-     * @var OrganizationDetail
-     * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $acceptedOrganizationDetails;
+    private $organizations;
 
     public function __construct()
     {
-        $this->sessions = new ArrayCollection();
         $this->tokens = new ArrayCollection();
+        $this->organizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,7 +83,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**
@@ -122,7 +110,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -147,37 +135,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    /**
-     * @return Collection|Session[]
-     */
-    public function getSessions(): Collection
-    {
-        return $this->sessions;
-    }
-
-    public function addSession(Session $session): self
-    {
-        if (!$this->sessions->contains($session)) {
-            $this->sessions[] = $session;
-            $session->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSession(Session $session): self
-    {
-        if ($this->sessions->contains($session)) {
-            $this->sessions->removeElement($session);
-            // set the owning side to null (unless already changed)
-            if ($session->getOwner() === $this) {
-                $session->setOwner(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -231,60 +188,39 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProposedOrganizationDetails(): ?OrganizationDetail
-    {
-        return $this->proposedOrganizationDetails;
-    }
-
-    public function setProposedOrganizationDetails(?OrganizationDetail $proposedOrganizationDetails): self
-    {
-        $this->proposedOrganizationDetails = $proposedOrganizationDetails;
-
-        return $this;
-    }
-
-    public function getAcceptedOrganizationDetails(): ?OrganizationDetail
-    {
-        return $this->acceptedOrganizationDetails;
-    }
-
-    public function setAcceptedOrganizationDetails(?OrganizationDetail $acceptedOrganizationDetails): self
-    {
-        $this->acceptedOrganizationDetails = $acceptedOrganizationDetails;
-
-        return $this;
-    }
-
-    public function ensureEditableOrganizationDetails(): void
-    {
-        if ($this->proposedOrganizationDetails === null) {
-            $this->proposedOrganizationDetails = new OrganizationDetail();
-            return;
-        }
-
-        if ($this->proposedOrganizationDetails === $this->acceptedOrganizationDetails) {
-            $this->proposedOrganizationDetails = $this->acceptedOrganizationDetails->editableClone();
-        }
-    }
-
     public function isEditor(): bool
     {
         return in_array(self::ROLE_EDITOR, $this->getRoles());
     }
 
-    public function isAccepted(): bool
+    /**
+     * @return Collection|Organization[]
+     */
+    public function getOrganizations(): Collection
     {
-        return $this->proposedOrganizationDetails !== null &&
-            $this->acceptedOrganizationDetails === $this->proposedOrganizationDetails;
+        return $this->organizations;
     }
 
-    public function getTitle(): ?string
+    public function addOrganization(Organization $organization): self
     {
-        return $this->proposedOrganizationDetails ? $this->proposedOrganizationDetails->getTitle() : null;
+        if (!$this->organizations->contains($organization)) {
+            $this->organizations[] = $organization;
+            $organization->setOwner($this);
+        }
+
+        return $this;
     }
 
-    public function accept()
+    public function removeOrganization(Organization $organization): self
     {
-        $this->setAcceptedOrganizationDetails($this->proposedOrganizationDetails);
+        if ($this->organizations->contains($organization)) {
+            $this->organizations->removeElement($organization);
+            // set the owning side to null (unless already changed)
+            if ($organization->getOwner() === $this) {
+                $organization->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

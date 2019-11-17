@@ -9,7 +9,7 @@
         <tbody>
         <tr>
             <th>E-Mail</th>
-            <td>{{ organization.email }}</td>
+            <td>{{ organization.owner.email }}</td>
         </tr>
         </tbody>
         {% if organization.proposedOrganizationDetails %}
@@ -19,12 +19,12 @@
                 <td>{{ organization.proposedOrganizationDetails.title }}</td>
             </tr>
             <tr>
-                <th>Kurzbeschreibung</th>
-                <td>{{ organization.proposedOrganizationDetails.shortDescription | nl2br }}</td>
+                <th>Ansprechpartner (wird nicht veröffentlicht)</th>
+                <td>{{ organization.proposedOrganizationDetails.contactName }}</td>
             </tr>
             <tr>
-                <th>Langbeschreibung</th>
-                <td>{{ organization.proposedOrganizationDetails.longDescription | nl2br }}</td>
+                <th>Beschreibung</th>
+                <td>{{ organization.proposedOrganizationDetails.description | nl2br }}</td>
             </tr>
             <tr>
                 <th>Link zur Homepage</th>
@@ -51,20 +51,6 @@
                 <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
             </tr>
-            <tr>
-                <th>Logo</th>
-                <td>
-                    {% if organization.proposedOrganizationDetails.logoBlob %}
-                        <a href="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}">
-                            <img class="logo_preview"
-                                 src="{{ path('logo_download', { id: organization.proposedOrganizationDetails.id}) }}"
-                                 alt="Aktuelle hinterlegtes Logo"/>
-                        </a>
-                    {% else %}
-                        <em>Es ist kein Logo hinterlegt.</em>
-                    {% endif %}
-                </td>
-            </tr>
             </tbody>
         {% endif %}
     </table>
@@ -89,7 +75,7 @@
             </form>
 
             <p>
-                <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.email }}">E-Mail an Veranstalter
+                <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.owner.email }}">E-Mail an Veranstalter
                     senden</a>.
             </p>
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\DTO\FinishPasswordReset;
 use App\DTO\StartPasswordReset;
@@ -36,10 +34,12 @@ class UserService
      */
     private $tokenRepository;
 
-    public function __construct(UserRepository $repository, MailerService $mailerService,
-                                UserPasswordEncoderInterface $passwordEncoder,
-                                TokenRepository $tokenRepository)
-    {
+    public function __construct(
+        UserRepository $repository,
+        MailerService $mailerService,
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenRepository $tokenRepository
+    ) {
         $this->repository = $repository;
         $this->mailerService = $mailerService;
         $this->passwordEncoder = $passwordEncoder;

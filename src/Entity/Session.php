@@ -28,26 +28,30 @@ class Session
     private $stop;
 
     /**
+     * @var boolean
      * @ORM\Column(type="boolean")
      */
     private $cancelled;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sessions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $owner;
-
-    /**
+     * @var ?SessionDetail
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
      */
     private $proposedDetails;
 
     /**
+     * @var ?SessionDetail
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $acceptedDetails;
+
+    /**
+     * @var ?Organization
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="sessions", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organization;
 
     public function __construct()
     {
@@ -96,18 +100,6 @@ class Session
         return $this;
     }
 
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): self
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
     public function getProposedDetails(): ?SessionDetail
     {
         return $this->proposedDetails;
@@ -144,6 +136,7 @@ class Session
             ->setDate($this->getStart())
             ->setStart($this->getStart())
             ->setStop($this->getStop())
+            ->setOrganization($this->getOrganization())
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
             ->setLongDescription($this->getProposedDetails()->getLongDescription())
@@ -160,18 +153,33 @@ class Session
         }
 
         $start = (new \DateTime())
-            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
-            ->setTime($sessionWithDetail->getStart()->format('H'), $sessionWithDetail->getStart()->format('i'));
+            ->setDate(
+                (int) $sessionWithDetail->getDate()->format('Y'),
+                (int) $sessionWithDetail->getDate()->format('m'),
+                (int) $sessionWithDetail->getDate()->format('d')
+            )
+            ->setTime(
+                (int) $sessionWithDetail->getStart()->format('H'),
+                (int) $sessionWithDetail->getStart()->format('i')
+            );
 
-        $stop = $sessionWithDetail->getStop() === null ? null : (
-        (new \DateTime())
-            ->setDate($sessionWithDetail->getDate()->format('Y'), $sessionWithDetail->getDate()->format('m'), $sessionWithDetail->getDate()->format('d'))
-            ->setTime($sessionWithDetail->getStop()->format('H'), $sessionWithDetail->getStop()->format('i'))
-        );
+        $stop =
+            $sessionWithDetail->getStop() === null
+                ? null
+                : (new \DateTime())
+                    ->setDate(
+                        (int) $sessionWithDetail->getDate()->format('Y'),
+                        (int) $sessionWithDetail->getDate()->format('m'),
+                        (int) $sessionWithDetail->getDate()->format('d')
+                    )
+                    ->setTime(
+                        (int) $sessionWithDetail->getStop()->format('H'),
+                        (int) $sessionWithDetail->getStop()->format('i')
+                    );
 
-        $this
-            ->setStart($start)
-            ->setStop($stop);
+        $this->setStart($start)
+            ->setStop($stop)
+            ->setOrganization($sessionWithDetail->getOrganization());
 
         $this->getProposedDetails()
             ->setTitle($sessionWithDetail->getTitle())
@@ -188,5 +196,17 @@ class Session
     public function accept()
     {
         $this->setAcceptedDetails($this->getProposedDetails());
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 }

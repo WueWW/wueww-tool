@@ -28,8 +28,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -38,8 +42,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+        return 'app_login' === $request->attributes->get('_route') && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -49,10 +52,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['email']
-        );
+        $request->getSession()->set(Security::LAST_USERNAME, $credentials['email']);
 
         return $credentials;
     }

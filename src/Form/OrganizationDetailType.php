@@ -26,16 +26,12 @@ class OrganizationDetailType extends AbstractType
                 'label' => 'Ansprechpartner (wird nicht veröffentlicht)',
                 'required' => true,
             ])
-            ->add('shortDescription', TextareaType::class, [
-                'label' => 'Kurzbeschreibung',
+            ->add('description', TextareaType::class, [
+                'label' => 'Beschreibung',
                 'required' => false,
                 'attr' => [
-                    'maxlength' => 250,
-                ]
-            ])
-            ->add('longDescription', TextareaType::class, [
-                'label' => 'Langbeschreibung',
-                'required' => false,
+                    'maxlength' => 500,
+                ],
             ])
             ->add('link', TextType::class, [
                 'label' => 'Link zur Homepage',
@@ -56,31 +52,13 @@ class OrganizationDetailType extends AbstractType
             ->add('instagramUrl', TextType::class, [
                 'label' => 'Link zum Instagram-Profil',
                 'required' => false,
-            ])
-            ->add('logo', FileType::class, [
-                'label' => 'Neues Logo hochladen (JPEG-Format)',
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpeg'],
-                        'mimeTypesMessage' => 'Bitte stelle ein Bild im JPEG-Format zur Verfügung.',
-                    ])
-                ]
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => OrganizationDetail::class,
-            ])
-            ->setRequired('currentLogoId');
-    }
-
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['currentLogoId'] = $options['currentLogoId'];
+        $resolver->setDefaults([
+            'data_class' => OrganizationDetail::class,
+        ]);
     }
 }

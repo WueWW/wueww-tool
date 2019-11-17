@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @method User getUser()
+ */
 class MyOrganizationController extends AbstractController
 {
     /**
@@ -19,35 +22,21 @@ class MyOrganizationController extends AbstractController
      */
     public function edit(Request $request): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-        $currentLogoId = $user->getProposedOrganizationDetails() && $user->getProposedOrganizationDetails()->getLogoBlob()
-            ? $user->getProposedOrganizationDetails()->getId() : null;
+        $organization = $this->getUser()
+            ->getOrganizations()
+            ->first();
 
-        $user->ensureEditableOrganizationDetails();
+        $organization->ensureEditableOrganizationDetails();
 
-        $form = $this->createForm(OrganizationDetailType::class, $user->getProposedOrganizationDetails(), [
-            'currentLogoId' => $currentLogoId
-        ]);
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $logoFile */
-            $logoFile = $form['logo']->getData();
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
-            if ($logoFile) {
-                $user->getProposedOrganizationDetails()->setLogoBlob(file_get_contents($logoFile->getPathname()));
-            }
-
-            $this->getDoctrine()->getManager()->flush();
-
-            $this->addFlash(
-                'success',
-                'Die Änderungen wurden gespeichert und zum Review eingereicht.'
-            );
-
-            // force redirect, so form is re-created with correct currentLogoId option, ... hack'ady'hack
-            return $this->redirectToRoute('my_organization');
+            $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
         }
 
         return $this->render('my_organization/edit.html.twig', [

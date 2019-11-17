@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Organization;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -36,12 +37,14 @@ class UserFixture extends Fixture
         $reporter1->setEmail('reporter1@example.org');
         $reporter1->setPassword($this->passwordEncoder->encodePassword($reporter1, 'reporter1_password'));
         $reporter1->setRegistrationComplete(true);
+        $reporter1->addOrganization(new Organization());
         $manager->persist($reporter1);
 
         $reporter2 = new User();
         $reporter2->setEmail('reporter2@example.org');
         $reporter2->setPassword($this->passwordEncoder->encodePassword($reporter2, 'reporter2_password'));
         $reporter2->setRegistrationComplete(true);
+        $reporter2->addOrganization(new Organization());
         $manager->persist($reporter2);
 
         $manager->flush();

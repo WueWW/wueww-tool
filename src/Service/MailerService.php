@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\Entity\Token;
 use App\Entity\User;
@@ -59,6 +57,4 @@ class MailerService
 
         $this->mailer->send($message);
     }
-
-
 }

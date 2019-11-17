@@ -1,8 +1,8 @@
 <?php
 
-
 namespace App\DTO;
 
+use App\Entity\Organization;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SessionWithDetail
@@ -46,6 +46,11 @@ class SessionWithDetail
      * @var string|null
      */
     private $longDescription;
+
+    /**
+     * @var Organization|null
+     */
+    private $organization;
 
     /**
      * @var string|null
@@ -142,6 +147,18 @@ class SessionWithDetail
     public function setLongDescription(?string $longDescription): SessionWithDetail
     {
         $this->longDescription = $longDescription;
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
+
         return $this;
     }
 
