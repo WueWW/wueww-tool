@@ -39,7 +39,7 @@ class SessionWithDetailType extends AbstractType
 
         $builder
             ->add('start', TimeType::class, [
-                'label' => 'Beginn',
+                'label' => 'Beginn (z. B. 18:00)',
                 'widget' => 'single_text',
                 'html5' => false,
             ])
@@ -70,7 +70,7 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Veranstaltungsort',
             ])
             ->add('link', TextType::class, [
-                'label' => 'Link',
+                'label' => 'Link (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)',
                 'required' => false,
             ]);
     }
