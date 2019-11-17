@@ -48,7 +48,7 @@ class Session
 
     /**
      * @var ?Organization
-     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="sessions", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organization", inversedBy="sessions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $organization;
