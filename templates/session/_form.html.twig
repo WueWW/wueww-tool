@@ -1,4 +1,21 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Speichern</button>
+
+<h2>Wann?</h2>
+{{ form_row(form.date) }}
+{{ form_row(form.start) }}
+{{ form_row(form.stop) }}
+
+<h2>Worum geht's?</h2>
+{{ form_row(form.title) }}
+{{ form_row(form.shortDescription) }}
+{{ form_row(form.longDescription) }}
+
+<h2>Veranstaltungsort</h2>
+{{ form_widget(form.location) }}
+
+<h2>Sonstiges</h2>
+{{ form_widget(form) }}
+
+<button class="btn btn-primary">Speichern</button>
+
 {{ form_end(form) }}

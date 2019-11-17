@@ -32,9 +32,9 @@ class SessionDetail
     private $longDescription;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Embedded(class = "Location")
      */
-    private $locationName;
+    private $location;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -92,14 +92,14 @@ class SessionDetail
         return $this;
     }
 
-    public function getLocationName(): ?string
+    public function getLocation(): ?Location
     {
-        return $this->locationName;
+        return $this->location;
     }
 
-    public function setLocationName(string $locationName): self
+    public function setLocation(Location $location): self
     {
-        $this->locationName = $locationName;
+        $this->location = $location;
 
         return $this;
     }

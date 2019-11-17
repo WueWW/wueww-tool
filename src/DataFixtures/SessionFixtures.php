@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Location;
 use App\Entity\Session;
 use App\Entity\SessionDetail;
 use App\Entity\User;
@@ -46,7 +47,13 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Nicht freigegeben')
             ->setShortDescription('Kurzbeschreibung nicht freigegebener Session')
             ->setLongDescription('Die nicht freigegebene Session hat auch eine Langbeschreibung')
-            ->setLocationName('Nicht-Freigegeben-Office')
+            ->setLocation(
+                (new Location())
+                    ->setName('Nicht-Freigegeben-Office')
+                    ->setStreetNo('Nicht-Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
             ->setLink('http://wueww.de/session/nicht/freigegeben');
 
         return $session;
@@ -58,7 +65,13 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Freigegebene Session ohne Änderung')
             ->setShortDescription('Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('Die freigegebene Session hat natürlich auch eine Langbeschreibung')
-            ->setLocationName('Freigegeben-Office')
+            ->setLocation(
+                (new Location())
+                    ->setName('Freigegeben-Office')
+                    ->setStreetNo('Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
@@ -78,14 +91,26 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Freigegebene Session')
             ->setShortDescription('Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('Die freigegebene Session hat natürlich auch eine Langbeschreibung')
-            ->setLocationName('Freigegeben-Office')
+            ->setLocation(
+                (new Location())
+                    ->setName('Freigegeben-Office')
+                    ->setStreetNo('Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
             ->setLink('http://wueww.de/session/freigegeben');
 
         $detailProposed = (new SessionDetail())
             ->setTitle('Freigegebene Session geändert')
             ->setShortDescription('geänderte Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('natürlich darf sich auch die Langbeschreibung ändern')
-            ->setLocationName('Freigegeben-Office')
+            ->setLocation(
+                (new Location())
+                    ->setName('Freigegeben-Office')
+                    ->setStreetNo('Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
@@ -105,7 +130,13 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('abgesagte Session')
             ->setShortDescription('Kurzbeschreibung einer abgesagten Session')
             ->setLongDescription('Die abgesagte Session hat natürlich auch eine Langbeschreibung')
-            ->setLocationName('Freigegeben-Office')
+            ->setLocation(
+                (new Location())
+                    ->setName('Freigegeben-Office')
+                    ->setStreetNo('Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())

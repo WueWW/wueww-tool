@@ -66,7 +66,7 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Langbeschreibung',
                 'required' => false,
             ])
-            ->add('locationName', TextType::class, [
+            ->add('location', LocationType::class, [
                 'label' => 'Veranstaltungsort',
             ])
             ->add('link', TextType::class, [

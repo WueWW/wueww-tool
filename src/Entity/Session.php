@@ -140,7 +140,7 @@ class Session
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
             ->setLongDescription($this->getProposedDetails()->getLongDescription())
-            ->setLocationName($this->getProposedDetails()->getLocationName())
+            ->setLocation($this->getProposedDetails()->getLocation())
             ->setLocationLat($this->getProposedDetails()->getLocationLat())
             ->setLocationLng($this->getProposedDetails()->getLocationLng())
             ->setLink($this->getProposedDetails()->getLink());
@@ -185,7 +185,7 @@ class Session
             ->setTitle($sessionWithDetail->getTitle())
             ->setShortDescription($sessionWithDetail->getShortDescription())
             ->setLongDescription($sessionWithDetail->getLongDescription())
-            ->setLocationName($sessionWithDetail->getLocationName())
+            ->setLocation($sessionWithDetail->getLocation())
             ->setLocationLat($sessionWithDetail->getLocationLat())
             ->setLocationLng($sessionWithDetail->getLocationLng())
             ->setLink($sessionWithDetail->getLink());
