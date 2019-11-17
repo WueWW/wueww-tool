@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\DTO\OrganizationCreate;
+use App\DTO\SessionWithDetail;
 use App\Entity\Organization;
 use App\Entity\OrganizationDetail;
+use App\Entity\Session;
 use App\Entity\User;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
+use App\Form\SessionWithDetailType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,6 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/organization")
+ * @method User getUser()
  */
 class OrganizationController extends AbstractController
 {
@@ -29,11 +33,11 @@ class OrganizationController extends AbstractController
      */
     public function index(OrganizationRepository $organizationRepository): Response
     {
-        if (!$this->isGranted(User::ROLE_EDITOR)) {
-            throw new AccessDeniedException();
+        if ($this->isGranted(User::ROLE_EDITOR)) {
+            $organizations = $organizationRepository->findAll();
+        } else {
+            $organizations = $this->getUser()->getOrganizations();
         }
-
-        $organizations = $organizationRepository->findAll();
 
         return $this->render('organization/index.html.twig', ['organizations' => $organizations]);
     }
@@ -44,6 +48,37 @@ class OrganizationController extends AbstractController
      * @return Response
      */
     public function new(Request $request): Response
+    {
+        if ($this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        $organization = new Organization();
+        $organization->ensureEditableOrganizationDetails();
+        $form = $this->createForm(OrganizationDetailType::class, $organization->getProposedOrganizationDetails());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getUser()->addOrganization($organization);
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
+
+            return $this->redirectToRoute('organization_index');
+        }
+
+        return $this->render('organization/new.html.twig', [
+            'organization' => $organization,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/new-with-user", name="userorg_new_by_editor", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function newWithUser(Request $request): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
@@ -69,7 +104,7 @@ class OrganizationController extends AbstractController
             return $this->redirectToRoute('organization_edit', ['id' => $organization->getId()]);
         }
 
-        return $this->render('organization/new.html.twig', [
+        return $this->render('organization/new-with-user.html.twig', [
             'organization' => $organizationCreateDTO,
             'form' => $form->createView(),
         ]);
@@ -82,7 +117,7 @@ class OrganizationController extends AbstractController
      */
     public function show(Organization $organization): Response
     {
-        if (!$this->isGranted(User::ROLE_EDITOR)) {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $organization->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -99,7 +134,7 @@ class OrganizationController extends AbstractController
      */
     public function edit(Request $request, Organization $organization): Response
     {
-        if (!$this->isGranted(User::ROLE_EDITOR)) {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $organization->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -108,12 +143,13 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $organization->accept();
+            if ($this->isGranted(User::ROLE_EDITOR)) {
+                $organization->accept();
+            }
+
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
-
-            return $this->redirectToRoute('organization_index');
         }
 
         return $this->render('organization/edit.html.twig', [

@@ -57,27 +57,29 @@
 
     {% if not organization.proposedOrganizationDetails %}
         <div class="alert alert-info clearfix" role="alert">
-            Dieser Veranstalter hat bisher keine Detailinformationen erfasst.
+            Bisher wurden keine Detailinformationen zum Veranstalter erfasst.
         </div>
     {% elseif organization.accepted %}
         <div class="alert alert-success" role="alert">
-            Dieser Veranstalter ist bereits freigegeben.
+            Diese Veranstalterinformationen sind bereits freigegeben.
         </div>
     {% else %}
         <div class="alert alert-info clearfix" role="alert">
             Dieser Veranstalter wurde {% if organization.acceptedOrganizationDetails %}(in dieser Version){% endif %}
             bisher nicht freigegeben.
 
-            <form class="inline pull-right" method="post"
-                  action="{{ path('organization_accept', {'id': organization.id}) }}">
-                <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
-                <button class="btn btn-primary"><i class="fa fa-check"></i> Veranstalter freigeben</button>
-            </form>
+            {% if is_granted('ROLE_EDITOR') %}
+                <form class="inline pull-right" method="post"
+                      action="{{ path('organization_accept', {'id': organization.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
+                    <button class="btn btn-primary"><i class="fa fa-check"></i> Veranstalter freigeben</button>
+                </form>
 
-            <p>
-                <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.owner.email }}">E-Mail an Veranstalter
-                    senden</a>.
-            </p>
+                <p>
+                    <i class="fa fa-envelope"></i> <a href="mailto:{{ organization.owner.email }}">E-Mail an
+                        Veranstalter senden</a>.
+                </p>
+            {% endif %}
 
         </div>
     {% endif %}

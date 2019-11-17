@@ -22,6 +22,14 @@ class MyOrganizationController extends AbstractController
      */
     public function edit(Request $request): Response
     {
+        if (
+            $this->getUser()
+                ->getOrganizations()
+                ->count() > 1
+        ) {
+            return $this->forward(OrganizationController::class . ':index');
+        }
+
         $organization = $this->getUser()
             ->getOrganizations()
             ->first();

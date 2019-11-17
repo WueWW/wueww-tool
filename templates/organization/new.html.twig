@@ -3,24 +3,7 @@
 {% block body %}
     <h1>Neuen Veranstalter anlegen</h1>
 
-    <div class="alert alert-info" role="alert">
-        <p>
-            Normalerweise sollten sich Veranstalter selbst im System registrieren, sodass diese später auch in der
-            Lage sind, Veranstalterinformationen und Sessions selbst zu bearbeiten.
-        </p>
+    {{ include('organization/_form.html.twig') }}
 
-        <p>
-            Falls unbedingt so gewollt, kann hier manuell ein Veranstalter angelegt werden. Es handelt sich dennoch
-            um ein reguläres Veranstalterkonto, nur zunächst ohne Passwort. Wenn der Veranstalter später doch noch
-            selbst die Inhalte verwalten möchte, kann die Funktion <em>Password zurücksetzen</em> genutzt werden.
-        </p>
-    </div>
-
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Speichern</button>
-    {{ form_end(form) }}
-
-
-    <a href="{{ path('organization_index') }}">zurück zur Liste der Veranstalter</a>
+    <a href="{{ path('organization_index') }}">zurück zur Veranstalterliste</a>
 {% endblock %}

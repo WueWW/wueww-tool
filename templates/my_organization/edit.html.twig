@@ -3,5 +3,19 @@
 {% block body %}
     <h1>Veranstalterangaben</h1>
 
-    {{ include('my_organization/_form.html.twig') }}
+    {{ include('organization/_form.html.twig') }}
+
+    {% if app.user.organizations.count == 1 %}
+        <h2>Weitere Veranstalter</h2>
+
+        <div class="alert alert-info" role="alert">
+            <p>
+                Aktuell ist "nur" ein einziger Veranstalter unter diesem Konto registriert. In fast allen Fällen reicht
+                das auch aus. Falls du einen zusätzlichen Veranstalter anlegen möchtest, z.B. weil du eine weitere
+                Session zusammen mit jemandem anderen planst, kannst du jedoch auch weitere Veranstalter anlegen.
+            </p>
+
+            <a class="btn btn-info" href="{{ path('organization_new') }}">Weiteres Veranstalterkonto anlegen</a>
+        </div>
+    {% endif %}
 {% endblock %}

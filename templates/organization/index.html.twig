@@ -6,7 +6,6 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>E-Mail</th>
             <th>Titel</th>
             <th>Freigabe</th>
             <th>Aktionen</th>
@@ -15,8 +14,13 @@
         <tbody>
         {% for organization in organizations %}
             <tr>
-                <td>{{ organization.owner.email }}</td>
-                <td>{{ organization.title }}</td>
+                <td>
+                    {% if organization.title %}
+                        {{ organization.title }}
+                    {% else %}
+                        <em>bisher ohne Titel</em>
+                    {% endif %}
+                </td>
                 <td>
                     {% if not organization.proposedOrganizationDetails %}
                         <i class="fa fa-times" title="Details nicht erfasst"></i>
@@ -31,9 +35,13 @@
                        href="{{ path('organization_show', {'id': organization.id}) }}"><i class="fa fa-eye"></i></a>
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                        href="{{ path('organization_edit', {'id': organization.id}) }}"><i class="fa fa-pencil"></i></a>
-                    {{ include('organization/_delete_form.html.twig') }}
-                    <a class="btn btn-outline-secondary btn-sm" title="Session anlegen"
-                       href="{{ path('session_editor_create', {'id': organization.id}) }}"><i class="fa fa-plus"></i></a>
+
+                    {% if is_granted('ROLE_EDITOR') %}
+                        {{ include('organization/_delete_form.html.twig') }}
+                        <a class="btn btn-outline-secondary btn-sm" title="Session anlegen"
+                           href="{{ path('session_editor_create', {'id': organization.id}) }}"><i
+                                    class="fa fa-plus"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -44,5 +52,9 @@
         </tbody>
     </table>
 
-    <a class="btn btn-success" href="{{ path('organization_new') }}">Neuen Veranstalter anlegen</a>
+    {% if is_granted('ROLE_EDITOR') %}
+        <a class="btn btn-success" href="{{ path('userorg_new_by_editor') }}">Neuen Veranstalter anlegen</a>
+    {% else %}
+        <a class="btn btn-success" href="{{ path('organization_new') }}">Neuen Veranstalter anlegen</a>
+    {% endif %}
 {% endblock %}
