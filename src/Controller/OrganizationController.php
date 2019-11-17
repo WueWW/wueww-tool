@@ -3,20 +3,14 @@
 namespace App\Controller;
 
 use App\DTO\OrganizationCreate;
-use App\DTO\SessionWithDetail;
 use App\Entity\Organization;
-use App\Entity\OrganizationDetail;
-use App\Entity\Session;
 use App\Entity\User;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
-use App\Form\SessionWithDetailType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

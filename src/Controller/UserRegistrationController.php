@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\SessionWithDetail;
 use App\DTO\UserRegistration;
-use App\Form\SessionWithDetailType;
 use App\Form\UserRegistrationType;
 use App\Service\Exception\UsernameNotUniqueException;
 use App\Service\UserService;
