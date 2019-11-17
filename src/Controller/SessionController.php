@@ -118,7 +118,7 @@ class SessionController extends AbstractController
      */
     public function show(Session $session): Response
     {
-        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -135,7 +135,7 @@ class SessionController extends AbstractController
      */
     public function edit(Request $request, Session $session): Response
     {
-        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
@@ -193,7 +193,7 @@ class SessionController extends AbstractController
      */
     public function cancel(Request $request, Session $session): Response
     {
-        if ($session->getOrganization()->getOwner() !== $this->getUser()) {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
 
