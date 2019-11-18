@@ -67,7 +67,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if ($user && !$user->isRegistrationComplete()) {
-            throw new CustomUserMessageAuthenticationException('Die E-Mail Adresse wurde noch nicht bestätigt.');
+            throw new CustomUserMessageAuthenticationException('Die E-Mail-Adresse wurde noch nicht bestätigt.');
         }
 
         return $user;

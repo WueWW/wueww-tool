@@ -34,7 +34,7 @@ class UserRegistrationController extends AbstractController
                 );
                 return $this->redirectToRoute('app_login');
             } catch (UsernameNotUniqueException $ex) {
-                $this->addFlash('danger', 'Diese E-Mail Adresse ist bereits in Verwendung.');
+                $this->addFlash('danger', 'Diese E-Mail-Adresse ist bereits in Verwendung.');
             }
         }
 
@@ -52,7 +52,7 @@ class UserRegistrationController extends AbstractController
     public function finish(string $token, UserService $userService): Response
     {
         $userService->finishRegistration($token);
-        $this->addFlash('success', 'Deine E-Mail Adresse wurde erfolgreich bestätigt. Du kannst dich jetzt anmelden.');
+        $this->addFlash('success', 'Deine E-Mail-Adresse wurde erfolgreich bestätigt. Du kannst dich jetzt anmelden.');
         return $this->redirectToRoute('app_login');
     }
 }

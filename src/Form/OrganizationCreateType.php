@@ -13,7 +13,7 @@ class OrganizationCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('email', EmailType::class, [
-            'label' => 'E-Mail Adresse:',
+            'label' => 'E-Mail-Adresse:',
         ]);
     }
 
