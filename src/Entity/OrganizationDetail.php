@@ -59,6 +59,16 @@ class OrganizationDetail
      */
     private $instagramUrl;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $xingUrl;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $linkedinUrl;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -169,6 +179,32 @@ class OrganizationDetail
             ->setFacebookUrl($this->getFacebookUrl())
             ->setTwitterUrl($this->getTwitterUrl())
             ->setYoutubeUrl($this->getYoutubeUrl())
-            ->setInstagramUrl($this->getInstagramUrl());
+            ->setInstagramUrl($this->getInstagramUrl())
+            ->setXingUrl($this->getXingUrl())
+            ->setLinkedinUrl($this->getLinkedinUrl());
+    }
+
+    public function getXingUrl(): ?string
+    {
+        return $this->xingUrl;
+    }
+
+    public function setXingUrl(?string $xingUrl): self
+    {
+        $this->xingUrl = $xingUrl;
+
+        return $this;
+    }
+
+    public function getLinkedinUrl(): ?string
+    {
+        return $this->linkedinUrl;
+    }
+
+    public function setLinkedinUrl(?string $linkedinUrl): self
+    {
+        $this->linkedinUrl = $linkedinUrl;
+
+        return $this;
     }
 }

@@ -48,6 +48,14 @@ class OrganizationDetailType extends AbstractType
             ->add('instagramUrl', TextType::class, [
                 'label' => 'Link zum Instagram-Profil',
                 'required' => false,
+            ])
+            ->add('xingUrl', TextType::class, [
+                'label' => 'Link zum Xing-Profil',
+                'required' => false,
+            ])
+            ->add('linkedinUrl', TextType::class, [
+                'label' => 'Link zum LinkedIn-Profil',
+                'required' => false,
             ]);
     }
 
