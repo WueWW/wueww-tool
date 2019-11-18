@@ -47,6 +47,32 @@
         </tbody>
     </table>
 
+    {% if is_granted('ROLE_EDITOR') %}
+        <h2>Veranstalter</h2>
+
+        <table class="table">
+            <tbody>
+            {% if session.organization.proposedOrganizationDetails %}
+                <tr>
+                    <th>Titel</th>
+                    <td>{{ session.organization.proposedOrganizationDetails.title }}</td>
+                </tr>
+                <tr>
+                    <th>Ansprechpartner</th>
+                    <td>{{ session.organization.proposedOrganizationDetails.contactName }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>E-Mail Adresse</th>
+                <td>
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ session.organization.owner.email }}">{{ session.organization.owner.email }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
     {% if session.accepted %}
         <div class="alert alert-success" role="alert">
             Diese Session ist bereits freigegeben.
@@ -60,13 +86,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ session.id) }}">
                     <button class="btn btn-primary"><i class="fa fa-check"></i> Session freigeben</button>
                 </form>
-
-                <p>
-                    <i class="fa fa-envelope"></i> <a href="mailto:{{ session.organization.owner.email }}">E-Mail an Veranstalter
-                        senden</a>.
-                </p>
             {% endif %}
-
         </div>
     {% endif %}
 
