@@ -24,13 +24,13 @@ class Organization
     private $sessions;
 
     /**
-     * @var ?OrganizationDetail
+     * @var OrganizationDetail|null
      * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      */
     private $proposedOrganizationDetails;
 
     /**
-     * @var ?OrganizationDetail
+     * @var OrganizationDetail|null
      * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $acceptedOrganizationDetails;
