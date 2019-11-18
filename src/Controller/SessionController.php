@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\SessionWithDetail;
+use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\User;
 use App\Form\SessionWithDetailType;
@@ -77,25 +78,23 @@ class SessionController extends AbstractController
 
     /**
      * @Route("/organization/{id}/new", name="session_editor_create", methods={"GET","POST"})
-     * @param User $user
+     * @param Organization $organization
      * @param Request $request
      * @return Response
      */
-    public function editorCreate(User $user, Request $request): Response
+    public function editorCreate(Organization $organization, Request $request): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
 
-        $sessionWithDetail = new SessionWithDetail();
+        $sessionWithDetail = (new SessionWithDetail())->setOrganization($organization);
 
         $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $session = (new Session())
-                ->setOrganization($user->getOrganizations()->first())
-                ->applyDetails($sessionWithDetail);
+            $session = (new Session())->applyDetails($sessionWithDetail);
             $session->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
