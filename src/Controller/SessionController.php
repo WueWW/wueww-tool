@@ -226,6 +226,6 @@ class SessionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('session_index');
+        return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
     }
 }
