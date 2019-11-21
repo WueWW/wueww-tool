@@ -42,7 +42,14 @@
         </tr>
         <tr>
             <th>Link</th>
-            <td><a href="{{ session.proposedDetails.link }}" target="_blank">{{ session.proposedDetails.link }}</a></td>
+            <td>
+                {% if "@" in session.proposedDetails.link %}
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ session.proposedDetails.link }}">{{ session.proposedDetails.link }}</a>
+                {% else %}
+                    <a href="{{ session.proposedDetails.link }}" target="_blank">{{ session.proposedDetails.link }}</a>
+                {% endif %}
+            </td>
         </tr>
         </tbody>
     </table>
