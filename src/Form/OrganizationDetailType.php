@@ -63,6 +63,7 @@ class OrganizationDetailType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => OrganizationDetail::class,
+            'attr' => ['autocomplete' => 'off'],
         ]);
     }
 }

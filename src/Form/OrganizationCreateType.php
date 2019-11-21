@@ -21,6 +21,7 @@ class OrganizationCreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => OrganizationCreate::class,
+            'attr' => ['autocomplete' => 'off'],
         ]);
     }
 }

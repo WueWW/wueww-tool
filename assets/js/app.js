@@ -26,6 +26,7 @@ $(document).ready(function () {
     $('#map').each((index, el) => {
         const $lat = $('#session_with_detail_locationLat');
         const $lng = $('#session_with_detail_locationLng');
+        const readonly = el.classList.contains('readonly');
 
         let marker;
         const map = L.map(el);
@@ -43,7 +44,7 @@ $(document).ready(function () {
             maxZoom: 18,
         }).addTo(map);
 
-        map.on('click', e => {
+        !readonly && map.on('click', e => {
             marker && marker.remove();
             marker = L.marker(e.latlng).addTo(map);
 

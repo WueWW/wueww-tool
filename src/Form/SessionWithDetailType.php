@@ -101,6 +101,7 @@ class SessionWithDetailType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SessionWithDetail::class,
+            'attr' => ['autocomplete' => 'off'],
         ]);
     }
 }
