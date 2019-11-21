@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Session{% endblock %}
+{% block title %}Event{% endblock %}
 
 {% block body %}
     {{ include('session/_orgdata_missing_info.html.twig') }}
 
-    <h1>Session</h1>
+    <h1>Event</h1>
 
     <table class="table">
         <tbody>
@@ -75,21 +75,21 @@
 
     {% if session.accepted %}
         <div class="alert alert-success" role="alert">
-            Diese Session ist bereits freigegeben.
+            Dieses Event ist bereits freigegeben.
         </div>
     {% else %}
         <div class="alert alert-info clearfix" role="alert">
-            Diese Session wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
+            Dieses Event wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
 
             {% if is_granted('ROLE_EDITOR') %}
                 <form class="inline pull-right" method="post" action="{{ path('session_accept', {'id': session.id}) }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ session.id) }}">
-                    <button class="btn btn-primary"><i class="fa fa-check"></i> Session freigeben</button>
+                    <button class="btn btn-primary"><i class="fa fa-check"></i> Event freigeben</button>
                 </form>
             {% endif %}
         </div>
     {% endif %}
 
-    <a href="{{ path('session_index') }}">zurück zur Sessionliste</a>
+    <a href="{{ path('session_index') }}">zurück zur Eventliste</a>
 
 {% endblock %}

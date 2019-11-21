@@ -38,7 +38,7 @@
 
                     {% if is_granted('ROLE_EDITOR') %}
                         {{ include('organization/_delete_form.html.twig') }}
-                        <a class="btn btn-outline-secondary btn-sm" title="Session anlegen"
+                        <a class="btn btn-outline-secondary btn-sm" title="Event anlegen"
                            href="{{ path('session_editor_create', {'id': organization.id}) }}"><i
                                     class="fa fa-plus"></i></a>
                     {% endif %}

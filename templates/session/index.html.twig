@@ -3,7 +3,7 @@
 {% block body %}
     {{ include('session/_orgdata_missing_info.html.twig') }}
 
-    <h1>Sessionliste</h1>
+    <h1>Eventliste</h1>
 
     <table class="table table-striped">
         <thead>
@@ -46,13 +46,13 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">Keine Sessions gefunden.</td>
+                <td colspan="6">Keine Events gefunden.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     {% if not is_granted('ROLE_EDITOR') %}
-        <a class="btn btn-success" href="{{ path('session_new') }}">Neue Session vorschlagen</a>
+        <a class="btn btn-success" href="{{ path('session_new') }}">Neues Event vorschlagen</a>
     {% endif %}
 {% endblock %}

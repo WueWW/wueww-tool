@@ -1,4 +1,4 @@
-<form class="inline" method="post" action="{{ path('session_cancel', {'id': session.id}) }}" onsubmit="return confirm('Bist du sicher, dass du die Session absagen möchtest?');">
+<form class="inline" method="post" action="{{ path('session_cancel', {'id': session.id}) }}" onsubmit="return confirm('Bist du sicher, dass du das Event absagen möchtest?');">
     <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ session.id) }}">
     <button class="btn btn-sm btn-outline-danger" title="absagen"><i class="fa fa-times"></i></button>
 </form>
