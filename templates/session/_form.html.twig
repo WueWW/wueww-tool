@@ -13,8 +13,11 @@
 <h2>Veranstaltungsort</h2>
 {{ form_widget(form.location) }}
 
+<label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
+<div id="map"></div>
+
 <h2>Sonstiges</h2>
-{{ form_widget(form) }}
+{{ form_rest(form) }}
 
 <button class="btn btn-primary">Speichern</button>
 
