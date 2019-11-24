@@ -31,25 +31,25 @@ class JsonExportController extends AbstractController
     static function mapSession(Session $session): array
     {
         $result = [
-            'key' => $session->getId(),
-            'start' => $session->getStart()->format('Y-m-d\\TH:i:sZ'),
-            'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sZ') : null,
+            'id' => $session->getId(),
+            'start' => $session->getStart()->format('Y-m-d\\TH:i:sP'),
+            'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sP') : null,
             'cancelled' => $session->getCancelled(),
             'host' => self::mapHost($session),
-            'title' => $session->getAcceptedDetails()->getTitle(),
+            'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
             'location' => self::mapLocation($session),
         ];
 
         if ($session->getAcceptedDetails()->getShortDescription()) {
-            $result['description']['short'] = $session->getAcceptedDetails()->getShortDescription();
+            $result['description']['short'] = trim($session->getAcceptedDetails()->getShortDescription());
         }
 
         if ($session->getAcceptedDetails()->getLongDescription()) {
-            $result['description']['long'] = $session->getAcceptedDetails()->getLongDescription();
+            $result['description']['long'] = trim($session->getAcceptedDetails()->getLongDescription());
         }
 
         if ($session->getAcceptedDetails()->getLink()) {
-            $result['links']['event'] = $session->getAcceptedDetails()->getLink();
+            $result['links']['event'] = trim($session->getAcceptedDetails()->getLink());
         }
 
         return $result;
@@ -64,8 +64,8 @@ class JsonExportController extends AbstractController
         $details = $session->getOrganization()->getAcceptedOrganizationDetails();
 
         $result = [
-            'key' => $session->getOrganization()->getId(),
-            'name' => $details->getTitle(),
+            'id' => $session->getOrganization()->getId(),
+            'name' => trim(str_replace("\n", '', $details->getTitle())),
         ];
 
         if ($details->getDescription()) {
