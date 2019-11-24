@@ -51,6 +51,11 @@ class SessionDetail
      */
     private $link;
 
+    public function __construct()
+    {
+        $this->location = new Location();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

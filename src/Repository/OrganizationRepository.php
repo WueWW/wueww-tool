@@ -18,4 +18,14 @@ class OrganizationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Organization::class);
     }
+
+    public function findOneByTitle($title)
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.proposedOrganizationDetails', 'opd')
+            ->andWhere('opd.title = :title')
+            ->setParameter('title', $title)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
