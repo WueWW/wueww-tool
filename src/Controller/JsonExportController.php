@@ -72,6 +72,34 @@ class JsonExportController extends AbstractController
             $result['infotext'] = $details->getDescription();
         }
 
+        if ($details->getLink()) {
+            $result['links']['host'] = $details->getLink();
+        }
+
+        if ($details->getFacebookUrl()) {
+            $result['links']['facebook'] = $details->getFacebookUrl();
+        }
+
+        if ($details->getTwitterUrl()) {
+            $result['links']['twitter'] = $details->getTwitterUrl();
+        }
+
+        if ($details->getYoutubeUrl()) {
+            $result['links']['youtube'] = $details->getYoutubeUrl();
+        }
+
+        if ($details->getInstagramUrl()) {
+            $result['links']['instagram'] = $details->getInstagramUrl();
+        }
+
+        if ($details->getXingUrl()) {
+            $result['links']['xing'] = $details->getXingUrl();
+        }
+
+        if ($details->getLinkedinUrl()) {
+            $result['links']['linkedIn'] = $details->getLinkedinUrl();
+        }
+
         return $result;
     }
 
