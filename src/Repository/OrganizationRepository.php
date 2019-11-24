@@ -28,4 +28,14 @@ class OrganizationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllWithProposedDetails(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.proposedOrganizationDetails', 'opd')
+            ->addSelect('opd')
+            ->orderBy('opd.title')
+            ->getQuery()
+            ->getResult();
+    }
 }

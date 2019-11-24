@@ -28,7 +28,7 @@ class OrganizationController extends AbstractController
     public function index(OrganizationRepository $organizationRepository): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
-            $organizations = $organizationRepository->findAll();
+            $organizations = $organizationRepository->findAllWithProposedDetails();
         } else {
             $organizations = $this->getUser()->getOrganizations();
         }

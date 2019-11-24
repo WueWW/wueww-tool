@@ -90,6 +90,8 @@ class SessionWithDetailType extends AbstractType
                 'query_builder' => function (OrganizationRepository $repo) use ($sessionWithDetail) {
                     return $repo
                         ->createQueryBuilder('o')
+                        ->innerJoin('o.proposedOrganizationDetails', 'opd')
+                        ->addSelect('opd')
                         ->andWhere('o.owner = :owner')
                         ->setParameter('owner', $sessionWithDetail->getOrganization()->getOwner());
                 },
