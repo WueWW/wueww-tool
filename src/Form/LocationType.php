@@ -14,7 +14,7 @@ class LocationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Locationname (ggf. Firmenname)',
+                'label' => 'Location-/Gebäudename (ggf. Firmenname)',
             ])
             ->add('streetNo', TextType::class, [
                 'label' => 'Straße und Hausnummer',
