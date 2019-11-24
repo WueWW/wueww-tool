@@ -51,4 +51,14 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllWithProposedDetails()
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.proposedDetails', 'sdp')
+            ->addSelect('sdp')
+            ->orderBy('s.start')
+            ->getQuery()
+            ->getResult();
+    }
 }

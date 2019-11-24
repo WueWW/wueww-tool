@@ -28,7 +28,7 @@ class SessionController extends AbstractController
     public function index(SessionRepository $sessionRepository): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
-            $sessions = $sessionRepository->findAll();
+            $sessions = $sessionRepository->findAllWithProposedDetails();
         } else {
             $sessions = $sessionRepository->findByUser($this->getUser());
         }
