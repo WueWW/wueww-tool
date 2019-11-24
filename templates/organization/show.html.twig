@@ -51,7 +51,16 @@
                 <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
             </tr>
-            </tbody>
+            <tr>
+                <th>Link zum Xing-Profil</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.xingUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.xingUrl }}</a></td>
+            </tr>
+            <tr>
+                <th>Link zum LinkedIn-Profil</th>
+                <td><a href="{{ organization.proposedOrganizationDetails.linkedinUrl }}"
+                       target="_blank">{{ organization.proposedOrganizationDetails.linkedinUrl }}</a></td>
+            </tr></tbody>
         {% endif %}
     </table>
 
