@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Service\UserService;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

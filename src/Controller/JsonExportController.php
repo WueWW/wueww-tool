@@ -2,18 +2,12 @@
 
 namespace App\Controller;
 
-use App\DTO\SessionWithDetail;
-use App\Entity\Organization;
 use App\Entity\Session;
-use App\Entity\User;
-use App\Form\SessionWithDetailType;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class JsonExportController extends AbstractController
 {

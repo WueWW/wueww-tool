@@ -9,7 +9,6 @@ use App\Repository\OrganizationRepository;
 use App\Repository\SessionRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 
 class SessionJsonProcessor
 {
