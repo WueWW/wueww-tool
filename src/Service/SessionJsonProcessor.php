@@ -34,9 +34,6 @@ class SessionJsonProcessor
      */
     private $objectManager;
 
-    /**
-     * SessionJsonProcessor constructor.
-     */
     public function __construct(
         SessionRepository $sessionRepository,
         OrganizationRepository $organizationRepository,
@@ -66,7 +63,8 @@ class SessionJsonProcessor
             $session = $this->sessionRepository->findOneBy(['importKey' => $sessionData->key]);
 
             if ($session === null) {
-                $session = new Session();
+                $session = (new Session())->setImportKey($sessionData->key);
+
                 $this->objectManager->persist($session);
             }
 
@@ -89,7 +87,27 @@ class SessionJsonProcessor
                 ->setZipcode($zipcode)
                 ->setCity($city);
 
-            $session->setOrganization($this->processHost($sessionData->host));
+            if (isset($sessionData->location->lat)) {
+                $session->getProposedDetails()->setLocationLat($sessionData->location->lat);
+            }
+
+            if (isset($sessionData->location->lng)) {
+                $session->getProposedDetails()->setLocationLng($sessionData->location->lng);
+            }
+
+            if (isset($sessionData->links) && isset($sessionData->links->event)) {
+                $session->getProposedDetails()->setLink($sessionData->links->event);
+            }
+
+            if (isset($sessionData->description) && isset($sessionData->description->short)) {
+                $session->getProposedDetails()->setShortDescription($sessionData->description->short);
+            }
+
+            if (isset($sessionData->description) && isset($sessionData->description->long)) {
+                $session->getProposedDetails()->setLongDescription($sessionData->description->long);
+            }
+
+            $session->setOrganization($this->processHost($sessionData));
             $session->accept();
 
             break;
@@ -98,8 +116,9 @@ class SessionJsonProcessor
         $this->objectManager->flush();
     }
 
-    private function processHost($host): Organization
+    private function processHost($sessionData): Organization
     {
+        $host = $sessionData->host;
         $organization = $this->organizationRepository->findOneByTitle($host->name);
 
         if ($organization === null) {
@@ -113,6 +132,10 @@ class SessionJsonProcessor
             ->setTitle($host->name)
             ->setContactName($host->name)
             ->setDescription($host->infotext);
+
+        if (isset($sessionData->links) && isset($sessionData->links->host)) {
+            $organization->getProposedOrganizationDetails()->setLink($sessionData->links->host);
+        }
 
         $organization->accept();
 
