@@ -89,10 +89,7 @@ class UserService
             return;
         }
 
-        $token = $user->createToken();
-        $this->repository->save($user);
-
-        $this->mailerService->sendPasswordResetMail($user, $token);
+        $this->startPasswortResetForUser($user);
     }
 
     public function finishPasswordReset(FinishPasswordReset $dto)
@@ -107,5 +104,13 @@ class UserService
         $user->removeToken($tokenEntity);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
         $this->repository->save($user);
+    }
+
+    public function startPasswortResetForUser(User $user): void
+    {
+        $token = $user->createToken();
+        $this->repository->save($user);
+
+        $this->mailerService->sendPasswordResetMail($user, $token);
     }
 }
