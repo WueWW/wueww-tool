@@ -44,7 +44,6 @@ class Organization
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
-        $this->proposedOrganizationDetails = new OrganizationDetail();
     }
 
     public function getId(): ?int

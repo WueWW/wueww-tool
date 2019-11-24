@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Organization;
+use App\Entity\OrganizationDetail;
 use App\Entity\Session;
 use App\Entity\User;
 use App\Repository\OrganizationRepository;
@@ -126,6 +127,10 @@ class SessionJsonProcessor
             $organization = (new Organization())->setOwner($this->dummyOwner());
 
             $this->objectManager->persist($organization);
+        }
+
+        if ($organization->getProposedOrganizationDetails() === null) {
+            $organization->setProposedOrganizationDetails(new OrganizationDetail());
         }
 
         $organization
