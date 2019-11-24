@@ -60,6 +60,11 @@ class SessionJsonProcessor
     private function processData(array $sessions)
     {
         foreach ($sessions as $sessionData) {
+            if (!isset($sessionData->location)) {
+                // skip record, invalid with this version of WueWW Tool
+                continue;
+            }
+
             $session = $this->sessionRepository->findOneBy(['importKey' => $sessionData->key]);
 
             if ($session === null) {
@@ -75,7 +80,7 @@ class SessionJsonProcessor
 
             $session->getProposedDetails()->setTitle($sessionData->title);
 
-            $locationInfo = explode("\n", $sessionData->location->name);
+            $locationInfo = explode("\n", trim($sessionData->location->name));
             [$zipcode, $city] = explode(' ', array_pop($locationInfo), 2);
             $streetNo = array_pop($locationInfo);
 
@@ -83,9 +88,9 @@ class SessionJsonProcessor
                 ->getProposedDetails()
                 ->getLocation()
                 ->setName(implode(', ', $locationInfo))
-                ->setStreetNo($streetNo)
-                ->setZipcode($zipcode)
-                ->setCity($city);
+                ->setStreetNo($streetNo ?? '')
+                ->setZipcode($zipcode ?? '')
+                ->setCity($city ?? '');
 
             if (isset($sessionData->location->lat)) {
                 $session->getProposedDetails()->setLocationLat($sessionData->location->lat);
@@ -109,11 +114,8 @@ class SessionJsonProcessor
 
             $session->setOrganization($this->processHost($sessionData));
             $session->accept();
-
-            break;
+            $this->objectManager->flush();
         }
-
-        $this->objectManager->flush();
     }
 
     private function processHost($sessionData): Organization
@@ -130,8 +132,11 @@ class SessionJsonProcessor
         $organization
             ->getProposedOrganizationDetails()
             ->setTitle($host->name)
-            ->setContactName($host->name)
-            ->setDescription($host->infotext);
+            ->setContactName($host->name);
+
+        if (isset($host->infotext)) {
+            $organization->getProposedOrganizationDetails()->setDescription($host->infotext);
+        }
 
         if (isset($sessionData->links) && isset($sessionData->links->host)) {
             $organization->getProposedOrganizationDetails()->setLink($sessionData->links->host);
