@@ -33,4 +33,22 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return Session[]
+     */
+    public function findFullyAccepted(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.acceptedDetails', 'sad')
+            ->addSelect('sad')
+            ->innerJoin('s.organization', 'o')
+            ->addSelect('o')
+            ->innerJoin('o.acceptedOrganizationDetails', 'oad')
+            ->addSelect('oad')
+            ->andWhere('s.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }
