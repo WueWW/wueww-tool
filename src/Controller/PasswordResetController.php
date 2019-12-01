@@ -6,6 +6,7 @@ use App\DTO\FinishPasswordReset;
 use App\DTO\StartPasswordReset;
 use App\Form\FinishPasswordResetType;
 use App\Form\StartPasswordResetType;
+use App\Service\Exception\PasswordIsPwnedException;
 use App\Service\Exception\TokenNotFoundException;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,6 +61,11 @@ class PasswordResetController extends AbstractController
                 $this->addFlash('success', 'Dein Passwort wurde zurückgesetzt. Du kannst dich jetzt anmelden.');
             } catch (TokenNotFoundException $ex) {
                 $this->addFlash('danger', 'Beim Zurücksetzen deines Passworts ist ein Problem aufgetreten.');
+            } catch (PasswordIsPwnedException $ex) {
+                $this->addFlash(
+                    'danger',
+                    'Das verwendete Passwort steht auf der Liste bereits geleakten Passwörter von haveibeenpwned.com. Bitte verwende ein sicheres Passwort.'
+                );
             }
 
             return $this->redirectToRoute('app_login');

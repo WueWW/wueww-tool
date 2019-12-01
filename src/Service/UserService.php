@@ -8,6 +8,7 @@ use App\DTO\UserRegistration;
 use App\Entity\User;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
+use App\Service\Exception\PasswordIsPwnedException;
 use App\Service\Exception\TokenNotFoundException;
 use App\Service\Exception\UsernameNotUniqueException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -29,6 +30,12 @@ class UserService
      * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
+
+    /**
+     * @var PwnedService
+     */
+    private $pwnedService;
+
     /**
      * @var TokenRepository
      */
@@ -38,11 +45,13 @@ class UserService
         UserRepository $repository,
         MailerService $mailerService,
         UserPasswordEncoderInterface $passwordEncoder,
+        PwnedService $pwnedService,
         TokenRepository $tokenRepository
     ) {
         $this->repository = $repository;
         $this->mailerService = $mailerService;
         $this->passwordEncoder = $passwordEncoder;
+        $this->pwnedService = $pwnedService;
         $this->tokenRepository = $tokenRepository;
     }
 
@@ -50,10 +59,9 @@ class UserService
     {
         $user = new User();
 
-        $user
-            ->setEmail($dto->getEmail())
-            ->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()))
-            ->setRegistrationComplete(false);
+        $user->setEmail($dto->getEmail())->setRegistrationComplete(false);
+
+        $this->changePassword($user, $dto->getPassword());
 
         $token = $user->createToken();
 
@@ -102,7 +110,7 @@ class UserService
 
         $user = $tokenEntity->getOwner();
         $user->removeToken($tokenEntity);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $dto->getPassword()));
+        $this->changePassword($user, $dto->getPassword());
         $this->repository->save($user);
     }
 
@@ -112,5 +120,14 @@ class UserService
         $this->repository->save($user);
 
         $this->mailerService->sendPasswordResetMail($user, $token);
+    }
+
+    public function changePassword(User $user, string $password)
+    {
+        if ($this->pwnedService->isPwned($password)) {
+            throw new PasswordIsPwnedException();
+        }
+
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
     }
 }

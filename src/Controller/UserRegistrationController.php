@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\UserRegistration;
 use App\Form\UserRegistrationType;
+use App\Service\Exception\PasswordIsPwnedException;
 use App\Service\Exception\TokenNotFoundException;
 use App\Service\Exception\UsernameNotUniqueException;
 use App\Service\UserService;
@@ -36,6 +37,11 @@ class UserRegistrationController extends AbstractController
                 return $this->redirectToRoute('app_login');
             } catch (UsernameNotUniqueException $ex) {
                 $this->addFlash('danger', 'Diese E-Mail-Adresse ist bereits in Verwendung.');
+            } catch (PasswordIsPwnedException $ex) {
+                $this->addFlash(
+                    'danger',
+                    'Das verwendete Passwort steht auf der Liste bereits geleakten Passwörter von haveibeenpwned.com. Bitte verwende ein sicheres Passwort.'
+                );
             }
         }
 
