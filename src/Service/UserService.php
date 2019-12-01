@@ -5,6 +5,7 @@ namespace App\Service;
 use App\DTO\FinishPasswordReset;
 use App\DTO\StartPasswordReset;
 use App\DTO\UserRegistration;
+use App\Entity\Organization;
 use App\Entity\User;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
@@ -60,6 +61,7 @@ class UserService
         $user = new User();
 
         $user->setEmail($dto->getEmail())->setRegistrationComplete(false);
+        $user->addOrganization(new Organization());
 
         $this->changePassword($user, $dto->getPassword());
 
