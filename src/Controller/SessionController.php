@@ -6,9 +6,11 @@ use App\DTO\SessionWithDetail;
 use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\User;
+use App\Event\SessionModifiedEvent;
 use App\Form\SessionWithDetailType;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,9 +41,10 @@ class SessionController extends AbstractController
     /**
      * @Route("/new", name="session_new", methods={"GET","POST"})
      * @param Request $request
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EventDispatcherInterface $eventDispatcher): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
             throw new \LogicException('session_new route not expected to be called by editor');
@@ -63,15 +66,16 @@ class SessionController extends AbstractController
                 throw new AccessDeniedException();
             }
 
-            if ($this->isGranted(User::ROLE_EDITOR)) {
-                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
-            } else {
-                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
-            }
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
             $entityManager->flush();
+
+            if ($this->isGranted(User::ROLE_EDITOR)) {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
+            } else {
+                $eventDispatcher->dispatch(new SessionModifiedEvent($session));
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+            }
 
             return $this->redirectToRoute('session_index');
         }
@@ -136,9 +140,10 @@ class SessionController extends AbstractController
      * @Route("/{id}/edit", name="session_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Session $session
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function edit(Request $request, Session $session): Response
+    public function edit(Request $request, Session $session, EventDispatcherInterface $eventDispatcher): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR) && $session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
@@ -158,6 +163,7 @@ class SessionController extends AbstractController
             } elseif ($session->getOrganization()->getOwner() !== $this->getUser()) {
                 throw new AccessDeniedException();
             } else {
+                $eventDispatcher->dispatch(new SessionModifiedEvent($session));
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             }
 

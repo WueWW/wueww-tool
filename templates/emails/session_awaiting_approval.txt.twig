@@ -1,0 +1,20 @@
+Hej Ute,
+
+jemand hat ein WueWW Event bearbeitet:
+
+Titel           : {{ session.proposedDetails.title }}
+
+{% if session.organization.proposedOrganizationDetails %}
+Organisator     : {{ session.organization.title }}
+Ansprechpartner : {{ session.organization.proposedOrganizationDetails.contactName }}
+E-Mail          : {{ session.organization.owner.email }}
+{% else %}
+Bisher wurden jedoch noch keine Veranstalterinformationen erfasst.
+{% endif %}
+
+Link zum Event (und dessen Freigabe):
+{{ url('session_show', { 'id': session.id }) }}
+
+Viele Grüße
+
+das WueWW-Tool :)
