@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\OrganizationModifiedEvent;
 use App\Form\OrganizationDetailType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,9 +19,10 @@ class MyOrganizationController extends AbstractController
     /**
      * @Route("/my-organization", name="my_organization")
      * @param Request $request
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, EventDispatcherInterface $eventDispatcher): Response
     {
         if (
             $this->getUser()
@@ -43,6 +46,7 @@ class MyOrganizationController extends AbstractController
                 ->getManager()
                 ->flush();
 
+            $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
         }
 

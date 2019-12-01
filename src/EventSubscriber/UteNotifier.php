@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Event\OrganizationModifiedEvent;
 use App\Event\SessionModifiedEvent;
 use App\Service\MailerService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,6 +20,7 @@ class UteNotifier implements EventSubscriberInterface
     {
         return [
             SessionModifiedEvent::class => 'onSessionModified',
+            OrganizationModifiedEvent::class => 'onOrganizationModified',
         ];
     }
 
@@ -30,5 +32,13 @@ class UteNotifier implements EventSubscriberInterface
     public function onSessionModified(SessionModifiedEvent $event)
     {
         $this->mailerService->sendSessionAwaitingApprovalMail(self::TARGET_EMAIL_ADDRESS, $event->getSession());
+    }
+
+    public function onOrganizationModified(OrganizationModifiedEvent $event)
+    {
+        $this->mailerService->sendOrganizationAwaitingApprovalMail(
+            self::TARGET_EMAIL_ADDRESS,
+            $event->getOrganization()
+        );
     }
 }

@@ -5,11 +5,12 @@ jemand hat ein WueWW Event bearbeitet:
 Titel           : {{ session.proposedDetails.title }}
 
 {% if session.organization.proposedOrganizationDetails %}
-Organisator     : {{ session.organization.title }}
+Veranstalter    : {{ session.organization.title }}
 Ansprechpartner : {{ session.organization.proposedOrganizationDetails.contactName }}
 E-Mail          : {{ session.organization.owner.email }}
 {% else %}
 Bisher wurden jedoch noch keine Veranstalterinformationen erfasst.
+E-Mail          : {{ session.organization.owner.email }}
 {% endif %}
 
 Link zum Event (und dessen Freigabe):

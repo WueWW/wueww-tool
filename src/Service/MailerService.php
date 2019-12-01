@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\Token;
 use App\Entity\User;
@@ -67,6 +68,21 @@ class MailerService
             ->setBody(
                 $this->twig->render('emails/session_awaiting_approval.txt.twig', [
                     'session' => $session,
+                ]),
+                'text/plain'
+            );
+
+        $this->mailer->send($message);
+    }
+
+    public function sendOrganizationAwaitingApprovalMail(string $toAddress, Organization $organization)
+    {
+        $message = (new \Swift_Message('Veranstalter geändert'))
+            ->setFrom(self::FROM_ADDRESS)
+            ->setTo($toAddress)
+            ->setBody(
+                $this->twig->render('emails/organization_awaiting_approval.txt.twig', [
+                    'organization' => $organization,
                 ]),
                 'text/plain'
             );

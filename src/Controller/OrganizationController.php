@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\DTO\OrganizationCreate;
 use App\Entity\Organization;
 use App\Entity\User;
+use App\Event\OrganizationModifiedEvent;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,9 +41,10 @@ class OrganizationController extends AbstractController
     /**
      * @Route("/new", name="organization_new", methods={"GET","POST"})
      * @param Request $request
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, EventDispatcherInterface $eventDispatcher): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
@@ -58,6 +61,7 @@ class OrganizationController extends AbstractController
                 ->getManager()
                 ->flush();
 
+            $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             return $this->redirectToRoute('organization_index');
         }
@@ -127,10 +131,14 @@ class OrganizationController extends AbstractController
      * @Route("/{id}/edit", name="organization_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Organization $organization
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function edit(Request $request, Organization $organization): Response
-    {
+    public function edit(
+        Request $request,
+        Organization $organization,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
         if (!$this->isGranted(User::ROLE_EDITOR) && $organization->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -140,16 +148,17 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
+
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $organization->accept();
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } else {
+                $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             }
-
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
         }
 
         return $this->render('organization/edit.html.twig', [

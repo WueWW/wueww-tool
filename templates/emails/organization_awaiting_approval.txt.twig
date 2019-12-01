@@ -1,0 +1,14 @@
+Hej Ute,
+
+jemand hat WueWW Veranstalterinformationen bearbeitet:
+
+Veranstalter    : {{ organization.title }}
+Ansprechpartner : {{ organization.proposedOrganizationDetails.contactName }}
+E-Mail          : {{ organization.owner.email }}
+
+Link zu den Veranstalterinformationen (und deren Freigabe):
+{{ url('organization_show', { 'id': organization.id }) }}
+
+Viele Grüße
+
+dein WueWW-Tool :)
