@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\UserRegistration;
 use App\Form\UserRegistrationType;
+use App\Service\Exception\TokenNotFoundException;
 use App\Service\Exception\UsernameNotUniqueException;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,8 +52,16 @@ class UserRegistrationController extends AbstractController
      */
     public function finish(string $token, UserService $userService): Response
     {
-        $userService->finishRegistration($token);
-        $this->addFlash('success', 'Deine E-Mail-Adresse wurde erfolgreich bestätigt. Du kannst dich jetzt anmelden.');
+        try {
+            $userService->finishRegistration($token);
+            $this->addFlash(
+                'success',
+                'Deine E-Mail-Adresse wurde erfolgreich bestätigt. Du kannst dich jetzt anmelden.'
+            );
+        } catch (TokenNotFoundException $ex) {
+            $this->addFlash('warning', 'Das übermittelte Token ist ungültig, bzw. wurde bereits verwendet.');
+        }
+
         return $this->redirectToRoute('app_login');
     }
 }
