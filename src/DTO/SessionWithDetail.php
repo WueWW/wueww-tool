@@ -50,6 +50,7 @@ class SessionWithDetail
 
     /**
      * @var Organization|null
+     * @Assert\NotNull()
      */
     private $organization;
 
