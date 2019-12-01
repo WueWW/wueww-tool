@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class UserRegistration
 {
     /**
@@ -11,6 +13,7 @@ class UserRegistration
 
     /**
      * @var string
+     * @Assert\Length(min = 8, minMessage="Das Passwort muss mindestens acht Zeichen lang sein.")
      */
     private $password;
 

@@ -22,10 +22,16 @@ class UserRegistrationType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'Die erfassten Passwörter stimmen nicht überein',
                 'first_options' => [
-                    'label' => 'Passwort:',
+                    'label' => 'Neues Passwort (mind. acht Zeichen):',
+                    'attr' => [
+                        'minlength' => 8,
+                    ],
                 ],
                 'second_options' => [
                     'label' => 'Passwort (Wiederholung):',
+                    'attr' => [
+                        'minlength' => 8,
+                    ],
                 ],
             ]);
     }

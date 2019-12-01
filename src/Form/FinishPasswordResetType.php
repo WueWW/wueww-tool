@@ -17,10 +17,16 @@ class FinishPasswordResetType extends AbstractType
             'type' => PasswordType::class,
             'invalid_message' => 'Die erfassten Passwörter stimmen nicht überein',
             'first_options' => [
-                'label' => 'Neues Passwort:',
+                'label' => 'Neues Passwort (mind. acht Zeichen):',
+                'attr' => [
+                    'minlength' => 8,
+                ],
             ],
             'second_options' => [
                 'label' => 'Neues Passwort (Wiederholung):',
+                'attr' => [
+                    'minlength' => 8,
+                ],
             ],
         ]);
     }
