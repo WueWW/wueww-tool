@@ -6,14 +6,6 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-        {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% endfor %}
-
         <div class="form-group">
             <label for="inputEmail">E-Mail-Adresse:</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"

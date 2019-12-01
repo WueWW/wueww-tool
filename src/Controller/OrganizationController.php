@@ -58,6 +58,7 @@ class OrganizationController extends AbstractController
                 ->getManager()
                 ->flush();
 
+            $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             return $this->redirectToRoute('organization_index');
         }
 
@@ -94,6 +95,8 @@ class OrganizationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Das Veranstalterkonto wurde angelegt.');
 
             return $this->redirectToRoute('organization_edit', ['id' => $organization->getId()]);
         }
@@ -139,6 +142,9 @@ class OrganizationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $organization->accept();
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
+            } else {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             }
 
             $this->getDoctrine()
@@ -190,6 +196,8 @@ class OrganizationController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            $this->addFlash('success', 'Die Veranstalterinformationen wurden freigegeben.');
         }
 
         return $this->redirectToRoute('organization_index');

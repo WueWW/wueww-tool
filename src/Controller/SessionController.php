@@ -63,6 +63,12 @@ class SessionController extends AbstractController
                 throw new AccessDeniedException();
             }
 
+            if ($this->isGranted(User::ROLE_EDITOR)) {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
+            } else {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
             $entityManager->flush();
@@ -148,8 +154,11 @@ class SessionController extends AbstractController
 
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $session->accept();
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } elseif ($session->getOrganization()->getOwner() !== $this->getUser()) {
                 throw new AccessDeniedException();
+            } else {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
             }
 
             $this->getDoctrine()
@@ -179,6 +188,8 @@ class SessionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($session);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Das Event wurde gelöscht.');
         }
 
         return $this->redirectToRoute('session_index');
@@ -201,6 +212,8 @@ class SessionController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            $this->addFlash('success', 'Das Event wurde als abgesagt markiert.');
         }
 
         return $this->redirectToRoute('session_index');
@@ -223,6 +236,8 @@ class SessionController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            $this->addFlash('success', 'Das Event wurde freigegeben.');
         }
 
         return $this->redirectToRoute('session_show', ['id' => $session->getId()]);

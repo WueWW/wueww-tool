@@ -1,22 +1,10 @@
 {% extends 'narrow.html.twig' %}
 
 {% block body %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>
-            Hej, sehr schön, dass du dich hier bei Utes Helferlein anmelden möchtest.
-        </p>
-    {% endfor %}
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-primary">Benutzerkonto anlegen</button>
     {{ form_end(form) }}
-
 
 {% endblock %}

@@ -1,14 +1,6 @@
 {% extends 'narrow.html.twig' %}
 
 {% block body %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn btn-primary">Passwort zurücksetzen</button>

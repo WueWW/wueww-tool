@@ -9,6 +9,14 @@
 </head>
 <body>
 <div class="container narrow">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     {% block body %}{% endblock %}
 </div>
 {% block javascripts %}
