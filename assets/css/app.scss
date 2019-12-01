@@ -54,3 +54,24 @@ tr.session-cancelled td {
   height: 23rem;
   margin-bottom: 2rem;
 }
+
+ul.plain {
+  padding-left: 0;
+
+  > li {
+    list-style-type: none;
+  }
+}
+
+footer {
+  text-align: center;
+  margin-top: 3em;
+  font-size: 1em;
+  color: rgba(0, 0, 0, .4);
+  border-top: 1px solid rgba(0, 0, 0, .05);
+  padding-top: .3em;
+}
+
+.red {
+  color: red;
+}

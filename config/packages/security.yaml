@@ -25,6 +25,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/nutzungsbedingungen$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/impressum$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/export, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -32,6 +34,3 @@ security:
         - { path: ^/user/password-reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
-
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }

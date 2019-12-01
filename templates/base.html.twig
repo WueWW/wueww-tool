@@ -61,6 +61,12 @@
     {% endfor %}
 
     {% block body %}{% endblock %}
+
+    <footer>
+        Made with <i class="fa fa-heart-o red"></i> by Rolf
+        | <a href="{{ path('impressum') }}">Impressum</a>
+        | <a href="{{ path('nutzungsbedingungen') }}">Nutzungsbedingungen</a>
+    </footer>
 </div>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
