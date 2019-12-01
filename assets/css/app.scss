@@ -2,15 +2,15 @@ table + h2, form + h2 {
   margin-top: 3rem;
 }
 
-.container.narrow {
-  max-width: 30rem;
-  margin: 10rem auto 0;
-  box-shadow: 0 0 15px rgba(0, 0, 0, .15);
-  padding: 2rem;
-}
-
 .navbar + .container {
   margin-top: 6rem;
+}
+
+.container.narrow {
+  max-width: 30rem;
+  margin: 10rem auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+  padding: 2rem;
 }
 
 .btn-sm {
