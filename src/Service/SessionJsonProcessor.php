@@ -9,7 +9,7 @@ use App\Entity\User;
 use App\Repository\OrganizationRepository;
 use App\Repository\SessionRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SessionJsonProcessor
 {
@@ -30,20 +30,20 @@ class SessionJsonProcessor
     private $userRepository;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $objectManager;
+    private $entityManager;
 
     public function __construct(
         SessionRepository $sessionRepository,
         OrganizationRepository $organizationRepository,
         UserRepository $userRepository,
-        ObjectManager $objectManager
+        EntityManagerInterface $entityManager
     ) {
         $this->sessionRepository = $sessionRepository;
         $this->organizationRepository = $organizationRepository;
         $this->userRepository = $userRepository;
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
     }
 
     public function processFile(string $filename)
@@ -70,7 +70,7 @@ class SessionJsonProcessor
             if ($session === null) {
                 $session = (new Session())->setImportKey($sessionData->key);
 
-                $this->objectManager->persist($session);
+                $this->entityManager->persist($session);
             }
 
             $session
@@ -114,7 +114,7 @@ class SessionJsonProcessor
 
             $session->setOrganization($this->processHost($sessionData));
             $session->accept();
-            $this->objectManager->flush();
+            $this->entityManager->flush();
         }
     }
 
@@ -126,7 +126,7 @@ class SessionJsonProcessor
         if ($organization === null) {
             $organization = (new Organization())->setOwner($this->dummyOwner());
 
-            $this->objectManager->persist($organization);
+            $this->entityManager->persist($organization);
         }
 
         if ($organization->getProposedOrganizationDetails() === null) {
@@ -161,7 +161,7 @@ class SessionJsonProcessor
                 ->setPassword('!')
                 ->setRegistrationComplete(true);
 
-            $this->objectManager->persist($user);
+            $this->entityManager->persist($user);
         }
 
         return $user;
