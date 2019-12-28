@@ -1,7 +1,4 @@
 {
-    "composer/xdebug-handler": {
-        "version": "1.4.0"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -92,38 +89,8 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "jean85/pretty-package-versions": {
-        "version": "1.2"
-    },
-    "nette/bootstrap": {
-        "version": "v3.0.1"
-    },
-    "nette/di": {
-        "version": "v3.0.1"
-    },
-    "nette/finder": {
-        "version": "v2.5.1"
-    },
-    "nette/neon": {
-        "version": "v3.0.0"
-    },
-    "nette/php-generator": {
-        "version": "v3.2.3"
-    },
-    "nette/robot-loader": {
-        "version": "v3.2.0"
-    },
-    "nette/schema": {
-        "version": "v1.0.1"
-    },
-    "nette/utils": {
-        "version": "v3.0.2"
-    },
     "nikic/php-parser": {
         "version": "v4.2.2"
-    },
-    "ocramius/package-versions": {
-        "version": "1.4.2"
     },
     "php": {
         "version": "7.2"
@@ -131,22 +98,16 @@
     "phpstan/extension-installer": {
         "version": "1.0.3"
     },
-    "phpstan/phpdoc-parser": {
-        "version": "0.3.5"
-    },
     "phpstan/phpstan": {
         "version": "0.11.19"
-    },
-    "phpstan/phpstan-doctrine": {
-        "version": "0.11.6"
-    },
-    "phpstan/phpstan-symfony": {
-        "version": "0.11.6"
     },
     "psr/cache": {
         "version": "1.0.1"
     },
     "psr/container": {
+        "version": "1.0.0"
+    },
+    "psr/event-dispatcher": {
         "version": "1.0.0"
     },
     "psr/http-message": {
@@ -209,9 +170,6 @@
             "bin/console",
             "config/bootstrap.php"
         ]
-    },
-    "symfony/debug": {
-        "version": "v4.3.3"
     },
     "symfony/dependency-injection": {
         "version": "v4.3.3"
