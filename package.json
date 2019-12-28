@@ -1,9 +1,9 @@
 {
     "devDependencies": {
-        "@prettier/plugin-php": "^0.11.2",
+        "@prettier/plugin-php": "^0.12.0",
         "@symfony/webpack-encore": "^0.28.2",
         "bootstrap": "^4.4.1",
-        "core-js": "^3.4.5",
+        "core-js": "^3.6.1",
         "font-awesome": "^4.7.0",
         "jquery": "^3.4.1",
         "leaflet": "^1.6.0",
