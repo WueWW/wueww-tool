@@ -43,12 +43,16 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Beginn (z. B. 18:00)',
                 'widget' => 'single_text',
                 'html5' => false,
+                'invalid_message' =>
+                    'Die erfasste Uhrzeit ist ungültig, bitte nur Stunden und Minuten eingeben (z. B. 18:00).',
             ])
             ->add('stop', TimeType::class, [
                 'label' => 'Ende',
                 'widget' => 'single_text',
                 'html5' => false,
                 'required' => false,
+                'invalid_message' =>
+                    'Die erfasste Uhrzeit ist ungültig, bitte nur Stunden und Minuten eingeben (z. B. 18:00).',
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titel',
