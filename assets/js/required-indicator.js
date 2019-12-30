@@ -1,10 +1,13 @@
+const formLabelHelper = require('./form-label-helper');
+
 module.exports = function($) {
     $.fn.requiredIndicator = function() {
         this.each(function(i, el) {
-            $('<span>*</span>')
+            const $indicator = $('<span>*</span>')
                 .addClass('required-indicator')
-                .attr('title', 'Pflichtfeld')
-                .appendTo(el);
+                .attr('title', 'Pflichtfeld');
+
+            formLabelHelper($indicator, $(el));
         });
     };
 };

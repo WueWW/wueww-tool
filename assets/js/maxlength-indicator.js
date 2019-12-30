@@ -1,3 +1,5 @@
+const formLabelHelper = require('./form-label-helper');
+
 module.exports = function($) {
     $.fn.maxlengthIndicator = function() {
         this.each(function(i, el) {
@@ -9,8 +11,9 @@ module.exports = function($) {
             }
 
             const $indicator = $('<span></span>')
-                .addClass('maxlength-indicator')
-                .appendTo($el.siblings('label'));
+                .addClass('maxlength-indicator');
+
+            formLabelHelper($indicator, $el.siblings('label'));
 
             function updateIndicator() {
                 window.setTimeout(function() {
