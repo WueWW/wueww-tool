@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RequestContext;
 
 class JsonExportController extends AbstractController
 {
@@ -21,23 +22,23 @@ class JsonExportController extends AbstractController
         $sessions = $sessionRepository->findFullyAccepted();
 
         $json = [
-            'format' => '0.4.0',
-            'sessions' => array_map([self::class, 'mapSession'], $sessions),
+            'format' => '0.4.1',
+            'sessions' => array_map([$this, 'mapSession'], $sessions),
         ];
 
         return JsonResponse::create($json);
     }
 
-    static function mapSession(Session $session): array
+    function mapSession(Session $session): array
     {
         $result = [
             'id' => $session->getId(),
             'start' => $session->getStart()->format('Y-m-d\\TH:i:sP'),
             'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sP') : null,
             'cancelled' => $session->getCancelled(),
-            'host' => self::mapHost($session),
+            'host' => $this->mapHost($session),
             'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
-            'location' => self::mapLocation($session),
+            'location' => $this->mapLocation($session),
         ];
 
         if ($session->getAcceptedDetails()->getShortDescription()) {
@@ -59,7 +60,7 @@ class JsonExportController extends AbstractController
      * @param Session $session
      * @return array
      */
-    static function mapHost(Session $session): array
+    function mapHost(Session $session): array
     {
         $details = $session->getOrganization()->getAcceptedOrganizationDetails();
 
@@ -70,6 +71,10 @@ class JsonExportController extends AbstractController
 
         if ($details->getDescription()) {
             $result['infotext'] = $details->getDescription();
+        }
+
+        if ($session->getOrganization()->getLogoFileName()) {
+            $result['logo'] = $this->urlForLogo($session->getOrganization()->getLogoFileName());
         }
 
         if ($details->getLink()) {
@@ -107,7 +112,7 @@ class JsonExportController extends AbstractController
      * @param Session $session
      * @return array
      */
-    static function mapLocation(Session $session): array
+    function mapLocation(Session $session): array
     {
         $location = $session->getAcceptedDetails()->getLocation();
 
@@ -124,5 +129,21 @@ class JsonExportController extends AbstractController
         }
 
         return $result;
+    }
+
+    private function urlForLogo(string $fileName): string
+    {
+        /** @var RequestContext $requestContext */
+        $requestContext = $this->get('router')->getContext();
+
+        if ($requestContext->getScheme() === 'https' && $requestContext->getHttpsPort() !== 443) {
+            $portExtra = ':' . $requestContext->getHttpsPort();
+        } elseif ($requestContext->getScheme() === 'http' && $requestContext->getHttpPort() !== 80) {
+            $portExtra = ':' . $requestContext->getHttpPort();
+        } else {
+            throw new \LogicException('scheme neither http nor https');
+        }
+
+        return $requestContext->getScheme() . '://' . $requestContext->getHost() . $portExtra . '/logos/' . $fileName;
     }
 }
