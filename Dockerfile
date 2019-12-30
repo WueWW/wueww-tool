@@ -37,4 +37,4 @@ RUN bin/console doctrine:database:create -n && \
 
 ENV APP_ENV=prod
 RUN bin/console cache:warmup -n && \
-    chown -R www-data. var/
+    chown -R www-data. var/ public/logos/
