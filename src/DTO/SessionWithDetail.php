@@ -15,13 +15,13 @@ class SessionWithDetail
 
     /**
      * @var \DateTimeInterface
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Ein Startzeitpunkt muss eingegeben werden.")
      */
     private $date;
 
     /**
      * @var \DateTimeInterface
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Ein Startzeitpunkt muss eingegeben werden.")
      */
     private $start;
 
@@ -32,14 +32,14 @@ class SessionWithDetail
 
     /**
      * @var string|null
-     * @Assert\NotBlank()
-     * @Assert\Length(max = 30, maxMessage = "Der Titel darf max. 30 Zeichen lang sein")
+     * @Assert\NotBlank(message = "Der Titel darf nicht leer sein.")
+     * @Assert\Length(max = 30, maxMessage = "Der Titel darf max. 30 Zeichen lang sein.")
      */
     private $title;
 
     /**
      * @var string|null
-     * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll")
+     * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll.")
      */
     private $shortDescription;
 
@@ -50,7 +50,7 @@ class SessionWithDetail
 
     /**
      * @var Organization|null
-     * @Assert\NotNull()
+     * @Assert\NotNull(message = "Es muss ein Veranstalter ausgewählt sein.")
      */
     private $organization;
 
@@ -124,7 +124,7 @@ class SessionWithDetail
         return $this->title;
     }
 
-    public function setTitle(string $title): SessionWithDetail
+    public function setTitle(?string $title): SessionWithDetail
     {
         $this->title = $title;
         return $this;

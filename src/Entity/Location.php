@@ -12,25 +12,25 @@ class Location
 {
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Der Name darf nicht leer sein.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Straße und Hausnummer dürfen nicht leer sein.")
      */
     private $streetNo;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Die PLZ darf nicht leer sein")
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Der Ort darf nicht leer sein")
      */
     private $city;
 
@@ -39,7 +39,7 @@ class Location
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -51,7 +51,7 @@ class Location
         return $this->streetNo;
     }
 
-    public function setStreetNo(string $streetNo): self
+    public function setStreetNo(?string $streetNo): self
     {
         $this->streetNo = $streetNo;
 
@@ -63,7 +63,7 @@ class Location
         return $this->zipcode;
     }
 
-    public function setZipcode(string $zipcode): self
+    public function setZipcode(?string $zipcode): self
     {
         $this->zipcode = $zipcode;
 
@@ -75,7 +75,7 @@ class Location
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?string $city): self
     {
         $this->city = $city;
 

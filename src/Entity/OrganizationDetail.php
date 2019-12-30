@@ -19,13 +19,13 @@ class OrganizationDetail
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Der Name darf nicht leer sein.")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Der Ansprechpartner darf nicht leer sein.")
      */
     private $contactName;
 
