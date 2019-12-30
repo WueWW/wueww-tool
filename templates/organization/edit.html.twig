@@ -5,5 +5,9 @@
 
     {{ include('organization/_form.html.twig') }}
 
+    {% if is_granted('ROLE_EDITOR') %}
+        {{ render(controller("App\\Controller\\OrganizationController::logo", { 'id': organization.id })) }}
+    {% endif %}
+
     <a href="{{ path('organization_index') }}">zurück zur Liste der Veranstalter</a>
 {% endblock %}

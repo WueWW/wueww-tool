@@ -2,16 +2,20 @@
 
 namespace App\Controller;
 
+use App\DTO\LogoUpload;
 use App\DTO\OrganizationCreate;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Event\OrganizationModifiedEvent;
+use App\Form\LogoUploadType;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -124,6 +128,57 @@ class OrganizationController extends AbstractController
 
         return $this->render('organization/show.html.twig', [
             'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/logo", name="organization_logo", methods={"GET","POST"})
+     * @param RequestStack $requestStack
+     * @param Organization $organization
+     * @return Response
+     */
+    public function logo(RequestStack $requestStack, Organization $organization): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        $dto = new LogoUpload();
+        $dto->setMasterRequestUri($requestStack->getMasterRequest()->getPathInfo());
+
+        $form = $this->createForm(LogoUploadType::class, $dto, [
+            'action' => $this->generateUrl('organization_logo', ['id' => $organization->getId()]),
+        ]);
+
+        $form->handleRequest($requestStack->getCurrentRequest());
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                /** @var UploadedFile $jpgFile */
+                $jpgFile = $form['file']->getData();
+                $newName = uniqid() . '.' . $jpgFile->guessExtension();
+                $jpgFile->move($this->getParameter('logos_directory'), $newName);
+
+                $organization->setLogoFileName($newName);
+
+                $this->getDoctrine()
+                    ->getManager()
+                    ->flush();
+
+                $this->addFlash('success', 'Das Logo wurde hinterlegt.');
+            } else {
+                $this->addFlash('warning', 'Der Logo-Upload ist fehlgeschlagen.');
+            }
+
+            return $this->redirect($dto->getMasterRequestUri());
+        }
+
+        return $this->render('organization/logo.html.twig', [
+            'current_logo' => $organization->getLogoFileName()
+                ? \sprintf('/logos/%s', $organization->getLogoFileName())
+                : null,
+            'organization' => $organization,
+            'form' => $form->createView(),
         ]);
     }
 

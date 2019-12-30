@@ -41,6 +41,11 @@ class Organization
      */
     private $owner;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $logoFileName;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -142,6 +147,18 @@ class Organization
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getLogoFileName(): ?string
+    {
+        return $this->logoFileName;
+    }
+
+    public function setLogoFileName(?string $logoFileName): self
+    {
+        $this->logoFileName = $logoFileName;
 
         return $this;
     }

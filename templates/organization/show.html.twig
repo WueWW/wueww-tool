@@ -60,7 +60,8 @@
                 <th>Link zum LinkedIn-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.linkedinUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.linkedinUrl }}</a></td>
-            </tr></tbody>
+            </tr>
+            </tbody>
         {% endif %}
     </table>
 
@@ -91,6 +92,10 @@
             {% endif %}
 
         </div>
+    {% endif %}
+
+    {% if is_granted('ROLE_EDITOR') %}
+        {{ render(controller("App\\Controller\\OrganizationController::logo", { 'id': organization.id })) }}
     {% endif %}
 
     <a href="{{ path('organization_index') }}">zurück zur Liste der Veranstalter</a>

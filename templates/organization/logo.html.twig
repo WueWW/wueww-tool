@@ -1,0 +1,16 @@
+<h2>Veranstalter-Logo</h2>
+
+{% if current_logo is null %}
+    <p>
+        <em>Aktuell ist kein Logo für diesen Veranstalter hinterlegt.</em>
+    </p>
+{% else %}
+    <img src="{{ current_logo }}" alt="Aktuelles Veranstalter-Logo"/>
+{% endif %}
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+
+<button class="btn btn-primary">Logo hochladen</button>
+
+{{ form_end(form) }}
