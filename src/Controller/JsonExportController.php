@@ -136,14 +136,14 @@ class JsonExportController extends AbstractController
         /** @var RequestContext $requestContext */
         $requestContext = $this->get('router')->getContext();
 
-        if ($requestContext->getScheme() === 'https' && $requestContext->getHttpsPort() !== 443) {
-            $portExtra = ':' . $requestContext->getHttpsPort();
-        } elseif ($requestContext->getScheme() === 'http' && $requestContext->getHttpPort() !== 80) {
-            $portExtra = ':' . $requestContext->getHttpPort();
+        if ($requestContext->getHost() === 'localhost') {
+            $scheme = 'http';
+            $portExtra = $requestContext->getHttpPort();
         } else {
-            throw new \LogicException('scheme neither http nor https');
+            $scheme = 'https';
+            $portExtra = '';
         }
 
-        return $requestContext->getScheme() . '://' . $requestContext->getHost() . $portExtra . '/logos/' . $fileName;
+        return $scheme . '://' . $requestContext->getHost() . $portExtra . '/logos/' . $fileName;
     }
 }
