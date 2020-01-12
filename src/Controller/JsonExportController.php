@@ -26,7 +26,7 @@ class JsonExportController extends AbstractController
             'sessions' => array_map([$this, 'mapSession'], $sessions),
         ];
 
-        return JsonResponse::create($json);
+        return JsonResponse::create($json, Response::HTTP_OK, ['access-control-allow-origin' => '*']);
     }
 
     function mapSession(Session $session): array
