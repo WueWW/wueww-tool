@@ -144,7 +144,7 @@ class OrganizationController extends AbstractController
         }
 
         $dto = new LogoUpload();
-        $dto->setMasterRequestUri($requestStack->getMasterRequest()->getPathInfo());
+        $dto->setMasterRequestUri($requestStack->getMasterRequest()->getBasePath() . $requestStack->getMasterRequest()->getPathInfo());
 
         $form = $this->createForm(LogoUploadType::class, $dto, [
             'action' => $this->generateUrl('organization_logo', ['id' => $organization->getId()]),
@@ -175,7 +175,7 @@ class OrganizationController extends AbstractController
 
         return $this->render('organization/logo.html.twig', [
             'current_logo' => $organization->getLogoFileName()
-                ? \sprintf('/logos/%s', $organization->getLogoFileName())
+                ? \sprintf('%s/logos/%s', $requestStack->getMasterRequest()->getBasePath(), $organization->getLogoFileName())
                 : null,
             'organization' => $organization,
             'form' => $form->createView(),

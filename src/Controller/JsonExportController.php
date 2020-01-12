@@ -6,9 +6,9 @@ use App\Entity\Session;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RequestContext;
 
 class JsonExportController extends AbstractController
 {
@@ -133,17 +133,10 @@ class JsonExportController extends AbstractController
 
     private function urlForLogo(string $fileName): string
     {
-        /** @var RequestContext $requestContext */
-        $requestContext = $this->get('router')->getContext();
+        /** @var Request $request */
+        $request = $this->get('request_stack')->getMasterRequest();
+        $scheme = $request->getHost() === 'localhost' ? 'http' : 'https';
 
-        if ($requestContext->getHost() === 'localhost') {
-            $scheme = 'http';
-            $portExtra = $requestContext->getHttpPort();
-        } else {
-            $scheme = 'https';
-            $portExtra = '';
-        }
-
-        return $scheme . '://' . $requestContext->getHost() . $portExtra . '/logos/' . $fileName;
+        return $scheme . '://' . $request->getHttpHost() . $request->getBasePath() . '/logos/' . $fileName;
     }
 }
