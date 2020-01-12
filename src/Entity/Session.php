@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\DTO\SessionWithDetail;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -58,10 +60,16 @@ class Session
      */
     private $organization;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Feedback", mappedBy="session", orphanRemoval=true)
+     */
+    private $feedback;
+
     public function __construct()
     {
         $this->setCancelled(false);
         $this->setProposedDetails(new SessionDetail());
+        $this->feedback = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,6 +238,37 @@ class Session
     public function setOrganization(?Organization $organization): self
     {
         $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Feedback[]
+     */
+    public function getFeedback(): Collection
+    {
+        return $this->feedback;
+    }
+
+    public function addFeedback(Feedback $feedback): self
+    {
+        if (!$this->feedback->contains($feedback)) {
+            $this->feedback[] = $feedback;
+            $feedback->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeedback(Feedback $feedback): self
+    {
+        if ($this->feedback->contains($feedback)) {
+            $this->feedback->removeElement($feedback);
+            // set the owning side to null (unless already changed)
+            if ($feedback->getSession() === $this) {
+                $feedback->setSession(null);
+            }
+        }
 
         return $this;
     }
