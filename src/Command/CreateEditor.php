@@ -42,5 +42,7 @@ class CreateEditor extends Command
             ->setRegistrationComplete(true)
             ->setRoles([User::ROLE_EDITOR]);
         $this->userService->startPasswortResetForUser($user);
+
+        return 0;
     }
 }
