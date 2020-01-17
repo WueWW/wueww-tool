@@ -46,7 +46,7 @@ class MailerService
 
     public function sendPasswordResetMail(?User $user, Token $token)
     {
-        $message = (new \Swift_Message('WueWW Tool Password zurücksetzen'))
+        $message = (new \Swift_Message('WueWW Tool Passwort zurücksetzen'))
             ->setFrom(self::FROM_ADDRESS)
             ->setTo($user->getEmail())
             ->setBody(
