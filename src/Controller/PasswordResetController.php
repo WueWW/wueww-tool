@@ -59,6 +59,7 @@ class PasswordResetController extends AbstractController
             try {
                 $userService->finishPasswordReset($finishPasswordReset);
                 $this->addFlash('success', 'Dein Passwort wurde zurückgesetzt. Du kannst dich jetzt anmelden.');
+                return $this->redirectToRoute('app_login');
             } catch (TokenNotFoundException $ex) {
                 $this->addFlash('danger', 'Beim Zurücksetzen deines Passworts ist ein Problem aufgetreten.');
             } catch (PasswordIsPwnedException $ex) {
@@ -67,8 +68,6 @@ class PasswordResetController extends AbstractController
                     'Das verwendete Passwort steht auf der Liste bereits geleakten Passwörter von haveibeenpwned.com. Bitte verwende ein sicheres Passwort.'
                 );
             }
-
-            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('password_reset/finish.html.twig', [
