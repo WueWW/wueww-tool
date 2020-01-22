@@ -222,10 +222,12 @@ class OrganizationController extends AbstractController
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $organization->accept();
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
-            } else {
-                $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
-                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+                return $this->redirectToRoute('organization_index');
             }
+
+            $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
+            $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+            return $this->redirectToRoute('organization_index');
         }
 
         return $this->render('organization/edit.html.twig', [

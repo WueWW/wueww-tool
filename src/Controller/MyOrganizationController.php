@@ -48,6 +48,7 @@ class MyOrganizationController extends AbstractController
 
             $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+            return $this->redirectToRoute('session_index');
         }
 
         return $this->render('my_organization/edit.html.twig', [
