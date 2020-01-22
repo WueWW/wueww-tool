@@ -170,6 +170,7 @@ class SessionController extends AbstractController
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
+            return $this->redirectToRoute('session_index');
         }
 
         return $this->render('session/edit.html.twig', [
