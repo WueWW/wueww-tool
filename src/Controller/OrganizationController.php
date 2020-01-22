@@ -227,6 +227,14 @@ class OrganizationController extends AbstractController
 
             $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+
+            if (!$organization->getLogoFileName()) {
+                $this->addFlash(
+                    'warning',
+                    'Sofern nicht bereits geschehen, sende bitte noch eine Logo an kontakt@wueww.de. Bevorzugte Formate: EPS, PDF, AI, ggf. hochauflösendes JPEG.'
+                );
+            }
+
             return $this->redirectToRoute('organization_index');
         }
 

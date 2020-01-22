@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Organization;
 use App\Entity\User;
 use App\Event\OrganizationModifiedEvent;
 use App\Form\OrganizationDetailType;
@@ -32,6 +33,7 @@ class MyOrganizationController extends AbstractController
             return $this->forward(OrganizationController::class . ':index');
         }
 
+        /** @var Organization $organization */
         $organization = $this->getUser()
             ->getOrganizations()
             ->first();
@@ -48,6 +50,14 @@ class MyOrganizationController extends AbstractController
 
             $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
             $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+
+            if (!$organization->getLogoFileName()) {
+                $this->addFlash(
+                    'warning',
+                    'Sofern nicht bereits geschehen, sende bitte noch eine Logo an kontakt@wueww.de. Bevorzugte Formate: EPS, PDF, AI, ggf. hochauflösendes JPEG.'
+                );
+            }
+
             return $this->redirectToRoute('session_index');
         }
 
