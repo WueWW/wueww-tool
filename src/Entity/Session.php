@@ -65,6 +65,11 @@ class Session
      */
     private $feedback;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $acceptedAt;
+
     public function __construct()
     {
         $this->setCancelled(false);
@@ -227,7 +232,7 @@ class Session
 
     public function accept()
     {
-        $this->setAcceptedDetails($this->getProposedDetails());
+        $this->setAcceptedDetails($this->getProposedDetails())->setAcceptedAt(new \DateTimeImmutable('now'));
     }
 
     public function getOrganization(): ?Organization
@@ -269,6 +274,18 @@ class Session
                 $feedback->setSession(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAcceptedAt(): ?\DateTimeInterface
+    {
+        return $this->acceptedAt;
+    }
+
+    public function setAcceptedAt(?\DateTimeInterface $acceptedAt): self
+    {
+        $this->acceptedAt = $acceptedAt;
 
         return $this;
     }
