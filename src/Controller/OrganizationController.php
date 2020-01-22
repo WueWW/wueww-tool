@@ -11,6 +11,7 @@ use App\Form\LogoUploadType;
 use App\Form\OrganizationCreateType;
 use App\Form\OrganizationDetailType;
 use App\Repository\OrganizationRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -100,9 +101,14 @@ class OrganizationController extends AbstractController
                 ->setRegistrationComplete(true)
                 ->addOrganization($organization);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (UniqueConstraintViolationException $ex) {
+                $this->addFlash('danger', 'Für diese E-Mail Adresse besteht bereits ein Veranstalterkonto.');
+                return $this->redirectToRoute('organization_index');
+            }
 
             $this->addFlash('success', 'Das Veranstalterkonto wurde angelegt.');
 
@@ -144,7 +150,9 @@ class OrganizationController extends AbstractController
         }
 
         $dto = new LogoUpload();
-        $dto->setMasterRequestUri($requestStack->getMasterRequest()->getBasePath() . $requestStack->getMasterRequest()->getPathInfo());
+        $dto->setMasterRequestUri(
+            $requestStack->getMasterRequest()->getBasePath() . $requestStack->getMasterRequest()->getPathInfo()
+        );
 
         $form = $this->createForm(LogoUploadType::class, $dto, [
             'action' => $this->generateUrl('organization_logo', ['id' => $organization->getId()]),
@@ -175,7 +183,11 @@ class OrganizationController extends AbstractController
 
         return $this->render('organization/logo.html.twig', [
             'current_logo' => $organization->getLogoFileName()
-                ? \sprintf('%s/logos/%s', $requestStack->getMasterRequest()->getBasePath(), $organization->getLogoFileName())
+                ? \sprintf(
+                    '%s/logos/%s',
+                    $requestStack->getMasterRequest()->getBasePath(),
+                    $organization->getLogoFileName()
+                )
                 : null,
             'organization' => $organization,
             'form' => $form->createView(),
