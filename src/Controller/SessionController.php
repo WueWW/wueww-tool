@@ -247,6 +247,6 @@ class SessionController extends AbstractController
             $this->addFlash('success', 'Das Event wurde freigegeben.');
         }
 
-        return $this->redirectToRoute('session_show', ['id' => $session->getId()]);
+        return $this->redirectToRoute('session_index');
     }
 }
