@@ -1,0 +1,8 @@
+{% if session.organization.proposedOrganizationDetails is not null and not session.organization.isAccepted  %}
+    <div class="alert alert-warning" role="alert">
+        <p>
+            Die Veranstalterdaten wurden bislang nicht zur Veröffentlichung freigeschaltet. Es können bereits
+            Events erfasst werden - diese bleiben bis zur Freigabe jedoch unveröffentlicht.
+        </p>
+    </div>
+{% endif %}
