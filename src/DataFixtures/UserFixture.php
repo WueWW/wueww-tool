@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Organization;
+use App\Entity\OrganizationDetail;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,18 +34,30 @@ class UserFixture extends Fixture
         $editor->setRegistrationComplete(true);
         $manager->persist($editor);
 
+        $organization1 = new Organization();
+        $organization1->setProposedOrganizationDetails(
+            (new OrganizationDetail())->setTitle('Organisator Eins')->setContactName('Ansprechpartner Organisator 1')
+        );
+        $organization1->accept();
+
         $reporter1 = new User();
         $reporter1->setEmail('reporter1@example.org');
         $reporter1->setPassword($this->passwordEncoder->encodePassword($reporter1, 'reporter1_password'));
         $reporter1->setRegistrationComplete(true);
-        $reporter1->addOrganization(new Organization());
+        $reporter1->addOrganization($organization1);
         $manager->persist($reporter1);
+
+        $organization2 = new Organization();
+        $organization2->setProposedOrganizationDetails(
+            (new OrganizationDetail())->setTitle('Organisator Zwei')->setContactName('Ansprechpartner Organisator 2')
+        );
+        $organization2->accept();
 
         $reporter2 = new User();
         $reporter2->setEmail('reporter2@example.org');
         $reporter2->setPassword($this->passwordEncoder->encodePassword($reporter2, 'reporter2_password'));
         $reporter2->setRegistrationComplete(true);
-        $reporter2->addOrganization(new Organization());
+        $reporter2->addOrganization($organization2);
         $manager->persist($reporter2);
 
         $manager->flush();

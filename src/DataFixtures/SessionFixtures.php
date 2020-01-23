@@ -79,8 +79,9 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(new \DateTimeImmutable('2020-04-21 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setAcceptedDetails($detail)
             ->setProposedDetails($detail);
+
+        $session->accept();
 
         return $session;
     }
@@ -118,8 +119,11 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(new \DateTimeImmutable('2020-04-24 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setAcceptedDetails($detailAccepted)
-            ->setProposedDetails($detailProposed);
+            ->setProposedDetails($detailAccepted);
+
+        $session->accept();
+
+        $session->setProposedDetails($detailProposed);
 
         return $session;
     }
@@ -142,10 +146,11 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
         $session = (new Session())
             ->setStart(new \DateTimeImmutable('2020-04-26 14:00'))
             ->setStop(new \DateTimeImmutable('2020-04-26 16:00'))
-            ->setCancelled(true)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setAcceptedDetails($detail)
             ->setProposedDetails($detail);
+
+        $session->accept();
+        $session->setCancelled(true);
 
         return $session;
     }
