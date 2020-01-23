@@ -215,25 +215,24 @@ class OrganizationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()
-                ->getManager()
-                ->flush();
-
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $organization->accept();
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
-                return $this->redirectToRoute('organization_index');
+            } else {
+                $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+
+                if (!$organization->getLogoFileName()) {
+                    $this->addFlash(
+                        'warning',
+                        'Sofern nicht bereits geschehen, sende bitte noch eine Logo an kontakt@wueww.de. Bevorzugte Formate: EPS, PDF, AI, ggf. hochauflösendes JPEG.'
+                    );
+                }
             }
 
-            $eventDispatcher->dispatch(new OrganizationModifiedEvent($organization));
-            $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
-
-            if (!$organization->getLogoFileName()) {
-                $this->addFlash(
-                    'warning',
-                    'Sofern nicht bereits geschehen, sende bitte noch eine Logo an kontakt@wueww.de. Bevorzugte Formate: EPS, PDF, AI, ggf. hochauflösendes JPEG.'
-                );
-            }
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
 
             return $this->redirectToRoute('organization_index');
         }
