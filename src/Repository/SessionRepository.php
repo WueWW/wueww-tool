@@ -61,4 +61,22 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findRecentlyApprovedSessions()
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.acceptedDetails', 'sad')
+            ->addSelect('sad')
+            ->innerJoin('s.organization', 'o')
+            ->addSelect('o')
+            ->innerJoin('o.acceptedOrganizationDetails', 'oad')
+            ->addSelect('oad')
+            ->andWhere('s.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->andWhere('s.acceptedAt IS NOT NULL')
+            ->orderBy('s.acceptedAt', 'DESC')
+            ->setMaxResults(20)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>WueWW: Neue Events</title>
+        <link>{{ url('welcome') }}</link>
+        <atom:link href="{{ url('rss_feed_approved_sessions') }}" rel="self" type="application/rss+xml"/>
+        <description>Infos zu den neuesten Events der Wuerzburg Web Week.</description>
+        <language>de-de</language>
+        <lastBuildDate>{{ "now" | date('r') }}</lastBuildDate>
+        <generator>https://github.com/WueWW/wueww-tool/</generator>
+        <ttl>60</ttl>
+        {% for session in sessions %}
+        <item>
+            <title>{{ session.acceptedDetails.title }}</title>
+            <description>
+                {{ session.acceptedDetails.longDescription }}
+
+                Veranstalter: {{ session.organization.title }}
+                Veranstaltungsort: {{ session.acceptedDetails.location.name }}, {{ session.acceptedDetails.location.streetNo }}, {{ session.acceptedDetails.location.zipcode }} {{ session.acceptedDetails.location.city }}
+            </description>
+            <pubDate>{{ session.acceptedAt | date('r') }}</pubDate>
+            <guid>{{ url('session_show', { id: session.id }) }}</guid>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
