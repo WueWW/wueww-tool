@@ -110,6 +110,31 @@
         </div>
     {% endif %}
 
+    <h1>Feedback zum Event</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Star Rating</th>
+            <th>Weitere Bemerkungen</th>
+            <th>Autor/E-Mail</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for feedback in session.feedback %}
+            <tr>
+                <td>{{ feedback.starRating }}</td>
+                <td>{{ feedback.message | nl2br }}</td>
+                <td>{{ feedback.author }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Bisher wurde keine Feedback hinterlassen.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <a href="{{ path('session_index') }}">zurück zur Eventliste</a>
 
 {% endblock %}
