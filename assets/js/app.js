@@ -1,6 +1,9 @@
 require('../css/global.scss');
 require('../css/app.scss');
 
+require('../../vendor/blackknight467/star-rating-bundle/blackknight467/StarRatingBundle/Resources/public/js/rating.js');
+require('../../vendor/blackknight467/star-rating-bundle/blackknight467/StarRatingBundle/Resources/public/css/rating.css');
+
 require('leaflet/dist/leaflet.css');
 require('leaflet/dist/leaflet.js');
 
@@ -11,7 +14,6 @@ L.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-const $ = require('jquery');
 require('bootstrap');
 require('font-awesome/scss/font-awesome.scss');
 

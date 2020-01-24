@@ -25,6 +25,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/feedback/session/\d+/post$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/feedback/thanks$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/nutzungsbedingungen$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/impressum$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
