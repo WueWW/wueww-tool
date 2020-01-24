@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feedback zum Event: {{ session.acceptedDetails.title }}</h1>
+    <h1>Feedback zum Event: {% if session.acceptedDetails is null %}{{ session.proposedDetails.title }}{% else %}{{ session.acceptedDetails.title }}{% endif %}</h1>
 
     {{ include('feedback/_form.html.twig') }}
 {% endblock %}

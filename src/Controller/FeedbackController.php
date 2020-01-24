@@ -27,10 +27,6 @@ class FeedbackController extends AbstractController
      */
     public function post(Session $session, Request $request): Response
     {
-        if ($session->getAcceptedDetails() === null) {
-            throw new AccessDeniedException();
-        }
-
         $feedback = (new Feedback())->setSession($session);
 
         $form = $this->createForm(FeedbackType::class, $feedback);
