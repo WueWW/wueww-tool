@@ -1,0 +1,14 @@
+{% for key, data in sessions %}
+{{ key }}
+
+{% for session in data %}
+{{ session.start | date('H') -}}{% set startMinute %}{{ session.start | date('i') }}{% endset %}{% if startMinute != '00' %}:{{ startMinute }}{% endif %}{{ ' ' -}}
+{% if session.stop is not null -%}
+bis {{ session.stop | date('H') -}}{% set stopMinute %}{{ session.stop | date('i') }}{% endset %}{% if stopMinute != '00' %}:{{ stopMinute }}{% endif %}{{ ' ' -}}
+{% endif -%}
+Uhr {{ session.organization.title }}: {{ session.acceptedDetails.title }}. {% if session.organization.title != session.acceptedDetails.location.name %}{{ session.acceptedDetails.location.name }}. {% endif %}
+{{ session.acceptedDetails.location.streetNo }}{% if session.acceptedDetails.location.city != "Würzburg" %}. {{ session.acceptedDetails.location.zipCode}} {{ session.acceptedDetails.location.city }}{% endif %}
+{{ "\n" }}
+{% endfor %}
+
+{% endfor %}

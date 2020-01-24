@@ -48,6 +48,7 @@ class SessionRepository extends ServiceEntityRepository
             ->addSelect('oad')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->orderBy('s.start', 'ASC')
             ->getQuery()
             ->getResult();
     }
