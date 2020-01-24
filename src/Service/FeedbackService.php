@@ -60,7 +60,7 @@ class FeedbackService
         $pdf->MultiCell(
             170,
             0,
-            'Mit deinem Feedback hilfst du dem Veranstalter und uns die Web Week noch besser zu machen.',
+            'Mit deinem Feedback hilfst du dem Veranstalter und uns, die Web Week noch besser zu machen.',
             0,
             'C'
         );
