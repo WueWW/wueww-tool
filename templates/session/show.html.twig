@@ -135,6 +135,12 @@
         </tbody>
     </table>
 
+    <div>
+        <a class="btn btn-secondary" href="{{ path('feedback_pdf', {'id': session.id}) }}">
+            PDF-Seite zur Feedback-Abgabe
+        </a>
+    </div>
+
     <a href="{{ path('session_index') }}">zurück zur Eventliste</a>
 
 {% endblock %}

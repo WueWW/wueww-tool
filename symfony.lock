@@ -431,6 +431,9 @@
     "symfony/yaml": {
         "version": "v4.3.3"
     },
+    "tecnickcom/tcpdf": {
+        "version": "6.3.2"
+    },
     "twig/twig": {
         "version": "v2.11.3"
     }
