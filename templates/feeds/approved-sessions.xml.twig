@@ -20,8 +20,9 @@
                             {{ session.acceptedDetails.shortDescription | nl2br }}
                         {% endif %}
 
-                        <p><em>Veranstalter:</em> {{ session.organization.title }}</p>
-                        <p><em>Veranstaltungsort:</em> {{ session.acceptedDetails.location.name }},
+                        <p><em>Wer?</em> {{ session.organization.title }}</p>
+                        <p><em>Wann?</em> {{ session.start | date('d.m.Y H:i') }}{% if session.stop is not null %} bis {{ session.stop | date('H:i') }} Uhr{% endif %}</p>
+                        <p><em>Wo?</em> {{ session.acceptedDetails.location.name }},
                             {{ session.acceptedDetails.location.streetNo }},
                             {{ session.acceptedDetails.location.zipcode }} {{ session.acceptedDetails.location.city }}
                         </p>
