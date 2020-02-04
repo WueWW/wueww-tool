@@ -61,14 +61,14 @@ class SessionWithDetailType extends AbstractType
                 ],
             ])
             ->add('shortDescription', TextareaType::class, [
-                'label' => 'Kurzbeschreibung',
+                'label' => 'Kurzbeschreibung (für Social Media)',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 250,
                 ],
             ])
             ->add('longDescription', TextareaType::class, [
-                'label' => 'Langbeschreibung',
+                'label' => 'Langbeschreibung (für die Webseite, WueWW App etc.)',
                 'required' => false,
             ])
             ->add('location', LocationType::class, [
