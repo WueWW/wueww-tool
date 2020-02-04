@@ -29,7 +29,7 @@
                     {% endset %}
                     {{ htmlContent | escape }}
                 </description>
-                <link>{{ url('session_show', { id: session.id }) }}</link>
+                <link>https://timetable.wueww.de/veranstaltung/{{ session.id }}</link>
                 <pubDate>{{ session.acceptedAt | date('r') }}</pubDate>
                 <guid>{{ url('session_show', { id: session.id }) }}</guid>
             </item>
