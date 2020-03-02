@@ -37,7 +37,10 @@ class MainpostExportController extends AbstractController
         $sessions = $sessionRepository->findFullyAccepted();
         $partitionedSessions = $this->partitionSessionsByDate($sessions);
 
-        $response = $this->render('feeds/mainpost.txt.twig', ['sessions' => $partitionedSessions]);
+        $response = $this->render('feeds/mainpost.txt.twig', [
+            'sessions' => $partitionedSessions,
+            'num_sessions' => \count($sessions),
+        ]);
         $response->headers->add(['Content-Type' => 'text/plain']);
 
         return $response;
