@@ -6,7 +6,7 @@ module.exports = function($) {
             const $el = $(el);
 
             const maxLength = $el.attr('maxlength');
-            if (maxLength === undefined) {
+            if (maxLength === undefined || maxLength === '255') {
                 return;
             }
 

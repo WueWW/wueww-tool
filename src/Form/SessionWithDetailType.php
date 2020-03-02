@@ -79,6 +79,9 @@ class SessionWithDetailType extends AbstractType
             ->add('link', TextType::class, [
                 'label' => 'Link (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)',
                 'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
