@@ -37,9 +37,9 @@ class SessionRepository extends ServiceEntityRepository
     /**
      * @return Session[]
      */
-    public function findFullyAccepted(): array
+    public function findFullyAccepted($excludeCancelled = false): array
     {
-        return $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.acceptedDetails', 'sad')
             ->addSelect('sad')
             ->innerJoin('s.organization', 'o')
@@ -48,9 +48,13 @@ class SessionRepository extends ServiceEntityRepository
             ->addSelect('oad')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
-            ->orderBy('s.start', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('s.start', 'ASC');
+
+        if ($excludeCancelled) {
+            $qb->andWhere('s.cancelled = FALSE');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function findAllWithProposedDetails()

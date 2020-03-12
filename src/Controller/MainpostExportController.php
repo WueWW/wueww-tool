@@ -34,7 +34,7 @@ class MainpostExportController extends AbstractController
      */
     public function index(SessionRepository $sessionRepository): Response
     {
-        $sessions = $sessionRepository->findFullyAccepted();
+        $sessions = $sessionRepository->findFullyAccepted(true);
         $partitionedSessions = $this->partitionSessionsByDate($sessions);
 
         $response = $this->render('feeds/mainpost.txt.twig', [
