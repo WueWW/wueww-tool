@@ -112,6 +112,8 @@ class UserService
 
         $user = $tokenEntity->getOwner();
         $user->removeToken($tokenEntity);
+        $user->setRegistrationComplete(true);
+
         $this->changePassword($user, $dto->getPassword());
         $this->repository->save($user);
     }
