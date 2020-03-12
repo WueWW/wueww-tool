@@ -6,6 +6,7 @@ use App\DTO\SessionWithDetail;
 use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\User;
+use App\Event\SessionCancelledEvent;
 use App\Event\SessionModifiedEvent;
 use App\Form\SessionWithDetailType;
 use App\Repository\SessionRepository;
@@ -206,9 +207,10 @@ class SessionController extends AbstractController
      * @Route("/{id}", name="session_cancel", methods={"POST"})
      * @param Request $request
      * @param Session $session
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function cancel(Request $request, Session $session): Response
+    public function cancel(Request $request, Session $session, EventDispatcherInterface $eventDispatcher): Response
     {
         if (!$this->isGranted(User::ROLE_EDITOR) && $session->getOrganization()->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
@@ -219,6 +221,10 @@ class SessionController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            if (!$this->isGranted(User::ROLE_EDITOR)) {
+                $eventDispatcher->dispatch(new SessionCancelledEvent($session));
+            }
 
             $this->addFlash('success', 'Das Event wurde als abgesagt markiert.');
         }

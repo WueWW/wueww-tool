@@ -89,4 +89,19 @@ class MailerService
 
         $this->mailer->send($message);
     }
+
+    public function sendSessionCancelledMail(string $toAddress, Session $session)
+    {
+        $message = (new \Swift_Message('Event abgesagt'))
+            ->setFrom(self::FROM_ADDRESS)
+            ->setTo($toAddress)
+            ->setBody(
+                $this->twig->render('emails/session_cancelled.txt.twig', [
+                    'session' => $session,
+                ]),
+                'text/plain'
+            );
+
+        $this->mailer->send($message);
+    }
 }

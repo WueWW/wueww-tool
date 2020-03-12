@@ -1,0 +1,15 @@
+Hej Ute,
+
+jemand hat ein WueWW Event abgesagt:
+
+Titel           : {{ session.proposedDetails.title }}
+Veranstalter    : {{ session.organization.title }}
+Ansprechpartner : {{ session.organization.proposedOrganizationDetails.contactName }}
+E-Mail          : {{ session.organization.owner.email }}
+
+Link zum Event:
+{{ url('session_show', { 'id': session.id }) }}
+
+Viele Grüße
+
+das WueWW-Tool :)
