@@ -2,7 +2,6 @@
 
 namespace App\DTO;
 
-use App\Entity\Location;
 use App\Entity\Organization;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,20 +54,10 @@ class SessionWithDetail
     private $organization;
 
     /**
-     * @var Location
+     * @var string
      * @Assert\Valid()
      */
     private $location;
-
-    /**
-     * @var float|null
-     */
-    private $locationLat;
-
-    /**
-     * @var float|null
-     */
-    private $locationLng;
 
     /**
      * @var string|null
@@ -164,37 +153,15 @@ class SessionWithDetail
         return $this;
     }
 
-    public function getLocation(): ?Location
+    public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    public function setLocation(Location $location): SessionWithDetail
+    public function setLocation(?string $location): SessionWithDetail
     {
         $this->location = $location;
 
-        return $this;
-    }
-
-    public function getLocationLat(): ?float
-    {
-        return $this->locationLat;
-    }
-
-    public function setLocationLat(?float $locationLat): SessionWithDetail
-    {
-        $this->locationLat = $locationLat;
-        return $this;
-    }
-
-    public function getLocationLng(): ?float
-    {
-        return $this->locationLng;
-    }
-
-    public function setLocationLng(?float $locationLng): SessionWithDetail
-    {
-        $this->locationLng = $locationLng;
         return $this;
     }
 

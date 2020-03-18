@@ -38,7 +38,7 @@ class JsonExportController extends AbstractController
             'cancelled' => $session->getCancelled(),
             'host' => $this->mapHost($session),
             'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
-            'location' => $this->mapLocation($session),
+            'location' => $session->getAcceptedDetails()->getLocation(),
         ];
 
         if ($session->getAcceptedDetails()->getShortDescription()) {
@@ -103,29 +103,6 @@ class JsonExportController extends AbstractController
 
         if ($details->getLinkedinUrl()) {
             $result['links']['linkedIn'] = $details->getLinkedinUrl();
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param Session $session
-     * @return array
-     */
-    function mapLocation(Session $session): array
-    {
-        $location = $session->getAcceptedDetails()->getLocation();
-
-        $result = [
-            'name' => $location->getName(),
-            'streetNo' => $location->getStreetNo(),
-            'zipcode' => $location->getZipcode(),
-            'city' => $location->getCity(),
-        ];
-
-        if ($session->getAcceptedDetails()->getLocationLat() && $session->getAcceptedDetails()->getLocationLng()) {
-            $result['lat'] = $session->getAcceptedDetails()->getLocationLat();
-            $result['lng'] = $session->getAcceptedDetails()->getLocationLng();
         }
 
         return $result;

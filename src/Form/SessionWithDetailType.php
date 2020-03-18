@@ -8,8 +8,6 @@ use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -22,21 +20,11 @@ class SessionWithDetailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', ChoiceType::class, [
+        $builder->add('date', TextType::class, [
             'label' => 'Datum',
-            'choices' => [
-                'Montag, 20. April 2020' => '2020-04-20',
-                'Dienstag, 21. April 2020' => '2020-04-21',
-                'Mittwoch, 22. April 2020' => '2020-04-22',
-                'Donnerstag, 23. April 2020' => '2020-04-23',
-                'Freitag, 24. April 2020' => '2020-04-24',
-                'Samstag, 25. April 2020' => '2020-04-25',
-                'Sonntag, 26. April 2020' => '2020-04-26',
-                'Montag, 27. April 2020' => '2020-04-27',
-            ],
         ]);
 
-        $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
+        $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'd.m.Y'));
 
         $builder
             ->add('start', TimeType::class, [
@@ -71,11 +59,12 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Langbeschreibung (für die Webseite, WueWW App etc.)',
                 'required' => false,
             ])
-            ->add('location', LocationType::class, [
-                'label' => 'Veranstaltungsort',
+            ->add('location', TextType::class, [
+                'label' => 'Veranstaltungsort (Link zum Veranstaltungsort, z. B. Zoom, Google Meet etc.)',
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ])
-            ->add('locationLat', HiddenType::class)
-            ->add('locationLng', HiddenType::class)
             ->add('link', TextType::class, [
                 'label' => 'Link (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)',
                 'required' => false,

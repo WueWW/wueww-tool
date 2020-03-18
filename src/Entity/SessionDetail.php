@@ -32,29 +32,14 @@ class SessionDetail
     private $longDescription;
 
     /**
-     * @ORM\Embedded(class = "Location")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $location;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $locationLat;
-
-    /**
-     * @ORM\Column(type="float", nullable=true)
-     */
-    private $locationLng;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $link;
-
-    public function __construct()
-    {
-        $this->location = new Location();
-    }
 
     public function getId(): ?int
     {
@@ -97,38 +82,14 @@ class SessionDetail
         return $this;
     }
 
-    public function getLocation(): ?Location
+    public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    public function setLocation(Location $location): self
+    public function setLocation(string $location): self
     {
         $this->location = $location;
-
-        return $this;
-    }
-
-    public function getLocationLat(): ?float
-    {
-        return $this->locationLat;
-    }
-
-    public function setLocationLat(?float $locationLat): self
-    {
-        $this->locationLat = $locationLat;
-
-        return $this;
-    }
-
-    public function getLocationLng(): ?float
-    {
-        return $this->locationLng;
-    }
-
-    public function setLocationLng(?float $locationLng): self
-    {
-        $this->locationLng = $locationLng;
 
         return $this;
     }

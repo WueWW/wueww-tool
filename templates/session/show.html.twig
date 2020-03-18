@@ -38,19 +38,9 @@
         </tr>
         <tr>
             <th>Veranstaltungsort</th>
-            <td>{{ session.proposedDetails.location.name }}, {{ session.proposedDetails.location.streetNo }},
-                {{ session.proposedDetails.location.zipcode }} {{ session.proposedDetails.location.city }}</td>
-        </tr>
-        <tr>
-            <th>Karte</th>
             <td>
-                <form autocomplete="off">
-                    <input type="hidden" id="session_with_detail_locationLat"
-                           value="{{ session.proposedDetails.locationLat }}"/>
-                    <input type="hidden" id="session_with_detail_locationLng"
-                           value="{{ session.proposedDetails.locationLng }}"/>
-                    <div id="map" class="readonly"></div>
-                </form>
+                <a href="{{ session.proposedDetails.location }}"
+                   target="_blank">{{ session.proposedDetails.location }}</a>
             </td>
         </tr>
         <tr>
