@@ -29,7 +29,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     sed -ri -e 's!Options Indexes FollowSymLinks!FallbackResource /index.php!' /etc/apache2/apache2.conf
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
-    echo 'date.timezone = "Europe/Berlin"' > $PHP_INI_DIR/conf.d/timezone.ini
+    echo 'date.timezone = "Europe/Berlin"' > $PHP_INI_DIR/conf.d/timezone.ini && \
+    echo 'variables_order = "GPCSE"' > $PHP_INI_DIR/conf.d/variables-order.ini
 
 COPY --from=builder /app /app
 WORKDIR /app
