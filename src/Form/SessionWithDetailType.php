@@ -60,7 +60,7 @@ class SessionWithDetailType extends AbstractType
                 'required' => false,
             ])
             ->add('location', TextType::class, [
-                'label' => 'Veranstaltungsort (Link zum Veranstaltungsort, z. B. Zoom, Google Meet etc.)',
+                'label' => 'Link zum Veranstaltungsort (z. B. Zoom, Google Meet etc.)',
                 'attr' => [
                     'maxlength' => 255,
                 ],
