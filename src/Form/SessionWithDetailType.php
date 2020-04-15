@@ -22,6 +22,9 @@ class SessionWithDetailType extends AbstractType
     {
         $builder->add('date', TextType::class, [
             'label' => 'Datum',
+            'attr' => [
+                'placeholder' => 'TT.MM.JJJJ',
+            ],
         ]);
 
         $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'd.m.Y'));
