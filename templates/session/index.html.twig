@@ -19,7 +19,7 @@
         <tbody>
         {% for session in sessions %}
             <tr class="{% if session.cancelled %}session-cancelled{% endif %}">
-                <td>{{ session.start|date('Y-m-d') }}</td>
+                <td>{{ session.start|date('d.m.Y') }}</td>
                 <td>{{ session.start|date('H:i') }}</td>
                 <td>{{ session.stop ? session.stop|date('H:i') : '-' }}</td>
                 <td>{{ session.proposedDetails.title }}</td>

@@ -12,11 +12,11 @@
         <tbody>
         <tr>
             <th>Beginn</th>
-            <td>{{ session.start ? session.start|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ session.start ? session.start|date('d.m.Y H:i:s') : '' }}</td>
         </tr>
         <tr>
             <th>Ende</th>
-            <td>{{ session.stop ? session.stop|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ session.stop ? session.stop|date('d.m.Y H:i:s') : '' }}</td>
         </tr>
         <tr>
             <th>Abgesagt?</th>
