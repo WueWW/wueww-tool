@@ -21,12 +21,21 @@ class JsonExportController extends AbstractController
     {
         $sessions = $sessionRepository->findFullyAccepted();
 
+        $latestUpdate = max(
+            array_map(function (Session $session): int {
+                return $session->getAcceptedAt()->getTimestamp();
+            }, $sessions)
+        );
+
         $json = [
             'format' => '0.4.1',
             'sessions' => array_map([$this, 'mapSession'], $sessions),
         ];
 
-        return JsonResponse::create($json, Response::HTTP_OK, ['access-control-allow-origin' => '*']);
+        return JsonResponse::create($json, Response::HTTP_OK, [
+            'access-control-allow-origin' => '*',
+            'Date' => \gmdate('D, d M Y H:i:s T', $latestUpdate),
+        ]);
     }
 
     function mapSession(Session $session): array
