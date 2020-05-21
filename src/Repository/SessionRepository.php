@@ -75,6 +75,7 @@ class SessionRepository extends ServiceEntityRepository
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
             ->andWhere('s.acceptedAt IS NOT NULL')
+            ->andWhere('s.start > CURRENT_TIMESTAMP()')
             ->andWhere('s.cancelled = FALSE')
             ->orderBy('s.acceptedAt', 'DESC')
             ->setMaxResults(20)
