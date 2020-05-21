@@ -22,7 +22,12 @@
 
                         <p><em>Wer?</em> {{ session.organization.title }}</p>
                         <p><em>Wann?</em> {{ session.start | date('d.m.Y H:i') }}{% if session.stop is not null %} bis {{ session.stop | date('H:i') }} Uhr{% endif %}</p>
-                        <p><em>Wo?</em> <a href="{{ session.acceptedDetails.location }}">{{ session.acceptedDetails.location }}</a></p>
+                        <p><em>Wo?</em> {% if session.acceptedDetails.location starts with 'http' -%}
+                                <a href="{{ session.acceptedDetails.location }}">{{ session.acceptedDetails.location }}</a>
+                            {% else -%}
+                                {{ session.acceptedDetails.location -}}
+                            {% endif -%}
+                        </p>
                     {% endset %}
                     {{ htmlContent | escape }}
                 </description>
