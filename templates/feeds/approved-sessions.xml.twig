@@ -31,7 +31,7 @@
                     {% endset %}
                     {{ htmlContent | escape }}
                 </description>
-                <link>https://digital-events.wueww.de/veranstaltung/{{ session.id }}</link>
+                <link>https://digital-events.wueww.de/#/veranstaltung/{{ session.id }}</link>
                 <pubDate>{{ session.acceptedAt | date('r') }}</pubDate>
                 <guid>{{ url('session_show', { id: session.id }) }}</guid>
             </item>
