@@ -8,6 +8,14 @@
 
     <h1>Event</h1>
 
+    {% if session.start is null %}
+    <div class="alert alert-danger" role="alert">
+        <p>
+            Aktuell ist kein Beginn-Zeitpunkt erfasst. Das Event wird daher nicht veröffentlicht.
+        </p>
+    </div>
+    {% endif %}
+
     <table class="table">
         <tbody>
         <tr>
