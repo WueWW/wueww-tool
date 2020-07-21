@@ -25,14 +25,14 @@ class SessionWithDetailType extends AbstractType
         $builder->add('date', ChoiceType::class, [
             'label' => 'Datum',
             'choices' => [
-                'Montag, 20. April 2020' => '2020-04-20',
-                'Dienstag, 21. April 2020' => '2020-04-21',
-                'Mittwoch, 22. April 2020' => '2020-04-22',
-                'Donnerstag, 23. April 2020' => '2020-04-23',
-                'Freitag, 24. April 2020' => '2020-04-24',
-                'Samstag, 25. April 2020' => '2020-04-25',
-                'Sonntag, 26. April 2020' => '2020-04-26',
-                'Montag, 27. April 2020' => '2020-04-27',
+                'Montag, 12. Oktober 2020' => '2020-10-12',
+                'Dienstag, 13. Oktober 2020' => '2020-10-13',
+                'Mittwoch, 14. Oktober 2020' => '2020-10-14',
+                'Donnerstag, 15. Oktober 2020' => '2020-10-15',
+                'Freitag, 16. Oktober 2020' => '2020-10-16',
+                'Samstag, 17. Oktober 2020' => '2020-10-17',
+                'Sonntag, 18. Oktober 2020' => '2020-10-18',
+                'Montag, 19. Oktober 2020' => '2020-10-19',
             ],
         ]);
 
