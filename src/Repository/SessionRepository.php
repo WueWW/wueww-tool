@@ -57,6 +57,7 @@ class SessionRepository extends ServiceEntityRepository
             ->addSelect('o')
             ->innerJoin('o.acceptedOrganizationDetails', 'oad')
             ->addSelect('oad')
+            ->andWhere('s.start IS NOT NULL')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
             ->orderBy('s.start', 'ASC');
