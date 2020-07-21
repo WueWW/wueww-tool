@@ -163,6 +163,8 @@ class SessionController extends AbstractController
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } elseif ($session->getOrganization()->getOwner() !== $this->getUser()) {
                 throw new AccessDeniedException();
+            } elseif ($session->getAcceptedDetails() === $session->getProposedDetails()) {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } else {
                 $eventDispatcher->dispatch(new SessionModifiedEvent($session));
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');

@@ -185,10 +185,6 @@ class Session
 
     public function applyDetails(SessionWithDetail $sessionWithDetail): self
     {
-        if ($this->getProposedDetails() === $this->getAcceptedDetails()) {
-            $this->setProposedDetails(new SessionDetail());
-        }
-
         $start = (new \DateTime())
             ->setDate(
                 (int) $sessionWithDetail->getDate()->format('Y'),
@@ -218,16 +214,39 @@ class Session
             ->setStop($stop)
             ->setOrganization($sessionWithDetail->getOrganization());
 
-        $this->getProposedDetails()
-            ->setTitle($sessionWithDetail->getTitle())
-            ->setShortDescription($sessionWithDetail->getShortDescription())
-            ->setLongDescription($sessionWithDetail->getLongDescription())
-            ->setLocation($sessionWithDetail->getLocation())
-            ->setLocationLat($sessionWithDetail->getLocationLat())
-            ->setLocationLng($sessionWithDetail->getLocationLng())
-            ->setLink($sessionWithDetail->getLink());
+        if (
+            $this->getAcceptedDetails() === null ||
+            $this->getProposedDetails() !== $this->getAcceptedDetails() ||
+            $this->differsInDetails($sessionWithDetail)
+        ) {
+            if ($this->getProposedDetails() === $this->getAcceptedDetails()) {
+                $this->setProposedDetails(new SessionDetail());
+            }
+
+            $this->getProposedDetails()
+                ->setTitle($sessionWithDetail->getTitle())
+                ->setShortDescription($sessionWithDetail->getShortDescription())
+                ->setLongDescription($sessionWithDetail->getLongDescription())
+                ->setLocation($sessionWithDetail->getLocation())
+                ->setLocationLat($sessionWithDetail->getLocationLat())
+                ->setLocationLng($sessionWithDetail->getLocationLng())
+                ->setLink($sessionWithDetail->getLink());
+        }
 
         return $this;
+    }
+
+    private function differsInDetails(SessionWithDetail $sessionWithDetail): bool
+    {
+        $currentDetails = $this->getProposedDetails();
+
+        return $currentDetails->getTitle() !== $sessionWithDetail->getTitle() ||
+            $currentDetails->getShortDescription() !== $sessionWithDetail->getShortDescription() ||
+            $currentDetails->getLongDescription() !== $sessionWithDetail->getLongDescription() ||
+            $currentDetails->getLocation() !== $sessionWithDetail->getLocation() ||
+            $currentDetails->getLocationLat() !== $sessionWithDetail->getLocationLat() ||
+            $currentDetails->getLocationLng() !== $sessionWithDetail->getLocationLng() ||
+            $currentDetails->getLink() !== $sessionWithDetail->getLink();
     }
 
     public function accept()
