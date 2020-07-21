@@ -62,7 +62,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
     private function createSessionFreigegeben(User $reporter): Session
     {
         $detail = (new SessionDetail())
-            ->setTitle('Freigegebene Session ohne Änderung')
+            ->setTitle('Freigegebene Session o. Ä.')
             ->setShortDescription('Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('Die freigegebene Session hat natürlich auch eine Langbeschreibung')
             ->setLocation(
