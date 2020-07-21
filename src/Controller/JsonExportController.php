@@ -20,12 +20,15 @@ class JsonExportController extends AbstractController
     public function index(SessionRepository $sessionRepository): Response
     {
         $sessions = $sessionRepository->findFullyAccepted();
+        $latestUpdate = time();
 
-        $latestUpdate = max(
-            array_map(function (Session $session): int {
-                return $session->getAcceptedAt()->getTimestamp();
-            }, $sessions)
-        );
+        if (\count($sessions) > 0) {
+            $latestUpdate = max(
+                array_map(function (Session $session): int {
+                    return $session->getAcceptedAt()->getTimestamp();
+                }, $sessions)
+            );
+        }
 
         $json = [
             'format' => '0.4.1',
