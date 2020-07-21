@@ -25,7 +25,7 @@ class Session
     private $importKey;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $start;
 

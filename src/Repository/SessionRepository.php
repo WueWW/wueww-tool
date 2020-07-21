@@ -20,6 +20,17 @@ class SessionRepository extends ServiceEntityRepository
         parent::__construct($registry, Session::class);
     }
 
+    public function resetAllStartAndEndTimes()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb
+            ->update()
+            ->set('s.start', 'null')
+            ->set('s.stop', 'null')
+            ->getQuery()
+            ->execute();
+    }
+
     /**
      * @param User $user
      * @return Session[]
