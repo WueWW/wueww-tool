@@ -31,7 +31,7 @@ class JsonExportController extends AbstractController
         }
 
         $json = [
-            'format' => '0.4.1',
+            'format' => '0.5.0',
             'sessions' => array_map([$this, 'mapSession'], $sessions),
         ];
 
@@ -48,10 +48,14 @@ class JsonExportController extends AbstractController
             'start' => $session->getStart()->format('Y-m-d\\TH:i:sP'),
             'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sP') : null,
             'cancelled' => $session->getCancelled(),
+            'onlineOnly' => $session->getAcceptedDetails()->getOnlineOnly(),
             'host' => $this->mapHost($session),
             'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
-            'location' => $this->mapLocation($session),
         ];
+
+        if (!$session->getAcceptedDetails()->getOnlineOnly()) {
+            $result['location'] = $this->mapLocation($session);
+        }
 
         if ($session->getAcceptedDetails()->getShortDescription()) {
             $result['description']['short'] = trim($session->getAcceptedDetails()->getShortDescription());
