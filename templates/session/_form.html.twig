@@ -11,10 +11,22 @@
 {{ form_row(form.longDescription) }}
 
 <h2>Veranstaltungsort</h2>
+
+{{ form_widget(form.onlineOnly) }}
+
+<div class="alert alert-info" role="alert" style="margin-top: 1rem">
+    <p>
+        Erfasst Hinweise, wie man bei eurer Online-Veranstaltung teilnehmen kann, bitte oben mit in der Langbeschreibung
+        (welche Software wird verwendet, wann bekommt man wie die Zugangsdaten usw.).
+    </p>
+</div>
+
+<div id="offline-session-details">
 {{ form_widget(form.location) }}
 
 <label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
 <div id="map"></div>
+</div>
 
 <h2>Sonstiges</h2>
 {{ form_rest(form) }}

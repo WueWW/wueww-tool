@@ -8,6 +8,7 @@ use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SessionWithDetailType extends AbstractType
@@ -71,6 +73,10 @@ class SessionWithDetailType extends AbstractType
                 'label' => 'Langbeschreibung (für die Webseite, WueWW App etc.)',
                 'required' => false,
             ])
+            ->add('onlineOnly', CheckboxType::class, [
+                'label' => 'Die Veranstaltung findet ausschließlich online statt',
+                'required' => false,
+            ])
             ->add('location', LocationType::class, [
                 'label' => 'Veranstaltungsort',
             ])
@@ -111,6 +117,11 @@ class SessionWithDetailType extends AbstractType
         $resolver->setDefaults([
             'data_class' => SessionWithDetail::class,
             'attr' => ['autocomplete' => 'off'],
+            'validation_groups' => function (FormInterface $form) {
+                /** @var SessionWithDetail $data */
+                $data = $form->getData();
+                return ['Default', $data->getOnlineOnly() ? 'online_only_event' : 'offline_event'];
+            },
         ]);
     }
 }

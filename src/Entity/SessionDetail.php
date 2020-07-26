@@ -51,6 +51,11 @@ class SessionDetail
      */
     private $link;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    private $onlineOnly;
+
     public function __construct()
     {
         $this->location = new Location();
@@ -141,6 +146,18 @@ class SessionDetail
     public function setLink(?string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getOnlineOnly(): ?bool
+    {
+        return $this->onlineOnly;
+    }
+
+    public function setOnlineOnly(bool $onlineOnly): self
+    {
+        $this->onlineOnly = $onlineOnly;
 
         return $this;
     }

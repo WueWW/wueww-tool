@@ -174,6 +174,7 @@ class Session
             ->setStart($this->getStart())
             ->setStop($this->getStop())
             ->setOrganization($this->getOrganization())
+            ->setOnlineOnly($this->getProposedDetails()->getOnlineOnly())
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
             ->setLongDescription($this->getProposedDetails()->getLongDescription())
@@ -224,6 +225,7 @@ class Session
             }
 
             $this->getProposedDetails()
+                ->setOnlineOnly($sessionWithDetail->getOnlineOnly())
                 ->setTitle($sessionWithDetail->getTitle())
                 ->setShortDescription($sessionWithDetail->getShortDescription())
                 ->setLongDescription($sessionWithDetail->getLongDescription())
@@ -240,7 +242,8 @@ class Session
     {
         $currentDetails = $this->getProposedDetails();
 
-        return $currentDetails->getTitle() !== $sessionWithDetail->getTitle() ||
+        return $currentDetails->getOnlineOnly() !== $sessionWithDetail->getOnlineOnly() ||
+            $currentDetails->getTitle() !== $sessionWithDetail->getTitle() ||
             $currentDetails->getShortDescription() !== $sessionWithDetail->getShortDescription() ||
             $currentDetails->getLongDescription() !== $sessionWithDetail->getLongDescription() ||
             $currentDetails->getLocation() !== $sessionWithDetail->getLocation() ||

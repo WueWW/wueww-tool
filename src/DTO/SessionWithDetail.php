@@ -55,6 +55,11 @@ class SessionWithDetail
     private $organization;
 
     /**
+     * @var boolean|null
+     */
+    private $onlineOnly;
+
+    /**
      * @var Location
      * @Assert\Valid()
      */
@@ -160,6 +165,18 @@ class SessionWithDetail
     public function setOrganization(?Organization $organization): self
     {
         $this->organization = $organization;
+
+        return $this;
+    }
+
+    public function getOnlineOnly(): ?bool
+    {
+        return $this->onlineOnly;
+    }
+
+    public function setOnlineOnly(?bool $onlineOnly): SessionWithDetail
+    {
+        $this->onlineOnly = $onlineOnly;
 
         return $this;
     }

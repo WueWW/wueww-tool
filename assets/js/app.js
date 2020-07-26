@@ -54,4 +54,20 @@ $(document).ready(function () {
             $lng.val(e.latlng.lng);
         })
     })
+
+    const $onlineOnly = $('#session_with_detail_onlineOnly');
+    $onlineOnly.click(ev => {
+        if (ev.target.checked) {
+            $('#offline-session-details').hide();
+            $('#offline-session-details input').prop('required', false);
+        } else {
+            $('#offline-session-details').show();
+            $('#offline-session-details input').prop('required', true);
+        }
+    });
+
+    if ($onlineOnly.prop('checked')) {
+        $('#offline-session-details').hide();
+        $('#offline-session-details input').prop('required', false);
+    }
 });
