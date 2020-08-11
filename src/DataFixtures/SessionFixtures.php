@@ -47,6 +47,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Nicht freigegeben')
             ->setShortDescription('Kurzbeschreibung nicht freigegebener Session')
             ->setLongDescription('Die nicht freigegebene Session hat auch eine Langbeschreibung')
+            ->setOnlineOnly(false)
             ->setLocation(
                 (new Location())
                     ->setName('Nicht-Freigegeben-Office')
@@ -65,6 +66,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Freigegebene Session o. Ä.')
             ->setShortDescription('Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('Die freigegebene Session hat natürlich auch eine Langbeschreibung')
+            ->setOnlineOnly(false)
             ->setLocation(
                 (new Location())
                     ->setName('Freigegeben-Office')
@@ -92,6 +94,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Freigegebene Session')
             ->setShortDescription('Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('Die freigegebene Session hat natürlich auch eine Langbeschreibung')
+            ->setOnlineOnly(false)
             ->setLocation(
                 (new Location())
                     ->setName('Freigegeben-Office')
@@ -105,6 +108,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('Freigegebene Session geändert')
             ->setShortDescription('geänderte Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('natürlich darf sich auch die Langbeschreibung ändern')
+            ->setOnlineOnly(false)
             ->setLocation(
                 (new Location())
                     ->setName('Freigegeben-Office')
@@ -134,6 +138,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setTitle('abgesagte Session')
             ->setShortDescription('Kurzbeschreibung einer abgesagten Session')
             ->setLongDescription('Die abgesagte Session hat natürlich auch eine Langbeschreibung')
+            ->setOnlineOnly(false)
             ->setLocation(
                 (new Location())
                     ->setName('Freigegeben-Office')
