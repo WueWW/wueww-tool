@@ -5,14 +5,14 @@
         <h1>Hej!</h1>
 
         <p class="lead">
-            Willkommen bei {{ app_name }}. Als Veranstalter/Veranstalterin kannst du hier Termine für die Wuerzburg Web
-            Week 2020, vom 12. bis 19. Oktober, einstellen.
+            Willkommen bei {{ app_name }}. Als Veranstalter/Veranstalterin kannst du hier {{ app_goal }}.
         </p>
 
+        {% if not app_extra_text is empty %}
         <p>
-            Nachdem du ein Benutzerkonto erstellt hast, vervollständige bitte die Veranstalterangaben. Danach kannst du
-            gleich den ersten Termin anlegen. Keine Sorge, das dauert nicht lange.
+            {{ app_extra_text }}
         </p>
+        {% endif %}
 
         <p>
             Wie geht es danach weiter?
