@@ -6,6 +6,7 @@ use App\DTO\SessionWithDetail;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -22,23 +23,44 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SessionWithDetailType extends AbstractType
 {
+    /**
+     * @var bool
+     */
+    private $useFreeDateInput;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->useFreeDateInput = $params->get('app_free_date_input');
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', ChoiceType::class, [
-            'label' => 'Datum',
-            'choices' => [
-                'Montag, 12. Oktober 2020' => '2020-10-12',
-                'Dienstag, 13. Oktober 2020' => '2020-10-13',
-                'Mittwoch, 14. Oktober 2020' => '2020-10-14',
-                'Donnerstag, 15. Oktober 2020' => '2020-10-15',
-                'Freitag, 16. Oktober 2020' => '2020-10-16',
-                'Samstag, 17. Oktober 2020' => '2020-10-17',
-                'Sonntag, 18. Oktober 2020' => '2020-10-18',
-                'Montag, 19. Oktober 2020' => '2020-10-19',
-            ],
-        ]);
+        if ($this->useFreeDateInput) {
+            $builder->add('date', TextType::class, [
+                'label' => 'Datum',
+                'attr' => [
+                    'placeholder' => 'TT.MM.JJJJ',
+                ],
+            ]);
 
-        $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
+            $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'd.m.Y'));
+        } else {
+            $builder->add('date', ChoiceType::class, [
+                'label' => 'Datum',
+                'choices' => [
+                    'Montag, 12. Oktober 2020' => '2020-10-12',
+                    'Dienstag, 13. Oktober 2020' => '2020-10-13',
+                    'Mittwoch, 14. Oktober 2020' => '2020-10-14',
+                    'Donnerstag, 15. Oktober 2020' => '2020-10-15',
+                    'Freitag, 16. Oktober 2020' => '2020-10-16',
+                    'Samstag, 17. Oktober 2020' => '2020-10-17',
+                    'Sonntag, 18. Oktober 2020' => '2020-10-18',
+                    'Montag, 19. Oktober 2020' => '2020-10-19',
+                ],
+            ]);
+
+            $builder->get('date')->addModelTransformer(new DateTimeToStringTransformer(null, null, 'Y-m-d'));
+        }
 
         $builder
             ->add('start', TimeType::class, [

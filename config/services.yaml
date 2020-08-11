@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     app_name: '%env(APP_NAME)%'
+    app_free_date_input: '%env(bool:APP_FREE_DATE_INPUT)%'
     logos_directory: '%env(resolve:APP_LOGOS_DIRECTORY)%'
 
 services:
