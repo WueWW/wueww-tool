@@ -77,6 +77,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "egulias/email-validator": {
         "version": "2.1.10"
     },
@@ -89,11 +92,11 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
     "nikic/php-parser": {
         "version": "v4.2.2"
+    },
+    "ocramius/package-versions": {
+        "version": "1.4.2"
     },
     "php": {
         "version": "7.2"
