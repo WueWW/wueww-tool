@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app_name: '%env(APP_NAME)%'
     logos_directory: '%env(resolve:APP_LOGOS_DIRECTORY)%'
 
 services:

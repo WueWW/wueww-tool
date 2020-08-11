@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Session;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FeedbackService
@@ -12,15 +13,21 @@ class FeedbackService
      */
     private $router;
 
-    public function __construct(UrlGeneratorInterface $router)
+    /**
+     * @var string
+     */
+    private $appName;
+
+    public function __construct(UrlGeneratorInterface $router, ParameterBagInterface $params)
     {
         $this->router = $router;
+        $this->appName = $params->get('app_name');
     }
 
     public function generatePdf(Session $session): string
     {
         $pdf = new \TCPDF();
-        $pdf->SetCreator('Utes Helferlein (https://github.com/WueWW/wueww-tool/)');
+        $pdf->SetCreator($this->appName . ' (https://github.com/WueWW/wueww-tool/)');
         $pdf->SetTitle('Feedback QR-Code');
 
         $style = [
