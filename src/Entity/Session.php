@@ -211,6 +211,17 @@ class Session
                         (int) $sessionWithDetail->getStop()->format('i')
                     );
 
+        if (
+            $this->getStart() === null &&
+            $this->getAcceptedDetails() !== null &&
+            $this->differsInDetails($sessionWithDetail)
+        ) {
+            // If user re-uses an existing, already accepted start=null session, and also updates the details,
+            // then re-trigger the editing process.
+            $this->setProposedDetails(new SessionDetail());
+            $this->setAcceptedDetails(null);
+        }
+
         $this->setStart($start)
             ->setStop($stop)
             ->setOrganization($sessionWithDetail->getOrganization());
