@@ -26,6 +26,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
         $reporter2 = $this->getReference(UserFixture::REPORTER2_USER_REF);
         $manager->persist($this->createSessionFreigegeben($reporter2));
         $manager->persist($this->createOnlineOnlySessionFreigegeben($reporter2));
+        $manager->persist($this->createSessionFreigegebenWithoutStartDate($reporter2));
 
         $manager->flush();
     }
@@ -110,6 +111,36 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
         $session = (new Session())
             ->setStart(new \DateTimeImmutable('2020-10-13 14:00'))
             ->setStop(new \DateTimeImmutable('2020-10-13 16:00'))
+            ->setCancelled(false)
+            ->setOrganization($reporter->getOrganizations()->first())
+            ->setProposedDetails($detail);
+
+        $session->accept();
+
+        return $session;
+    }
+
+    private function createSessionFreigegebenWithoutStartDate(User $reporter): Session
+    {
+        $detail = (new SessionDetail())
+            ->setTitle('Alte Session o. Ä.')
+            ->setShortDescription('Kurzbeschreibung einer alten Session')
+            ->setLongDescription(
+                'Die alte Session hat natürlich auch eine Langbeschreibung, und wartet darauf, dass sie wieder einen Startzeitpunkt bekommt.'
+            )
+            ->setOnlineOnly(false)
+            ->setLocation(
+                (new Location())
+                    ->setName('Freigegeben-Office')
+                    ->setStreetNo('Freigegeben-Straße 17a')
+                    ->setZipcode('97072')
+                    ->setCity('Würzburg')
+            )
+            ->setLink('http://wueww.de/session/alt');
+
+        $session = (new Session())
+            ->setStart(null)
+            ->setStop(null)
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
             ->setProposedDetails($detail);
