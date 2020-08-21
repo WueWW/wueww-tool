@@ -25,6 +25,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
         /** @var User $reporter2 */
         $reporter2 = $this->getReference(UserFixture::REPORTER2_USER_REF);
         $manager->persist($this->createSessionFreigegeben($reporter2));
+        $manager->persist($this->createOnlineOnlySessionFreigegeben($reporter2));
 
         $manager->flush();
     }
@@ -56,6 +57,36 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
                     ->setCity('Würzburg')
             )
             ->setLink('http://wueww.de/session/nicht/freigegeben');
+
+        return $session;
+    }
+
+    private function createOnlineOnlySessionFreigegeben(User $reporter): Session
+    {
+        $detail = (new SessionDetail())
+            ->setTitle('Online-Only Session')
+            ->setShortDescription('Kurzbeschreibung einer freigegebenen, online-only Session')
+            ->setLongDescription(
+                'Die freigegebene Session hat natürlich auch eine Langbeschreibung, und hier würden noch Zugangsdaten stehen.  Und vieles Weitere mehr.'
+            )
+            ->setOnlineOnly(true)
+            ->setLocation(
+                (new Location())
+                    ->setName('nix da')
+                    ->setStreetNo('')
+                    ->setZipcode('')
+                    ->setCity('')
+            )
+            ->setLink('http://wueww.de/session/online-only');
+
+        $session = (new Session())
+            ->setStart(new \DateTimeImmutable('2020-04-21 14:00'))
+            ->setStop(new \DateTimeImmutable('2020-04-21 16:00'))
+            ->setCancelled(false)
+            ->setOrganization($reporter->getOrganizations()->first())
+            ->setProposedDetails($detail);
+
+        $session->accept();
 
         return $session;
     }
