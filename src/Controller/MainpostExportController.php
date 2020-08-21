@@ -69,8 +69,8 @@ class MainpostExportController extends AbstractController
 
     private function formatDate(\DateTimeInterface $date): string
     {
-        $weekdayName = self::WOCHENTAGE[$date->format('w')];
-        $monthName = self::MONATSNAMEN[$date->format('n') - 1];
+        $weekdayName = self::WOCHENTAGE[(int) $date->format('w')];
+        $monthName = self::MONATSNAMEN[(int) $date->format('n') - 1];
 
         return \sprintf('%s, %s. %s', $weekdayName, $date->format('d'), $monthName);
     }

@@ -60,7 +60,14 @@ class SessionJsonProcessor
     private function processData(array $sessions)
     {
         foreach ($sessions as $sessionData) {
-            if (!isset($sessionData->location)) {
+            if (
+                !isset($sessionData->location) ||
+                !isset($sessionData->key) ||
+                !isset($sessionData->start) ||
+                !isset($sessionData->end) ||
+                !isset($sessionData->cancelled) ||
+                !isset($sessionData->title)
+            ) {
                 // skip record, invalid with this version of WueWW Tool
                 continue;
             }

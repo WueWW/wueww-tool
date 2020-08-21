@@ -36,5 +36,6 @@ class ImportJsonFile extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->sessionJsonProcessor->processFile($input->getArgument('filename'));
+        return 0;
     }
 }
