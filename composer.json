@@ -38,6 +38,9 @@
         "symfony/web-server-bundle": "^4.4"
     },
     "config": {
+        "platform": {
+            "php": "7.3"
+        },
         "preferred-install": {
             "*": "dist"
         },
