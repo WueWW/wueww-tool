@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Job;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +18,29 @@ class JobRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Job::class);
+    }
+
+    /**
+     * @param User $user
+     * @return Job[]
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('j')
+            ->innerJoin('j.organization', 'o')
+            ->andWhere('o.owner = :owner')
+            ->setParameter('owner', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllWithProposedDetails()
+    {
+        return $this->createQueryBuilder('j')
+            ->innerJoin('j.proposedDetails', 'jdp')
+            ->addSelect('jdp')
+            ->orderBy('jdp.title')
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -24,6 +24,11 @@ class Organization
     private $sessions;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Job", mappedBy="organization", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $jobs;
+
+    /**
      * @var OrganizationDetail|null
      * @ORM\OneToOne(targetEntity="App\Entity\OrganizationDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      */
@@ -49,6 +54,7 @@ class Organization
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,6 +87,37 @@ class Organization
             // set the owning side to null (unless already changed)
             if ($session->getOrganization() === $this) {
                 $session->setOrganization(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Job[]
+     */
+    public function getJobs(): Collection
+    {
+        return $this->jobs;
+    }
+
+    public function addJob(Job $job): self
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs[] = $job;
+            $job->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->contains($job)) {
+            $this->jobs->removeElement($job);
+            // set the owning side to null (unless already changed)
+            if ($job->getOrganization() === $this) {
+                $job->setOrganization(null);
             }
         }
 

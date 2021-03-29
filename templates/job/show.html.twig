@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Job{% endblock %}
+
+{% block body %}
+    {{ include('job/_orgdata_missing_info.html.twig') }}
+    {{ include('job/_orgdata_not_accepted.html.twig') }}
+
+    <h1>Job</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Titel</th>
+            <td>{{ job.proposedDetails.title }}</td>
+        </tr>
+        <tr>
+            <th>Kurzbeschreibung</th>
+            <td>{{ job.proposedDetails.shortDescription | nl2br }}</td>
+        </tr>
+        <tr>
+            <th>Link</th>
+            <td>
+                {% if "@" in job.proposedDetails.link %}
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ job.proposedDetails.link }}">{{ job.proposedDetails.link }}</a>
+                {% else %}
+                    <a href="{{ job.proposedDetails.link }}" target="_blank">{{ job.proposedDetails.link }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_EDITOR') %}
+        <h2>Veranstalter</h2>
+
+        <table class="table">
+            <tbody>
+            {% if job.organization.proposedOrganizationDetails %}
+                <tr>
+                    <th>Titel</th>
+                    <td>{{ job.organization.proposedOrganizationDetails.title }}</td>
+                </tr>
+                <tr>
+                    <th>Ansprechpartner</th>
+                    <td>{{ job.organization.proposedOrganizationDetails.contactName }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>E-Mail-Adresse</th>
+                <td>
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ job.organization.owner.email }}">{{ job.organization.owner.email }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if job.accepted %}
+        <div class="alert alert-success" role="alert">
+            Dieser Job ist bereits freigegeben.
+        </div>
+    {% else %}
+        <div class="alert alert-info clearfix" role="alert">
+            Dieser Job wurde {% if job.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
+
+            {% if is_granted('ROLE_EDITOR') %}
+                <form class="inline pull-right" method="post" action="{{ path('job_accept', {'id': job.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ job.id) }}">
+                    <button class="btn btn-primary"><i class="fa fa-check"></i> Job freigeben</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <a href="{{ path('job_index') }}">zurück zur Job-Liste</a>
+
+{% endblock %}

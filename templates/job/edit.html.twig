@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ include('job/_orgdata_missing_info.html.twig') }}
+    {{ include('job/_orgdata_not_accepted.html.twig') }}
+
+    <h1>Job bearbeiten</h1>
+
+    {{ include('job/_form.html.twig') }}
+
+    <a href="{{ path('job_index') }}">zurück zur Job-Liste</a>
+{% endblock %}

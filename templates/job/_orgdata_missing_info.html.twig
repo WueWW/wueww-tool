@@ -1,0 +1,10 @@
+{% if not is_granted('ROLE_EDITOR') and (app.user.organizations.first.proposedOrganizationDetails is null or app.user.organizations.first.proposedOrganizationDetails.title == "") %}
+    <div class="alert alert-warning" role="alert">
+        <p>
+            Aktuell sind die Unternehmensdaten nicht, oder nicht vollständig, erfasst. Diese müssen gepflegt werden,
+            ehe ein Job veröffentlicht werden kann.
+        </p>
+
+        <a class="btn btn-warning" href="{{ path('my_organization') }}">Veranstalterangaben pflegen</a>
+    </div>
+{% endif %}

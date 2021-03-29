@@ -11,6 +11,9 @@
             <li>
                 <a class="nav-link" href="{{ path('session_index') }}">Events</a>
             </li>
+            <li>
+                <a class="nav-link" href="{{ path('job_index') }}">Jobs</a>
+            </li>
             {% if app.user %}
                 {% if is_granted('ROLE_EDITOR') %}
                     <li>

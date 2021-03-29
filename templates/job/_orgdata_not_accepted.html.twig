@@ -1,0 +1,8 @@
+{% if job.organization.proposedOrganizationDetails is not null and job.organization.acceptedOrganizationDetails is null %}
+    <div class="alert alert-warning" role="alert">
+        <p>
+            Die Unternehmensdaten wurden bislang nicht zur Veröffentlichung freigeschaltet. Es können bereits
+            Jobs erfasst werden - diese bleiben bis zur Freigabe jedoch unveröffentlicht.
+        </p>
+    </div>
+{% endif %}

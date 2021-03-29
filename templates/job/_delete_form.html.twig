@@ -1,0 +1,5 @@
+<form class="inline" method="post" action="{{ path('job_delete', {'id': job.id}) }}" onsubmit="return confirm('Bist du sicher, dass du diesen Job löschen möchtest?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ job.id) }}">
+    <button class="btn btn-sm btn-outline-danger" title="löschen"><i class="fa fa-trash"></i></button>
+</form>
