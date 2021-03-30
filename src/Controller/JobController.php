@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\DTO\JobWithDetail;
 use App\Entity\Job;
 use App\Entity\User;
+use App\Event\JobDeletedEvent;
 use App\Event\JobModifiedEvent;
 use App\Form\JobWithDetailType;
 use App\Repository\JobRepository;
@@ -150,15 +151,20 @@ class JobController extends AbstractController
      * @Route("/{id}", name="job_delete", methods={"DELETE"})
      * @param Request $request
      * @param Job $job
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function delete(Request $request, Job $job): Response
+    public function delete(Request $request, Job $job, EventDispatcherInterface $eventDispatcher): Response
     {
-        if (!$this->isGranted(User::ROLE_EDITOR)) {
-            throw new AccessDeniedException();
-        }
-
         if ($this->isCsrfTokenValid('delete' . $job->getId(), $request->request->get('_token'))) {
+            if (!$this->isGranted(User::ROLE_EDITOR)) {
+                if ($job->getOrganization()->getOwner() !== $this->getUser()) {
+                    throw new AccessDeniedException();
+                }
+
+                $eventDispatcher->dispatch(new JobDeletedEvent($job));
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($job);
             $entityManager->flush();

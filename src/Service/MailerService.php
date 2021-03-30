@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Job;
 use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\Token;
@@ -98,6 +99,36 @@ class MailerService
             ->setBody(
                 $this->twig->render('emails/session_cancelled.txt.twig', [
                     'session' => $session,
+                ]),
+                'text/plain'
+            );
+
+        $this->mailer->send($message);
+    }
+
+    public function sendJobDeletedMail(string $toAddress, Job $job)
+    {
+        $message = (new \Swift_Message('Job gelöscht'))
+            ->setFrom(self::FROM_ADDRESS)
+            ->setTo($toAddress)
+            ->setBody(
+                $this->twig->render('emails/job_deleted.txt.twig', [
+                    'job' => $job,
+                ]),
+                'text/plain'
+            );
+
+        $this->mailer->send($message);
+    }
+
+    public function sendJobAwaitingApprovalMail(string $toAddress, Job $job)
+    {
+        $message = (new \Swift_Message('Job geändert'))
+            ->setFrom(self::FROM_ADDRESS)
+            ->setTo($toAddress)
+            ->setBody(
+                $this->twig->render('emails/job_awaiting_approval.txt.twig', [
+                    'job' => $job,
                 ]),
                 'text/plain'
             );

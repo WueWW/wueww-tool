@@ -1,0 +1,21 @@
+Hej Ute,
+
+jemand hat einen Job bearbeitet:
+
+Titel           : {{ job.proposedDetails.title }}
+
+{% if job.organization.proposedOrganizationDetails %}
+Unternehmen     : {{ job.organization.title }}
+Ansprechpartner : {{ job.organization.proposedOrganizationDetails.contactName }}
+E-Mail          : {{ job.organization.owner.email }}
+{% else %}
+Bisher wurden jedoch noch keine Unternehmensinformationen erfasst.
+E-Mail          : {{ job.organization.owner.email }}
+{% endif %}
+
+Link zum Job (und dessen Freigabe):
+{{ url('job_show', { 'id': job.id }) }}
+
+Viele Grüße
+
+das WueWW-Tool :)

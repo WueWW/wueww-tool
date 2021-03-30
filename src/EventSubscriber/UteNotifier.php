@@ -2,6 +2,8 @@
 
 namespace App\EventSubscriber;
 
+use App\Event\JobDeletedEvent;
+use App\Event\JobModifiedEvent;
 use App\Event\OrganizationModifiedEvent;
 use App\Event\SessionCancelledEvent;
 use App\Event\SessionModifiedEvent;
@@ -20,6 +22,8 @@ class UteNotifier implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            JobDeletedEvent::class => 'onJobDeleted',
+            JobModifiedEvent::class => 'onJobModified',
             SessionModifiedEvent::class => 'onSessionModified',
             SessionCancelledEvent::class => 'onSessionCancelled',
             OrganizationModifiedEvent::class => 'onOrganizationModified',
@@ -29,6 +33,16 @@ class UteNotifier implements EventSubscriberInterface
     public function __construct(MailerService $mailerService)
     {
         $this->mailerService = $mailerService;
+    }
+
+    public function onJobDeleted(JobDeletedEvent $event)
+    {
+        $this->mailerService->sendJobDeletedMail(self::TARGET_EMAIL_ADDRESS, $event->getJob());
+    }
+
+    public function onJobModified(JobModifiedEvent $event)
+    {
+        $this->mailerService->sendJobAwaitingApprovalMail(self::TARGET_EMAIL_ADDRESS, $event->getJob());
     }
 
     public function onSessionModified(SessionModifiedEvent $event)
