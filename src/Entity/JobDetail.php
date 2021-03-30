@@ -31,6 +31,30 @@ class JobDetail
      */
     private $link;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     * @var bool|null
+     */
+    private $fullyRemote;
+
+    /**
+     * @ORM\Embedded(class = "Location")
+     * @var Location|null
+     */
+    private $location;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @var float|null
+     */
+    private $locationLat;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @var float|null
+     */
+    private $locationLng;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +93,50 @@ class JobDetail
     {
         $this->link = $link;
 
+        return $this;
+    }
+
+    public function isFullyRemote(): ?bool
+    {
+        return $this->fullyRemote;
+    }
+
+    public function setFullyRemote(?bool $fullyRemote): self
+    {
+        $this->fullyRemote = $fullyRemote;
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    public function getLocationLat(): ?float
+    {
+        return $this->locationLat;
+    }
+
+    public function setLocationLat(?float $locationLat): self
+    {
+        $this->locationLat = $locationLat;
+        return $this;
+    }
+
+    public function getLocationLng(): ?float
+    {
+        return $this->locationLng;
+    }
+
+    public function setLocationLng(?float $locationLng): self
+    {
+        $this->locationLng = $locationLng;
         return $this;
     }
 }

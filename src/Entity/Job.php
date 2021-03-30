@@ -89,7 +89,11 @@ class Job
             ->setOrganization($this->getOrganization())
             ->setTitle($this->getProposedDetails()->getTitle())
             ->setShortDescription($this->getProposedDetails()->getShortDescription())
-            ->setLink($this->getProposedDetails()->getLink());
+            ->setLink($this->getProposedDetails()->getLink())
+            ->setFullyRemote($this->getProposedDetails()->isFullyRemote())
+            ->setLocation($this->getProposedDetails()->getLocation())
+            ->setLocationLat($this->getProposedDetails()->getLocationLat())
+            ->setLocationLng($this->getProposedDetails()->getLocationLng());
     }
 
     public function applyDetails(JobWithDetail $jobWithDetail): self
@@ -108,7 +112,11 @@ class Job
             $this->getProposedDetails()
                 ->setTitle($jobWithDetail->getTitle())
                 ->setShortDescription($jobWithDetail->getShortDescription())
-                ->setLink($jobWithDetail->getLink());
+                ->setLink($jobWithDetail->getLink())
+                ->setFullyRemote($jobWithDetail->getFullyRemote())
+                ->setLocation($jobWithDetail->getLocation())
+                ->setLocationLat($jobWithDetail->getLocationLat())
+                ->setLocationLng($jobWithDetail->getLocationLng());
         }
 
         return $this;
@@ -120,7 +128,11 @@ class Job
 
         return $currentDetails->getTitle() !== $jobWithDetail->getTitle() ||
             $currentDetails->getShortDescription() !== $jobWithDetail->getShortDescription() ||
-            $currentDetails->getLink() !== $jobWithDetail->getLink();
+            $currentDetails->getLink() !== $jobWithDetail->getLink() ||
+            $currentDetails->isFullyRemote() !== $jobWithDetail->getFullyRemote() ||
+            $currentDetails->getLocation() !== $jobWithDetail->getLocation() ||
+            $currentDetails->getLocationLat() !== $jobWithDetail->getLocationLat() ||
+            $currentDetails->getLocationLng() !== $jobWithDetail->getLocationLng();
     }
 
     public function accept()

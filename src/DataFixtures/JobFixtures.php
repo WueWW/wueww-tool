@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Job;
 use App\Entity\JobDetail;
+use App\Entity\Location;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,6 +12,15 @@ use Doctrine\Persistence\ObjectManager;
 
 class JobFixtures extends Fixture implements DependentFixtureInterface
 {
+    private static function emptyLocation()
+    {
+        return (new Location())
+            ->setName('')
+            ->setStreetNo('')
+            ->setZipcode('')
+            ->setCity('');
+    }
+
     public function load(ObjectManager $manager)
     {
         /** @var User $reporter1 */
@@ -37,7 +47,9 @@ class JobFixtures extends Fixture implements DependentFixtureInterface
             ->setShortDescription(
                 'Pixelschubsen macht uns Spaß, und weil wir so viel Spaß haben, möchten wir den gerne mit dir teilen.'
             )
-            ->setLink('http://wueww.de/job/nicht/freigegeben');
+            ->setLink('http://wueww.de/job/nicht/freigegeben')
+            ->setFullyRemote(true)
+            ->setLocation(self::emptyLocation());
 
         return $job;
     }
@@ -49,7 +61,9 @@ class JobFixtures extends Fixture implements DependentFixtureInterface
             ->setShortDescription(
                 'Wir sind **die** Cobol-Schmiede in der Stadt.  Löten war gestern, heute wird feinstes Cobol gehackt.'
             )
-            ->setLink('http://wueww.de/job/freigegeben');
+            ->setLink('http://wueww.de/job/freigegeben')
+            ->setFullyRemote(true)
+            ->setLocation(self::emptyLocation());
 
         $job = (new Job())->setOrganization($reporter->getOrganizations()->first())->setProposedDetails($detail);
 

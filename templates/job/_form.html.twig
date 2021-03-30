@@ -4,6 +4,17 @@
 {{ form_row(form.title) }}
 {{ form_row(form.shortDescription) }}
 
+<h2>Unternehmensort</h2>
+
+{{ form_widget(form.fullyRemote) }}
+
+<div id="office-job-details">
+    {{ form_widget(form.location) }}
+
+    <label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
+    <div id="map"></div>
+</div>
+
 <h2>Sonstiges</h2>
 {{ form_rest(form) }}
 

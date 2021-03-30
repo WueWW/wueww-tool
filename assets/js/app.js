@@ -26,8 +26,8 @@ $(document).ready(function () {
     $('label.required').requiredIndicator();
 
     $('#map').each((index, el) => {
-        const $lat = $('#session_with_detail_locationLat');
-        const $lng = $('#session_with_detail_locationLng');
+        const $lat = $('.location-lat');
+        const $lng = $('.location-lng');
         const readonly = el.classList.contains('readonly');
 
         let marker;
@@ -69,5 +69,21 @@ $(document).ready(function () {
     if ($onlineOnly.prop('checked')) {
         $('#offline-session-details').hide();
         $('#offline-session-details input').prop('required', false);
+    }
+
+    const $fullyRemote = $('#job_with_detail_fullyRemote');
+    $fullyRemote.click(ev => {
+        if (ev.target.checked) {
+            $('#office-job-details').hide();
+            $('#office-job-details input').prop('required', false)
+        } else {
+            $('#office-job-details').show();
+            $('#office-job-details input').prop('required', true)
+        }
+    });
+
+    if ($fullyRemote.prop('checked')) {
+        $('#office-job-details').hide();
+        $('#office-job-details input').prop('required', false)
     }
 });

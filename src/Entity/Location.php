@@ -12,25 +12,25 @@ class Location
 {
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Der Name darf nicht leer sein.", groups={"offline_event"})
+     * @Assert\NotBlank(message="Der Name darf nicht leer sein.", groups={"offline_event", "office_job"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Straße und Hausnummer dürfen nicht leer sein.", groups={"offline_event"})
+     * @Assert\NotBlank(message="Straße und Hausnummer dürfen nicht leer sein.", groups={"offline_event", "office_job"})
      */
     private $streetNo;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Die PLZ darf nicht leer sein", groups={"offline_event"})
+     * @Assert\NotBlank(message="Die PLZ darf nicht leer sein", groups={"offline_event", "office_job"})
      */
     private $zipcode;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Der Ort darf nicht leer sein", groups={"offline_event"})
+     * @Assert\NotBlank(message="Der Ort darf nicht leer sein", groups={"offline_event", "office_job"})
      */
     private $city;
 

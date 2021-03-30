@@ -37,6 +37,26 @@ class JobWithDetail
      */
     private $link;
 
+    /**
+     * @var bool|null
+     */
+    private $fullyRemote;
+
+    /**
+     * @var Location|null
+     */
+    private $location;
+
+    /**
+     * @var float|null
+     */
+    private $locationLat;
+
+    /**
+     * @var float|null
+     */
+    private $locationLng;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +110,78 @@ class JobWithDetail
     public function setLink(?string $link): JobWithDetail
     {
         $this->link = $link;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getFullyRemote(): ?bool
+    {
+        return $this->fullyRemote;
+    }
+
+    /**
+     * @param bool|null $fullyRemote
+     * @return JobWithDetail
+     */
+    public function setFullyRemote(?bool $fullyRemote): JobWithDetail
+    {
+        $this->fullyRemote = $fullyRemote;
+        return $this;
+    }
+
+    /**
+     * @return Location|null
+     */
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param Location|null $location
+     * @return JobWithDetail
+     */
+    public function setLocation(?Location $location): JobWithDetail
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLocationLat(): ?float
+    {
+        return $this->locationLat;
+    }
+
+    /**
+     * @param float|null $locationLat
+     * @return JobWithDetail
+     */
+    public function setLocationLat(?float $locationLat): JobWithDetail
+    {
+        $this->locationLat = $locationLat;
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLocationLng(): ?float
+    {
+        return $this->locationLng;
+    }
+
+    /**
+     * @param float|null $locationLng
+     * @return JobWithDetail
+     */
+    public function setLocationLng(?float $locationLng): JobWithDetail
+    {
+        $this->locationLng = $locationLng;
         return $this;
     }
 }

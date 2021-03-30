@@ -39,14 +39,22 @@ class JobWithDetailType extends AbstractType
                     'maxlength' => 250,
                 ],
             ])
-
             ->add('link', TextType::class, [
                 'label' => 'Link (z. B. "klassische" Stellenanzeige)',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
-            ]);
+            ])
+            ->add('fullyRemote', CheckboxType::class, [
+                'label' => 'Bei dem Job handelt es sich um eine "fully remote" Stelle (auch Post-Covid)',
+                'required' => false,
+            ])
+            ->add('location', LocationType::class, [
+                'label' => 'Unternehmensort',
+            ])
+            ->add('locationLat', HiddenType::class, ['attr' => ['class' => 'location-lat']])
+            ->add('locationLng', HiddenType::class, ['attr' => ['class' => 'location-lng']]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
             /** @var JobWithDetail $jobWithDetail */
@@ -75,6 +83,11 @@ class JobWithDetailType extends AbstractType
         $resolver->setDefaults([
             'data_class' => JobWithDetail::class,
             'attr' => ['autocomplete' => 'off'],
+            'validation_groups' => function (FormInterface $form) {
+                /** @var JobWithDetail $data */
+                $data = $form->getData();
+                return ['Default', $data->getFullyRemote() ? 'fully_remote_job' : 'office_job'];
+            },
         ]);
     }
 }

@@ -102,8 +102,8 @@ class SessionWithDetailType extends AbstractType
             ->add('location', LocationType::class, [
                 'label' => 'Veranstaltungsort',
             ])
-            ->add('locationLat', HiddenType::class)
-            ->add('locationLng', HiddenType::class)
+            ->add('locationLat', HiddenType::class, ['attr' => ['class' => 'location-lat']])
+            ->add('locationLng', HiddenType::class, ['attr' => ['class' => 'location-lng']])
             ->add('link', TextType::class, [
                 'label' => 'Link (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)',
                 'required' => false,
