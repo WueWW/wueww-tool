@@ -4,6 +4,9 @@ namespace App\DTO;
 
 use App\Entity\Location;
 use App\Entity\Organization;
+use App\Enum\HomeOfficeEnum;
+use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\SlackTimeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class JobWithDetail
@@ -56,6 +59,21 @@ class JobWithDetail
      * @var float|null
      */
     private $locationLng;
+
+    /**
+     * @var HomeOfficeEnum|null
+     */
+    private $homeOffice;
+
+    /**
+     * @var OeffiErreichbarkeitEnum|null
+     */
+    private $oeffiErreichbarkeit;
+
+    /**
+     * @var SlackTimeEnum|null
+     */
+    private $slackTime;
 
     public function getId(): ?int
     {
@@ -182,6 +200,60 @@ class JobWithDetail
     public function setLocationLng(?float $locationLng): JobWithDetail
     {
         $this->locationLng = $locationLng;
+        return $this;
+    }
+
+    /**
+     * @return HomeOfficeEnum|null
+     */
+    public function getHomeOffice(): ?HomeOfficeEnum
+    {
+        return $this->homeOffice;
+    }
+
+    /**
+     * @param HomeOfficeEnum|null $homeOffice
+     * @return JobWithDetail
+     */
+    public function setHomeOffice(?HomeOfficeEnum $homeOffice): JobWithDetail
+    {
+        $this->homeOffice = $homeOffice;
+        return $this;
+    }
+
+    /**
+     * @return OeffiErreichbarkeitEnum|null
+     */
+    public function getOeffiErreichbarkeit(): ?OeffiErreichbarkeitEnum
+    {
+        return $this->oeffiErreichbarkeit;
+    }
+
+    /**
+     * @param OeffiErreichbarkeitEnum|null $oeffiErreichbarkeit
+     * @return JobWithDetail
+     */
+    public function setOeffiErreichbarkeit(?OeffiErreichbarkeitEnum $oeffiErreichbarkeit): JobWithDetail
+    {
+        $this->oeffiErreichbarkeit = $oeffiErreichbarkeit;
+        return $this;
+    }
+
+    /**
+     * @return SlackTimeEnum|null
+     */
+    public function getSlackTime(): ?SlackTimeEnum
+    {
+        return $this->slackTime;
+    }
+
+    /**
+     * @param SlackTimeEnum|null $slackTime
+     * @return JobWithDetail
+     */
+    public function setSlackTime(?SlackTimeEnum $slackTime): JobWithDetail
+    {
+        $this->slackTime = $slackTime;
         return $this;
     }
 }

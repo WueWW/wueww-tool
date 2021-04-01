@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\DTO\JobWithDetail;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Enum\HomeOfficeEnum;
+use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\SlackTimeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +44,24 @@ class Job
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $acceptedAt;
+
+    /**
+     * @ORM\Column(type="homeoffice", nullable=true)
+     * @var ?HomeOfficeEnum
+     */
+    private $homeOffice;
+
+    /**
+     * @ORM\Column(type="oeffi_erreichbarkeit", nullable=true)
+     * @var ?OeffiErreichbarkeitEnum
+     */
+    private $oeffiErreichbarkeit;
+
+    /**
+     * @ORM\Column(type="slack_time", nullable=true)
+     * @var ?SlackTimeEnum
+     */
+    private $slackTime;
 
     public function __construct()
     {
@@ -82,6 +102,60 @@ class Job
         return $this->acceptedDetails === $this->proposedDetails;
     }
 
+    /**
+     * @return HomeOfficeEnum|null
+     */
+    public function getHomeOffice(): ?HomeOfficeEnum
+    {
+        return $this->homeOffice;
+    }
+
+    /**
+     * @param HomeOfficeEnum|null $homeOffice
+     * @return Job
+     */
+    public function setHomeOffice(?HomeOfficeEnum $homeOffice)
+    {
+        $this->homeOffice = $homeOffice;
+        return $this;
+    }
+
+    /**
+     * @return OeffiErreichbarkeitEnum|null
+     */
+    public function getOeffiErreichbarkeit(): ?OeffiErreichbarkeitEnum
+    {
+        return $this->oeffiErreichbarkeit;
+    }
+
+    /**
+     * @param OeffiErreichbarkeitEnum|null $oeffiErreichbarkeit
+     * @return Job
+     */
+    public function setOeffiErreichbarkeit(?OeffiErreichbarkeitEnum $oeffiErreichbarkeit): Job
+    {
+        $this->oeffiErreichbarkeit = $oeffiErreichbarkeit;
+        return $this;
+    }
+
+    /**
+     * @return SlackTimeEnum|null
+     */
+    public function getSlackTime(): ?SlackTimeEnum
+    {
+        return $this->slackTime;
+    }
+
+    /**
+     * @param SlackTimeEnum|null $slackTime
+     * @return Job
+     */
+    public function setSlackTime(?SlackTimeEnum $slackTime): Job
+    {
+        $this->slackTime = $slackTime;
+        return $this;
+    }
+
     public function toJobWithDetail(): JobWithDetail
     {
         return (new JobWithDetail())
@@ -93,12 +167,18 @@ class Job
             ->setFullyRemote($this->getProposedDetails()->isFullyRemote())
             ->setLocation($this->getProposedDetails()->getLocation())
             ->setLocationLat($this->getProposedDetails()->getLocationLat())
-            ->setLocationLng($this->getProposedDetails()->getLocationLng());
+            ->setLocationLng($this->getProposedDetails()->getLocationLng())
+            ->setHomeOffice($this->getHomeOffice())
+            ->setOeffiErreichbarkeit($this->getOeffiErreichbarkeit())
+            ->setSlackTime($this->getSlackTime());
     }
 
     public function applyDetails(JobWithDetail $jobWithDetail): self
     {
-        $this->setOrganization($jobWithDetail->getOrganization());
+        $this->setOrganization($jobWithDetail->getOrganization())
+            ->setHomeOffice($jobWithDetail->getHomeOffice())
+            ->setOeffiErreichbarkeit($jobWithDetail->getOeffiErreichbarkeit())
+            ->setSlackTime($jobWithDetail->getSlackTime());
 
         if (
             $this->getAcceptedDetails() === null ||

@@ -15,6 +15,7 @@
         "blackknight467/star-rating-bundle": "dev-symfony5",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.6",
+        "elao/enum": "^1.14",
         "guzzlehttp/guzzle": "^6.4",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/console": "5.2.*",

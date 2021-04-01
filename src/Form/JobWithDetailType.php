@@ -4,7 +4,11 @@ namespace App\Form;
 
 use App\DTO\JobWithDetail;
 use App\Entity\Organization;
+use App\Enum\HomeOfficeEnum;
+use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\SlackTimeEnum;
 use App\Repository\OrganizationRepository;
+use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
@@ -33,7 +37,7 @@ class JobWithDetailType extends AbstractType
                 ],
             ])
             ->add('shortDescription', TextareaType::class, [
-                'label' => 'Kurzbeschreibung (für Social Media)',
+                'label' => 'Beschreibung (worum geht\'s? was macht die Stelle besonders?)',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 250,
@@ -54,7 +58,25 @@ class JobWithDetailType extends AbstractType
                 'label' => 'Unternehmensort',
             ])
             ->add('locationLat', HiddenType::class, ['attr' => ['class' => 'location-lat']])
-            ->add('locationLng', HiddenType::class, ['attr' => ['class' => 'location-lng']]);
+            ->add('locationLng', HiddenType::class, ['attr' => ['class' => 'location-lng']])
+            ->add('homeOffice', EnumType::class, [
+                'enum_class' => HomeOfficeEnum::class,
+                'label' => 'Home-Office (Post-Covid)',
+                'required' => false,
+                'placeholder' => '-- keine Angabe --',
+            ])
+            ->add('oeffiErreichbarkeit', EnumType::class, [
+                'enum_class' => OeffiErreichbarkeitEnum::class,
+                'label' => 'Öffi-Erreichbarkeit',
+                'required' => false,
+                'placeholder' => '-- keine Angabe --',
+            ])
+            ->add('slackTime', EnumType::class, [
+                'enum_class' => SlackTimeEnum::class,
+                'label' => 'Slack-Time Regelung',
+                'required' => false,
+                'placeholder' => '-- keine Angabe --',
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
             /** @var JobWithDetail $jobWithDetail */
