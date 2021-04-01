@@ -63,6 +63,12 @@ class Job
      */
     private $slackTime;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var boolean|null
+     */
+    private $weiterbildungsbudget;
+
     public function __construct()
     {
         $this->setProposedDetails(new JobDetail());
@@ -156,6 +162,24 @@ class Job
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getWeiterbildungsbudget(): ?bool
+    {
+        return $this->weiterbildungsbudget;
+    }
+
+    /**
+     * @param bool|null $weiterbildungsbudget
+     * @return Job
+     */
+    public function setWeiterbildungsbudget(?bool $weiterbildungsbudget): Job
+    {
+        $this->weiterbildungsbudget = $weiterbildungsbudget;
+        return $this;
+    }
+
     public function toJobWithDetail(): JobWithDetail
     {
         return (new JobWithDetail())
@@ -170,7 +194,8 @@ class Job
             ->setLocationLng($this->getProposedDetails()->getLocationLng())
             ->setHomeOffice($this->getHomeOffice())
             ->setOeffiErreichbarkeit($this->getOeffiErreichbarkeit())
-            ->setSlackTime($this->getSlackTime());
+            ->setSlackTime($this->getSlackTime())
+            ->setWeiterbildungsbudget($this->getWeiterbildungsbudget());
     }
 
     public function applyDetails(JobWithDetail $jobWithDetail): self
@@ -178,7 +203,8 @@ class Job
         $this->setOrganization($jobWithDetail->getOrganization())
             ->setHomeOffice($jobWithDetail->getHomeOffice())
             ->setOeffiErreichbarkeit($jobWithDetail->getOeffiErreichbarkeit())
-            ->setSlackTime($jobWithDetail->getSlackTime());
+            ->setSlackTime($jobWithDetail->getSlackTime())
+            ->setWeiterbildungsbudget($jobWithDetail->getWeiterbildungsbudget());
 
         if (
             $this->getAcceptedDetails() === null ||

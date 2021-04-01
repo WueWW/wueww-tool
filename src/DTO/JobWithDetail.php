@@ -75,6 +75,11 @@ class JobWithDetail
      */
     private $slackTime;
 
+    /**
+     * @var boolean|null
+     */
+    private $weiterbildungsbudget;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -254,6 +259,24 @@ class JobWithDetail
     public function setSlackTime(?SlackTimeEnum $slackTime): JobWithDetail
     {
         $this->slackTime = $slackTime;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getWeiterbildungsbudget(): ?bool
+    {
+        return $this->weiterbildungsbudget;
+    }
+
+    /**
+     * @param bool|null $weiterbildungsbudget
+     * @return JobWithDetail
+     */
+    public function setWeiterbildungsbudget(?bool $weiterbildungsbudget): JobWithDetail
+    {
+        $this->weiterbildungsbudget = $weiterbildungsbudget;
         return $this;
     }
 }

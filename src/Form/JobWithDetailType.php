@@ -76,6 +76,10 @@ class JobWithDetailType extends AbstractType
                 'label' => 'Slack-Time Regelung',
                 'required' => false,
                 'placeholder' => '-- keine Angabe --',
+            ])
+            ->add('weiterbildungsbudget', CheckboxType::class, [
+                'label' => 'es gibt ein Weiterbildungsbudget',
+                'required' => false,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
