@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method SessionDetail|null findOneBy(array $criteria, array $orderBy = null)
  * @method SessionDetail[]    findAll()
  * @method SessionDetail[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<SessionDetail>
  */
 class SessionDetailRepository extends ServiceEntityRepository
 {

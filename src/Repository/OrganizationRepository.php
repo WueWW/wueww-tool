@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Organization|null findOneBy(array $criteria, array $orderBy = null)
  * @method Organization[]    findAll()
  * @method Organization[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Organization>
  */
 class OrganizationRepository extends ServiceEntityRepository
 {
@@ -19,7 +20,7 @@ class OrganizationRepository extends ServiceEntityRepository
         parent::__construct($registry, Organization::class);
     }
 
-    public function findOneByTitle($title)
+    public function findOneByTitle(string $title): ?Organization
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.proposedOrganizationDetails', 'opd')
@@ -29,6 +30,9 @@ class OrganizationRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @return Organization[]
+     */
     public function findAllWithProposedDetails(): array
     {
         return $this->createQueryBuilder('o')

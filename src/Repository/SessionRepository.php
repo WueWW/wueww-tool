@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Session|null findOneBy(array $criteria, array $orderBy = null)
  * @method Session[]    findAll()
  * @method Session[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends ServiceEntityRepository<Session>
  */
 class SessionRepository extends ServiceEntityRepository
 {
@@ -20,7 +21,7 @@ class SessionRepository extends ServiceEntityRepository
         parent::__construct($registry, Session::class);
     }
 
-    public function resetAllStartAndEndTimes()
+    public function resetAllStartAndEndTimes(): void
     {
         $qb = $this->createQueryBuilder('s');
         $qb
@@ -46,6 +47,7 @@ class SessionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param bool $excludeCancelled
      * @return Session[]
      */
     public function findFullyAccepted($excludeCancelled = false): array
@@ -69,7 +71,10 @@ class SessionRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findAllWithProposedDetails()
+    /**
+     * @return Session[]
+     */
+    public function findAllWithProposedDetails(): array
     {
         return $this->createQueryBuilder('s')
             ->innerJoin('s.proposedDetails', 'sdp')
@@ -79,7 +84,10 @@ class SessionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findRecentlyApprovedSessions()
+    /**
+     * @return Session[]
+     */
+    public function findRecentlyApprovedSessions(): array
     {
         return $this->createQueryBuilder('s')
             ->innerJoin('s.acceptedDetails', 'sad')
