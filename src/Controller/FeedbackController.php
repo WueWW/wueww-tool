@@ -48,7 +48,7 @@ class FeedbackController extends AbstractController
     /**
      * @Route("/thanks", name="feedback_thanks", methods={"GET"})
      */
-    public function thanks()
+    public function thanks(): Response
     {
         return $this->render('feedback/thanks.html.twig');
     }
