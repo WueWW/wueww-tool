@@ -6,7 +6,7 @@ use GuzzleHttp\Client as Guzzle;
 
 class PwnedService
 {
-    public function isPwned(string $password)
+    public function isPwned(string $password): bool
     {
         $client = new Guzzle();
 

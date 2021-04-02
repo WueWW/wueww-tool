@@ -56,7 +56,7 @@ class UserService
         $this->tokenRepository = $tokenRepository;
     }
 
-    public function registerUser(UserRegistration $dto)
+    public function registerUser(UserRegistration $dto): void
     {
         $user = new User();
 
@@ -91,7 +91,7 @@ class UserService
         $this->repository->save($user);
     }
 
-    public function startPasswordReset(StartPasswordReset $startPasswordReset)
+    public function startPasswordReset(StartPasswordReset $startPasswordReset): void
     {
         $user = $this->repository->findOneBy(['email' => $startPasswordReset->getEmail()]);
 
@@ -102,7 +102,7 @@ class UserService
         $this->startPasswortResetForUser($user);
     }
 
-    public function finishPasswordReset(FinishPasswordReset $dto)
+    public function finishPasswordReset(FinishPasswordReset $dto): void
     {
         $tokenEntity = $this->tokenRepository->findOneBy(['token' => $dto->getToken()]);
 
@@ -126,7 +126,7 @@ class UserService
         $this->mailerService->sendPasswordResetMail($user, $token);
     }
 
-    public function changePassword(User $user, string $password)
+    public function changePassword(User $user, string $password): void
     {
         if ($this->pwnedService->isPwned($password)) {
             throw new PasswordIsPwnedException();

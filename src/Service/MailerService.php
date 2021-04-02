@@ -28,7 +28,7 @@ class MailerService
         $this->mailer = $swiftMailer;
     }
 
-    public function sendUserRegistrationMail(User $user, Token $token)
+    public function sendUserRegistrationMail(User $user, Token $token): void
     {
         $message = (new \Swift_Message('Deine Registrierung beim WueWW Tool'))
             ->setFrom(self::FROM_ADDRESS)
@@ -44,7 +44,7 @@ class MailerService
         $this->mailer->send($message);
     }
 
-    public function sendPasswordResetMail(?User $user, Token $token)
+    public function sendPasswordResetMail(?User $user, Token $token): void
     {
         $message = (new \Swift_Message('WueWW Tool Passwort zurücksetzen'))
             ->setFrom(self::FROM_ADDRESS)
@@ -60,7 +60,7 @@ class MailerService
         $this->mailer->send($message);
     }
 
-    public function sendSessionAwaitingApprovalMail(string $toAddress, Session $session)
+    public function sendSessionAwaitingApprovalMail(string $toAddress, Session $session): void
     {
         $message = (new \Swift_Message('Event geändert'))
             ->setFrom(self::FROM_ADDRESS)
@@ -75,7 +75,7 @@ class MailerService
         $this->mailer->send($message);
     }
 
-    public function sendOrganizationAwaitingApprovalMail(string $toAddress, Organization $organization)
+    public function sendOrganizationAwaitingApprovalMail(string $toAddress, Organization $organization): void
     {
         $message = (new \Swift_Message('Veranstalter geändert'))
             ->setFrom(self::FROM_ADDRESS)
@@ -90,7 +90,7 @@ class MailerService
         $this->mailer->send($message);
     }
 
-    public function sendSessionCancelledMail(string $toAddress, Session $session)
+    public function sendSessionCancelledMail(string $toAddress, Session $session): void
     {
         $message = (new \Swift_Message('Event abgesagt'))
             ->setFrom(self::FROM_ADDRESS)
