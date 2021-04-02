@@ -87,6 +87,10 @@ class JobWithDetailType extends AbstractType
             ->add('weiterbildungsbudget', CheckboxType::class, [
                 'label' => 'es gibt ein Weiterbildungsbudget',
                 'required' => false,
+            ])
+            ->add('teilzeitPossible', CheckboxType::class, [
+                'label' => 'in Teilzeit möglich (z.B. vier statt fünf Tage/Woche)',
+                'required' => false,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {

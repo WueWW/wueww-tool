@@ -86,6 +86,11 @@ class JobWithDetail
      */
     private $gehaltsvorstellung;
 
+    /**
+     * @var boolean|null
+     */
+    private $teilzeitPossible;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -301,6 +306,24 @@ class JobWithDetail
     public function setGehaltsvorstellung(?GehaltsvorstellungEnum $gehaltsvorstellung): JobWithDetail
     {
         $this->gehaltsvorstellung = $gehaltsvorstellung;
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getTeilzeitPossible(): ?bool
+    {
+        return $this->teilzeitPossible;
+    }
+
+    /**
+     * @param bool|null $teilzeitPossible
+     * @return JobWithDetail
+     */
+    public function setTeilzeitPossible(?bool $teilzeitPossible): JobWithDetail
+    {
+        $this->teilzeitPossible = $teilzeitPossible;
         return $this;
     }
 }

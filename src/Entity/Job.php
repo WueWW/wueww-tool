@@ -76,6 +76,12 @@ class Job
      */
     private $gehaltsvorstellung;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var boolean|null
+     */
+    private $teilzeitPossible;
+
     public function __construct()
     {
         $this->setProposedDetails(new JobDetail());
@@ -205,6 +211,24 @@ class Job
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getTeilzeitPossible(): ?bool
+    {
+        return $this->teilzeitPossible;
+    }
+
+    /**
+     * @param bool|null $teilzeitPossible
+     * @return Job
+     */
+    public function setTeilzeitPossible(?bool $teilzeitPossible): Job
+    {
+        $this->teilzeitPossible = $teilzeitPossible;
+        return $this;
+    }
+
     public function toJobWithDetail(): JobWithDetail
     {
         return (new JobWithDetail())
@@ -221,7 +245,8 @@ class Job
             ->setOeffiErreichbarkeit($this->getOeffiErreichbarkeit())
             ->setSlackTime($this->getSlackTime())
             ->setWeiterbildungsbudget($this->getWeiterbildungsbudget())
-            ->setGehaltsvorstellung($this->getGehaltsvorstellung());
+            ->setGehaltsvorstellung($this->getGehaltsvorstellung())
+            ->setTeilzeitPossible($this->getTeilzeitPossible());
     }
 
     public function applyDetails(JobWithDetail $jobWithDetail): self
@@ -231,7 +256,8 @@ class Job
             ->setOeffiErreichbarkeit($jobWithDetail->getOeffiErreichbarkeit())
             ->setSlackTime($jobWithDetail->getSlackTime())
             ->setWeiterbildungsbudget($jobWithDetail->getWeiterbildungsbudget())
-            ->setGehaltsvorstellung($jobWithDetail->getGehaltsvorstellung());
+            ->setGehaltsvorstellung($jobWithDetail->getGehaltsvorstellung())
+            ->setTeilzeitPossible($jobWithDetail->getTeilzeitPossible());
 
         if (
             $this->getAcceptedDetails() === null ||
