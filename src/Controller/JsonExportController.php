@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
+use App\Entity\Organization;
 use App\Entity\Session;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,12 +51,16 @@ class JsonExportController extends AbstractController
             'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sP') : null,
             'cancelled' => $session->getCancelled(),
             'onlineOnly' => $session->getAcceptedDetails()->getOnlineOnly(),
-            'host' => $this->mapHost($session),
+            'host' => $this->mapHost($session->getOrganization()),
             'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
         ];
 
         if (!$session->getAcceptedDetails()->getOnlineOnly()) {
-            $result['location'] = $this->mapLocation($session);
+            $result['location'] = $this->mapLocation(
+                $session->getAcceptedDetails()->getLocation(),
+                $session->getAcceptedDetails()->getLocationLat(),
+                $session->getAcceptedDetails()->getLocationLng()
+            );
         }
 
         if ($session->getAcceptedDetails()->getShortDescription()) {
@@ -72,16 +78,12 @@ class JsonExportController extends AbstractController
         return $result;
     }
 
-    /**
-     * @param Session $session
-     * @return array
-     */
-    function mapHost(Session $session): array
+    function mapHost(Organization $organization): array
     {
-        $details = $session->getOrganization()->getAcceptedOrganizationDetails();
+        $details = $organization->getAcceptedOrganizationDetails();
 
         $result = [
-            'id' => $session->getOrganization()->getId(),
+            'id' => $organization->getId(),
             'name' => trim(str_replace("\n", '', $details->getTitle())),
         ];
 
@@ -89,8 +91,8 @@ class JsonExportController extends AbstractController
             $result['infotext'] = $details->getDescription();
         }
 
-        if ($session->getOrganization()->getLogoFileName()) {
-            $result['logo'] = $this->urlForLogo($session->getOrganization()->getLogoFileName());
+        if ($organization->getLogoFileName()) {
+            $result['logo'] = $this->urlForLogo($organization->getLogoFileName());
         }
 
         if ($details->getLink()) {
@@ -124,14 +126,8 @@ class JsonExportController extends AbstractController
         return $result;
     }
 
-    /**
-     * @param Session $session
-     * @return array
-     */
-    function mapLocation(Session $session): array
+    function mapLocation(?Location $location, ?float $lat, ?float $lng): array
     {
-        $location = $session->getAcceptedDetails()->getLocation();
-
         $result = [
             'name' => $location->getName(),
             'streetNo' => $location->getStreetNo(),
@@ -139,9 +135,9 @@ class JsonExportController extends AbstractController
             'city' => $location->getCity(),
         ];
 
-        if ($session->getAcceptedDetails()->getLocationLat() && $session->getAcceptedDetails()->getLocationLng()) {
-            $result['lat'] = $session->getAcceptedDetails()->getLocationLat();
-            $result['lng'] = $session->getAcceptedDetails()->getLocationLng();
+        if ($lat && $lng) {
+            $result['lat'] = $lat;
+            $result['lng'] = $lng;
         }
 
         return $result;
