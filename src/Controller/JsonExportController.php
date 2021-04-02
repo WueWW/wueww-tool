@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Job;
 use App\Entity\Location;
 use App\Entity\Organization;
 use App\Entity\Session;
+use App\Repository\JobRepository;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +21,7 @@ class JsonExportController extends AbstractController
      * @param SessionRepository $sessionRepository
      * @return Response
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function sessionExport(SessionRepository $sessionRepository): Response
     {
         $sessions = $sessionRepository->findFullyAccepted();
         $latestUpdate = time();
@@ -38,6 +40,35 @@ class JsonExportController extends AbstractController
         ];
 
         return JsonResponse::create($json, Response::HTTP_OK, [
+            'access-control-allow-origin' => '*',
+            'Date' => \gmdate('D, d M Y H:i:s T', $latestUpdate),
+        ]);
+    }
+
+    /**
+     * @Route("/export/jobs.json", name="export_jobs_json", methods={"GET"})
+     * @param JobRepository $jobRepository
+     * @return Response
+     */
+    public function jobsExport(JobRepository $jobRepository): Response
+    {
+        $jobs = $jobRepository->findFullyAccepted();
+        $latestUpdate = time();
+
+        if (\count($jobs) > 0) {
+            $latestUpdate = max(
+                array_map(function (Job $job): int {
+                    return $job->getAcceptedAt()->getTimestamp();
+                }, $jobs)
+            );
+        }
+
+        $json = [
+            'format' => '0.0.1',
+            'jobs' => array_map([$this, 'mapJob'], $jobs),
+        ];
+
+        return new JsonResponse($json, Response::HTTP_OK, [
             'access-control-allow-origin' => '*',
             'Date' => \gmdate('D, d M Y H:i:s T', $latestUpdate),
         ]);
@@ -73,6 +104,58 @@ class JsonExportController extends AbstractController
 
         if ($session->getAcceptedDetails()->getLink()) {
             $result['links']['event'] = trim($session->getAcceptedDetails()->getLink());
+        }
+
+        return $result;
+    }
+
+    function mapJob(Job $job): array
+    {
+        $result = [
+            'id' => $job->getId(),
+            'fullyRemote' => $job->getAcceptedDetails()->isFullyRemote(),
+            'employer' => $this->mapHost($job->getOrganization()),
+            'title' => trim(str_replace("\n", '', $job->getAcceptedDetails()->getTitle())),
+        ];
+
+        if (!$job->getAcceptedDetails()->isFullyRemote()) {
+            $result['location'] = $this->mapLocation(
+                $job->getAcceptedDetails()->getLocation(),
+                $job->getAcceptedDetails()->getLocationLat(),
+                $job->getAcceptedDetails()->getLocationLng()
+            );
+        }
+
+        if ($job->getAcceptedDetails()->getShortDescription()) {
+            $result['description']['short'] = trim($job->getAcceptedDetails()->getShortDescription());
+        }
+
+        if ($job->getAcceptedDetails()->getLink()) {
+            $result['links']['job'] = trim($job->getAcceptedDetails()->getLink());
+        }
+
+        if ($job->getHomeOffice()) {
+            $result['meta']['homeOffice'] = $job->getHomeOffice()->getValue();
+        }
+
+        if ($job->getOeffiErreichbarkeit()) {
+            $result['meta']['oeffiErreichbarkeit'] = $job->getOeffiErreichbarkeit()->getValue();
+        }
+
+        if ($job->getSlackTime()) {
+            $result['meta']['slackTime'] = $job->getSlackTime()->getValue();
+        }
+
+        if ($job->getGehaltsvorstellung()) {
+            $result['meta']['gehaltsvorstellung'] = $job->getGehaltsvorstellung()->getValue();
+        }
+
+        if ($job->getWeiterbildungsbudget() !== null) {
+            $result['meta']['weiterbildungsbudget'] = $job->getWeiterbildungsbudget();
+        }
+
+        if ($job->getTeilzeitPossible() !== null) {
+            $result['meta']['teilzeitPossible'] = $job->getTeilzeitPossible();
         }
 
         return $result;

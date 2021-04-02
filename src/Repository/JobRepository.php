@@ -43,4 +43,22 @@ class JobRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @return Job[]
+     */
+    public function findFullyAccepted(): array
+    {
+        $qb = $this->createQueryBuilder('j')
+            ->innerJoin('j.acceptedDetails', 'jad')
+            ->addSelect('jad')
+            ->innerJoin('j.organization', 'o')
+            ->addSelect('o')
+            ->innerJoin('o.acceptedOrganizationDetails', 'oad')
+            ->addSelect('oad')
+            ->andWhere('j.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL');
+
+        return $qb->getQuery()->getResult();
+    }
 }
