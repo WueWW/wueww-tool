@@ -33,7 +33,7 @@ class SessionWithDetailType extends AbstractType
         $this->useFreeDateInput = $params->get('app_free_date_input');
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($this->useFreeDateInput) {
             $builder->add('date', TextType::class, [
@@ -134,7 +134,7 @@ class SessionWithDetailType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => SessionWithDetail::class,

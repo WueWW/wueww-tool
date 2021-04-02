@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 class LogoUploadType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('masterRequestUri', HiddenType::class)->add('file', FileType::class, [
             'label' => 'Neues Logo hochladen (JPEG-Format)',
@@ -27,7 +27,7 @@ class LogoUploadType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => LogoUpload::class,
