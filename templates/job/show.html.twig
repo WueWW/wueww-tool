@@ -19,6 +19,31 @@
             <td>{{ job.proposedDetails.shortDescription | nl2br }}</td>
         </tr>
         <tr>
+            <th>Unternehmensort</th>
+            <td>
+                {% if job.proposedDetails.fullyRemote %}
+                    <em>es handelt sich um eine "fully remote" Stelle</em>
+                {% else %}
+                    {{ job.proposedDetails.location.name }}, {{ job.proposedDetails.location.streetNo }},
+                    {{ job.proposedDetails.location.zipcode }} {{ job.proposedDetails.location.city }}
+                {% endif %}
+            </td>
+        </tr>
+        {% if not job.proposedDetails.fullyRemote %}
+            <tr>
+                <th>Karte</th>
+                <td>
+                    <form autocomplete="off">
+                        <input type="hidden" class="location-lat"
+                               value="{{ job.proposedDetails.locationLat }}"/>
+                        <input type="hidden" class="location-lng"
+                               value="{{ job.proposedDetails.locationLng }}"/>
+                        <div id="map" class="readonly"></div>
+                    </form>
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
             <th>Link</th>
             <td>
                 {% if "@" in job.proposedDetails.link %}
@@ -31,6 +56,38 @@
         </tr>
         </tbody>
     </table>
+
+    <h2>Rahmendaten</h2>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Home-Office (Post-Covid)</th>
+            <td>{{ job.homeOffice }}</td>
+        </tr>
+        <tr>
+            <th>Öffi-Erreichbarkeit</th>
+            <td>{{ job.oeffiErreichbarkeit }}</td>
+        </tr>
+        <tr>
+            <th>Slack-Time Regelung</th>
+            <td>{{ job.slackTime }}</td>
+        </tr>
+        <tr>
+            <th>Gehaltsvorstellung</th>
+            <td>{{ job.gehaltsvorstellung }}</td>
+        </tr>
+        <tr>
+            <th>Weiterbildungsbudget</th>
+            <td>{% if job.weiterbildungsbudget %}ja{% else %}nein{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Teilzeit möglich</th>
+            <td>{% if job.teilzeitPossible %}ja{% else %}nein{% endif %}</td>
+        </tr>
+        </tbody>
+    </table>
+
 
     {% if is_granted('ROLE_EDITOR') %}
         <h2>Veranstalter</h2>
