@@ -6,3 +6,4 @@ elao_enum:
             homeoffice: App\Enum\HomeOfficeEnum
             oeffi_erreichbarkeit: App\Enum\OeffiErreichbarkeitEnum
             slack_time: App\Enum\SlackTimeEnum
+            gehaltsvorstellung: App\Enum\GehaltsvorstellungEnum

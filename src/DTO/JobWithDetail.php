@@ -6,6 +6,7 @@ use App\Entity\Location;
 use App\Entity\Organization;
 use App\Enum\HomeOfficeEnum;
 use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\GehaltsvorstellungEnum;
 use App\Enum\SlackTimeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -79,6 +80,11 @@ class JobWithDetail
      * @var boolean|null
      */
     private $weiterbildungsbudget;
+
+    /**
+     * @var GehaltsvorstellungEnum|null
+     */
+    private $gehaltsvorstellung;
 
     public function getId(): ?int
     {
@@ -277,6 +283,24 @@ class JobWithDetail
     public function setWeiterbildungsbudget(?bool $weiterbildungsbudget): JobWithDetail
     {
         $this->weiterbildungsbudget = $weiterbildungsbudget;
+        return $this;
+    }
+
+    /**
+     * @return GehaltsvorstellungEnum|null
+     */
+    public function getGehaltsvorstellung(): ?GehaltsvorstellungEnum
+    {
+        return $this->gehaltsvorstellung;
+    }
+
+    /**
+     * @param GehaltsvorstellungEnum|null $gehaltsvorstellung
+     * @return JobWithDetail
+     */
+    public function setGehaltsvorstellung(?GehaltsvorstellungEnum $gehaltsvorstellung): JobWithDetail
+    {
+        $this->gehaltsvorstellung = $gehaltsvorstellung;
         return $this;
     }
 }

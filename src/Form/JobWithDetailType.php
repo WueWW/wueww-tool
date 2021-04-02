@@ -6,6 +6,7 @@ use App\DTO\JobWithDetail;
 use App\Entity\Organization;
 use App\Enum\HomeOfficeEnum;
 use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\GehaltsvorstellungEnum;
 use App\Enum\SlackTimeEnum;
 use App\Repository\OrganizationRepository;
 use Elao\Enum\Bridge\Symfony\Form\Type\EnumType;
@@ -74,6 +75,12 @@ class JobWithDetailType extends AbstractType
             ->add('slackTime', EnumType::class, [
                 'enum_class' => SlackTimeEnum::class,
                 'label' => 'Slack-Time Regelung',
+                'required' => false,
+                'placeholder' => '-- keine Angabe --',
+            ])
+            ->add('gehaltsvorstellung', EnumType::class, [
+                'enum_class' => GehaltsvorstellungEnum::class,
+                'label' => 'Gehaltsvorstellung',
                 'required' => false,
                 'placeholder' => '-- keine Angabe --',
             ])

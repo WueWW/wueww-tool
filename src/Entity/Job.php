@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\DTO\JobWithDetail;
 use App\Enum\HomeOfficeEnum;
 use App\Enum\OeffiErreichbarkeitEnum;
+use App\Enum\GehaltsvorstellungEnum;
 use App\Enum\SlackTimeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -69,6 +70,12 @@ class Job
      */
     private $weiterbildungsbudget;
 
+    /**
+     * @ORM\Column(type="gehaltsvorstellung", nullable=true)
+     * @var GehaltsvorstellungEnum|null
+     */
+    private $gehaltsvorstellung;
+
     public function __construct()
     {
         $this->setProposedDetails(new JobDetail());
@@ -120,7 +127,7 @@ class Job
      * @param HomeOfficeEnum|null $homeOffice
      * @return Job
      */
-    public function setHomeOffice(?HomeOfficeEnum $homeOffice)
+    public function setHomeOffice(?HomeOfficeEnum $homeOffice): self
     {
         $this->homeOffice = $homeOffice;
         return $this;
@@ -180,6 +187,24 @@ class Job
         return $this;
     }
 
+    /**
+     * @return GehaltsvorstellungEnum|null
+     */
+    public function getGehaltsvorstellung(): ?GehaltsvorstellungEnum
+    {
+        return $this->gehaltsvorstellung;
+    }
+
+    /**
+     * @param GehaltsvorstellungEnum|null $gehaltsvorstellung
+     * @return Job
+     */
+    public function setGehaltsvorstellung(?GehaltsvorstellungEnum $gehaltsvorstellung): Job
+    {
+        $this->gehaltsvorstellung = $gehaltsvorstellung;
+        return $this;
+    }
+
     public function toJobWithDetail(): JobWithDetail
     {
         return (new JobWithDetail())
@@ -195,7 +220,8 @@ class Job
             ->setHomeOffice($this->getHomeOffice())
             ->setOeffiErreichbarkeit($this->getOeffiErreichbarkeit())
             ->setSlackTime($this->getSlackTime())
-            ->setWeiterbildungsbudget($this->getWeiterbildungsbudget());
+            ->setWeiterbildungsbudget($this->getWeiterbildungsbudget())
+            ->setGehaltsvorstellung($this->getGehaltsvorstellung());
     }
 
     public function applyDetails(JobWithDetail $jobWithDetail): self
@@ -204,7 +230,8 @@ class Job
             ->setHomeOffice($jobWithDetail->getHomeOffice())
             ->setOeffiErreichbarkeit($jobWithDetail->getOeffiErreichbarkeit())
             ->setSlackTime($jobWithDetail->getSlackTime())
-            ->setWeiterbildungsbudget($jobWithDetail->getWeiterbildungsbudget());
+            ->setWeiterbildungsbudget($jobWithDetail->getWeiterbildungsbudget())
+            ->setGehaltsvorstellung($jobWithDetail->getGehaltsvorstellung());
 
         if (
             $this->getAcceptedDetails() === null ||
