@@ -24,7 +24,7 @@ class ImportJsonFile extends Command
         $this->sessionJsonProcessor = $sessionJsonProcessor;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('import session.json 0.3.0 feed')->addArgument(
             'filename',
@@ -33,7 +33,7 @@ class ImportJsonFile extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->sessionJsonProcessor->processFile($input->getArgument('filename'));
         return 0;

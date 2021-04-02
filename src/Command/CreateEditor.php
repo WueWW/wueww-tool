@@ -25,7 +25,7 @@ class CreateEditor extends Command
         $this->userService = $userService;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('create editor account')->addArgument(
             'email',
@@ -34,7 +34,7 @@ class CreateEditor extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $user = (new User())
             ->setEmail($input->getArgument('email'))

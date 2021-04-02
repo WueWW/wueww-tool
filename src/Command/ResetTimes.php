@@ -24,7 +24,7 @@ class ResetTimes extends Command
         $this->sessionRepository = $sessionRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('reset start/end times of all sessions, aka corona mode')->addOption(
             'force',
@@ -34,7 +34,7 @@ class ResetTimes extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('force')) {
             $output->writeln('This command does nothing unless you force it to do');
