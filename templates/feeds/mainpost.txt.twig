@@ -6,8 +6,8 @@
 {% if session.stop is not null -%}
 bis {{ session.stop | date('H') -}}{% set stopMinute %}{{ session.stop | date('i') }}{% endset %}{% if stopMinute != '00' %}:{{ stopMinute }}{% endif %}{{ ' ' -}}
 {% endif -%}
-Uhr {{ session.organization.title }}: {{ session.acceptedDetails.title }}. {% if session.organization.title != session.acceptedDetails.location.name %}{{ session.acceptedDetails.location.name }}. {% endif %}
-{{ session.acceptedDetails.location.streetNo }}{% if session.acceptedDetails.location.city != "Würzburg" %}. {{ session.acceptedDetails.location.zipCode}} {{ session.acceptedDetails.location.city }}{% endif %}
+Uhr {{ session.organization.title }}: {{ session.acceptedDetails.title }}{% if not session.acceptedDetails.onlineOnly %}. {% if session.organization.title != session.acceptedDetails.location.name %}{{ session.acceptedDetails.location.name }}. {% endif %}
+{{ session.acceptedDetails.location.streetNo }}{% if session.acceptedDetails.location.city != "Würzburg" %}. {{ session.acceptedDetails.location.zipCode}} {{ session.acceptedDetails.location.city }}{% endif %}{% endif %}
 {{ "\n" }}
 {% endfor %}
 
