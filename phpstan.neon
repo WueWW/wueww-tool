@@ -1,4 +1,0 @@
-parameters:
-	ignoreErrors:
-		- '#Method App\\Form\\.*Type::buildForm\(\) has parameter \$builder with no value type specified in iterable type Symfony\\Component\\Form\\FormBuilderInterface\.#'
-		- '#Method App\\Form\\.*Type::buildForm\(\) has parameter \$options with no value type specified in iterable type array\.#'
