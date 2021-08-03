@@ -27,8 +27,10 @@
                     {% if session.cancelled %}
                     {% elseif session.accepted %}
                         <i class="fa fa-check" title="freigegeben"></i>
-                    {% else %}
+                    {% elseif session.proposed %}
                         <i class="fa fa-hourglass-2" title="warten auf Freigabe"></i>
+                    {% else %}
+                        <i class="fa fa-pencil" title="Entwurf"></i>
                     {% endif %}
                 </td>
                 <td class="session-actions">

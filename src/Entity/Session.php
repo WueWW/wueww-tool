@@ -181,7 +181,7 @@ class Session
 
     public function isAccepted(): bool
     {
-        return $this->acceptedDetails === $this->proposedDetails;
+        return $this->acceptedDetails === $this->proposedDetails && $this->acceptedDetails !== null;
     }
 
     public function isProposed(): bool
@@ -189,22 +189,29 @@ class Session
         return $this->proposedDetails !== null;
     }
 
-    public function toSessionWithDetail(): SessionWithDetail
+    public function hasDraft(): bool
     {
+        return $this->proposedDetails !== $this->draftDetails;
+    }
+
+    public function toSessionWithDetail(bool $withProposedDetails): SessionWithDetail
+    {
+        $details = $withProposedDetails ? $this->getProposedDetails() : $this->getDraftDetails();
+
         return (new SessionWithDetail())
             ->setId($this->getId())
             ->setDate($this->getStart())
             ->setStart($this->getStart())
             ->setStop($this->getStop())
             ->setOrganization($this->getOrganization())
-            ->setOnlineOnly($this->getProposedDetails()->getOnlineOnly())
-            ->setTitle($this->getProposedDetails()->getTitle())
-            ->setShortDescription($this->getProposedDetails()->getShortDescription())
-            ->setLongDescription($this->getProposedDetails()->getLongDescription())
-            ->setLocation($this->getProposedDetails()->getLocation())
-            ->setLocationLat($this->getProposedDetails()->getLocationLat())
-            ->setLocationLng($this->getProposedDetails()->getLocationLng())
-            ->setLink($this->getProposedDetails()->getLink());
+            ->setOnlineOnly($details->getOnlineOnly())
+            ->setTitle($details->getTitle())
+            ->setShortDescription($details->getShortDescription())
+            ->setLongDescription($details->getLongDescription())
+            ->setLocation($details->getLocation())
+            ->setLocationLat($details->getLocationLat())
+            ->setLocationLng($details->getLocationLng())
+            ->setLink($details->getLink());
     }
 
     public function applyDetails(SessionWithDetail $sessionWithDetail): self

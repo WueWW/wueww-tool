@@ -119,6 +119,12 @@
         <div class="alert alert-success" role="alert">
             Dieses Event ist bereits freigegeben.
         </div>
+
+        {% if session.hasDraft %}
+            <div class="alert alert-info" role="alert">
+                Zu diesem Event existieren Änderungen, die jedoch noch nicht zur Freigabe eingereicht wurden.
+            </div>
+        {% endif %}
     {% elseif session.proposed %}
         <div class="alert alert-info clearfix" role="alert">
             Dieses Event wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
@@ -131,7 +137,7 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="alert alert-info clearfix" role="alert">
+        <div class="alert alert-info" role="alert">
             Dieses Event wurde bisher nicht zur Freigabe eingereicht.
         </div>
     {% endif %}
