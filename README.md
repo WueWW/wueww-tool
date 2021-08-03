@@ -1,11 +1,11 @@
 # wueww-tool
 
 Das WueWW-Redaktionstool ist eine Web-Anwendung, die potentiellen Sessiongeber:innen dazu dienen
-soll, ihre Sessions zur WueWW 2020 bekannt zu geben. Daran angebunden ist ein kleiner
+soll, ihre Sessions zur WueWW bekannt zu geben. Daran angebunden ist ein kleiner
 Freigabeprozess.
 
-Es handelt sich um eine Symfony 5.0 Applikation, die vor der WueWW 2020 zur Verfügung gestellt
-werden soll. Noch ist es leider nicht so weit.
+Es handelt sich um eine Symfony 5.3 Applikation, die erstmals zur WueWW 2020 zur Verfügung gestellt
+wurde.
 
 ## Mitentwickeln
 
@@ -49,5 +49,5 @@ Last but not least, die Anwendung starten
 
 ```
 $ bin/console cache:warmup -n
-$ bin/console server:run
+$ symfony local:server:start --no-tls
 ```

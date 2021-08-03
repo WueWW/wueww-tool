@@ -39,8 +39,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
     private function createSessionNichtFreigegeben(User $reporter): Session
     {
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable('2020-10-12 14:00'))
-            ->setStop(new \DateTimeImmutable('2020-10-12 16:00'))
+            ->setStart(new \DateTimeImmutable('2021-10-22 14:00'))
+            ->setStop(new \DateTimeImmutable('2021-10-22 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first());
 
@@ -81,8 +81,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/online-only');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable('2020-10-13 14:00'))
-            ->setStop(new \DateTimeImmutable('2020-10-13 16:00'))
+            ->setStart(new \DateTimeImmutable('2021-10-23 14:00'))
+            ->setStop(new \DateTimeImmutable('2021-10-23 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
             ->setProposedDetails($detail);
@@ -109,8 +109,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable('2020-10-13 14:00'))
-            ->setStop(new \DateTimeImmutable('2020-10-13 16:00'))
+            ->setStart(new \DateTimeImmutable('2021-10-23 14:00'))
+            ->setStop(new \DateTimeImmutable('2021-10-23 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
             ->setProposedDetails($detail);
@@ -181,8 +181,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable('2020-10-17 14:00'))
-            ->setStop(new \DateTimeImmutable('2020-10-17 16:00'))
+            ->setStart(new \DateTimeImmutable('2021-10-27 14:00'))
+            ->setStop(new \DateTimeImmutable('2021-10-27 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
             ->setProposedDetails($detailAccepted);
@@ -211,8 +211,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setLink('http://wueww.de/session/freigegeben');
 
         $session = (new Session())
-            ->setStart(new \DateTimeImmutable('2020-10-19 14:00'))
-            ->setStop(new \DateTimeImmutable('2020-10-19 16:00'))
+            ->setStart(new \DateTimeImmutable('2021-10-29 14:00'))
+            ->setStop(new \DateTimeImmutable('2021-10-29 16:00'))
             ->setOrganization($reporter->getOrganizations()->first())
             ->setProposedDetails($detail);
 
