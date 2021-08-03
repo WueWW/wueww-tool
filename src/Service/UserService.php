@@ -13,7 +13,7 @@ use App\Service\Exception\PasswordIsPwnedException;
 use App\Service\Exception\TokenNotFoundException;
 use App\Service\Exception\UsernameNotUniqueException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService
 {
@@ -28,9 +28,9 @@ class UserService
     private $mailerService;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
+    private $passwordHasher;
 
     /**
      * @var PwnedService
@@ -45,13 +45,13 @@ class UserService
     public function __construct(
         UserRepository $repository,
         MailerService $mailerService,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         PwnedService $pwnedService,
         TokenRepository $tokenRepository
     ) {
         $this->repository = $repository;
         $this->mailerService = $mailerService;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->pwnedService = $pwnedService;
         $this->tokenRepository = $tokenRepository;
     }
@@ -132,6 +132,6 @@ class UserService
             throw new PasswordIsPwnedException();
         }
 
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
     }
 }

@@ -7,7 +7,7 @@ use App\Entity\OrganizationDetail;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixture extends Fixture
 {
@@ -16,20 +16,20 @@ class UserFixture extends Fixture
     public const REPORTER2_USER_REF = 'reporter2-user';
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
+    private $passwordHasher;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager)
     {
         $editor = new User();
         $editor->setEmail('editor@example.org');
-        $editor->setPassword($this->passwordEncoder->encodePassword($editor, 'editor_password'));
+        $editor->setPassword($this->passwordHasher->hashPassword($editor, 'editor_password'));
         $editor->setRoles([User::ROLE_EDITOR]);
         $editor->setRegistrationComplete(true);
         $manager->persist($editor);
@@ -42,7 +42,7 @@ class UserFixture extends Fixture
 
         $reporter1 = new User();
         $reporter1->setEmail('reporter1@example.org');
-        $reporter1->setPassword($this->passwordEncoder->encodePassword($reporter1, 'reporter1_password'));
+        $reporter1->setPassword($this->passwordHasher->hashPassword($reporter1, 'reporter1_password'));
         $reporter1->setRegistrationComplete(true);
         $reporter1->addOrganization($organization1);
         $manager->persist($reporter1);
@@ -55,7 +55,7 @@ class UserFixture extends Fixture
 
         $reporter2 = new User();
         $reporter2->setEmail('reporter2@example.org');
-        $reporter2->setPassword($this->passwordEncoder->encodePassword($reporter2, 'reporter2_password'));
+        $reporter2->setPassword($this->passwordHasher->hashPassword($reporter2, 'reporter2_password'));
         $reporter2->setRegistrationComplete(true);
         $reporter2->addOrganization($organization2);
         $manager->persist($reporter2);
