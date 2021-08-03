@@ -45,7 +45,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setOrganization($reporter->getOrganizations()->first());
 
         $session
-            ->getProposedDetails()
+            ->getDraftDetails()
             ->setTitle('Nicht freigegeben')
             ->setShortDescription('Kurzbeschreibung nicht freigegebener Session')
             ->setLongDescription('Die nicht freigegebene Session hat auch eine Langbeschreibung')
@@ -58,6 +58,8 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
                     ->setCity('Würzburg')
             )
             ->setLink('http://wueww.de/session/nicht/freigegeben');
+
+        $session->propose();
 
         return $session;
     }
@@ -85,8 +87,9 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(new \DateTimeImmutable('2021-10-23 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setProposedDetails($detail);
+            ->setDraftDetails($detail);
 
+        $session->propose();
         $session->accept();
 
         return $session;
@@ -113,8 +116,9 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(new \DateTimeImmutable('2021-10-23 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setProposedDetails($detail);
+            ->setDraftDetails($detail);
 
+        $session->propose();
         $session->accept();
 
         return $session;
@@ -143,8 +147,9 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(null)
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setProposedDetails($detail);
+            ->setDraftDetails($detail);
 
+        $session->propose();
         $session->accept();
 
         return $session;
@@ -166,7 +171,7 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             )
             ->setLink('http://wueww.de/session/freigegeben');
 
-        $detailProposed = (new SessionDetail())
+        $detailNewDraft = (new SessionDetail())
             ->setTitle('Freigegebene Session geändert')
             ->setShortDescription('geänderte Kurzbeschreibung einer freigegebenen Session')
             ->setLongDescription('natürlich darf sich auch die Langbeschreibung ändern')
@@ -185,11 +190,13 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStop(new \DateTimeImmutable('2021-10-27 16:00'))
             ->setCancelled(false)
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setProposedDetails($detailAccepted);
+            ->setDraftDetails($detailAccepted);
 
+        $session->propose();
         $session->accept();
 
-        $session->setProposedDetails($detailProposed);
+        $session->setDraftDetails($detailNewDraft);
+        $session->propose();
 
         return $session;
     }
@@ -214,8 +221,9 @@ class SessionFixtures extends Fixture implements DependentFixtureInterface
             ->setStart(new \DateTimeImmutable('2021-10-29 14:00'))
             ->setStop(new \DateTimeImmutable('2021-10-29 16:00'))
             ->setOrganization($reporter->getOrganizations()->first())
-            ->setProposedDetails($detail);
+            ->setDraftDetails($detail);
 
+        $session->propose();
         $session->accept();
         $session->setCancelled(true);
 

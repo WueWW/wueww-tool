@@ -45,6 +45,13 @@ class Session
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
      */
+    private $draftDetails;
+
+    /**
+     * @var ?SessionDetail
+     * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
+     * @ORM\JoinColumn(nullable=false)
+     */
     private $proposedDetails;
 
     /**
@@ -73,7 +80,7 @@ class Session
     public function __construct()
     {
         $this->setCancelled(false);
-        $this->setProposedDetails(new SessionDetail());
+        $this->setDraftDetails(new SessionDetail());
         $this->feedback = new ArrayCollection();
     }
 
@@ -137,6 +144,18 @@ class Session
         return $this;
     }
 
+    public function getDraftDetails(): ?SessionDetail
+    {
+        return $this->draftDetails;
+    }
+
+    public function setDraftDetails(SessionDetail $draftDetails): self
+    {
+        $this->draftDetails = $draftDetails;
+
+        return $this;
+    }
+
     public function getProposedDetails(): ?SessionDetail
     {
         return $this->proposedDetails;
@@ -164,6 +183,11 @@ class Session
     public function isAccepted(): bool
     {
         return $this->acceptedDetails === $this->proposedDetails;
+    }
+
+    public function isProposed(): bool
+    {
+        return $this->proposedDetails !== null;
     }
 
     public function toSessionWithDetail(): SessionWithDetail
@@ -214,11 +238,11 @@ class Session
         if (
             $this->getStart() === null &&
             $this->getAcceptedDetails() !== null &&
-            $this->differsInDetails($sessionWithDetail)
+            $this->getAcceptedDetails()->differs($sessionWithDetail)
         ) {
             // If user re-uses an existing, already accepted start=null session, and also updates the details,
             // then re-trigger the editing process.
-            $this->setProposedDetails(new SessionDetail());
+            $this->setDraftDetails(new SessionDetail());
             $this->setAcceptedDetails(null);
         }
 
@@ -226,41 +250,25 @@ class Session
             ->setStop($stop)
             ->setOrganization($sessionWithDetail->getOrganization());
 
-        if (
-            $this->getAcceptedDetails() === null ||
-            $this->getProposedDetails() !== $this->getAcceptedDetails() ||
-            $this->differsInDetails($sessionWithDetail)
-        ) {
-            if ($this->getProposedDetails() === $this->getAcceptedDetails()) {
-                $this->setProposedDetails(new SessionDetail());
-            }
-
-            $this->getProposedDetails()
-                ->setOnlineOnly($sessionWithDetail->getOnlineOnly())
-                ->setTitle($sessionWithDetail->getTitle())
-                ->setShortDescription($sessionWithDetail->getShortDescription())
-                ->setLongDescription($sessionWithDetail->getLongDescription())
-                ->setLocation($sessionWithDetail->getLocation())
-                ->setLocationLat($sessionWithDetail->getLocationLat())
-                ->setLocationLng($sessionWithDetail->getLocationLng())
-                ->setLink($sessionWithDetail->getLink());
+        if (!$this->getDraftDetails()->differs($sessionWithDetail)) {
+            return $this;
         }
+
+        if (
+            $this->getDraftDetails() === $this->getAcceptedDetails() ||
+            $this->getDraftDetails() === $this->getProposedDetails()
+        ) {
+            $this->setDraftDetails(new SessionDetail());
+        }
+
+        $this->getDraftDetails()->apply($sessionWithDetail);
 
         return $this;
     }
 
-    private function differsInDetails(SessionWithDetail $sessionWithDetail): bool
+    public function propose()
     {
-        $currentDetails = $this->getProposedDetails();
-
-        return $currentDetails->getOnlineOnly() !== $sessionWithDetail->getOnlineOnly() ||
-            $currentDetails->getTitle() !== $sessionWithDetail->getTitle() ||
-            $currentDetails->getShortDescription() !== $sessionWithDetail->getShortDescription() ||
-            $currentDetails->getLongDescription() !== $sessionWithDetail->getLongDescription() ||
-            $currentDetails->getLocation() !== $sessionWithDetail->getLocation() ||
-            $currentDetails->getLocationLat() !== $sessionWithDetail->getLocationLat() ||
-            $currentDetails->getLocationLng() !== $sessionWithDetail->getLocationLng() ||
-            $currentDetails->getLink() !== $sessionWithDetail->getLink();
+        $this->setProposedDetails($this->getDraftDetails());
     }
 
     public function accept()

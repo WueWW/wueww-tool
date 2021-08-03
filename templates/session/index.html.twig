@@ -22,7 +22,7 @@
                 <td>{{ session.start ? session.start|date('d.m.Y') : '-' }}</td>
                 <td>{{ session.start ? session.start|date('H:i') : '-' }}</td>
                 <td>{{ session.stop ? session.stop|date('H:i') : '-' }}</td>
-                <td>{{ session.proposedDetails.title }}</td>
+                <td>{% if is_granted('ROLE_EDITOR') %}{{ session.proposedDetails.title }}{% else %}{{ session.draftDetails.title }}{% endif %}</td>
                 <td>
                     {% if session.cancelled %}
                     {% elseif session.accepted %}

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\DTO\SessionWithDetail;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -160,5 +161,29 @@ class SessionDetail
         $this->onlineOnly = $onlineOnly;
 
         return $this;
+    }
+
+    public function apply(SessionWithDetail $sessionWithDetail)
+    {
+        $this->setOnlineOnly($sessionWithDetail->getOnlineOnly())
+            ->setTitle($sessionWithDetail->getTitle())
+            ->setShortDescription($sessionWithDetail->getShortDescription())
+            ->setLongDescription($sessionWithDetail->getLongDescription())
+            ->setLocation($sessionWithDetail->getLocation())
+            ->setLocationLat($sessionWithDetail->getLocationLat())
+            ->setLocationLng($sessionWithDetail->getLocationLng())
+            ->setLink($sessionWithDetail->getLink());
+    }
+
+    public function differs(SessionWithDetail $sessionWithDetail): bool
+    {
+        return $this->getOnlineOnly() !== $sessionWithDetail->getOnlineOnly() ||
+            $this->getTitle() !== $sessionWithDetail->getTitle() ||
+            $this->getShortDescription() !== $sessionWithDetail->getShortDescription() ||
+            $this->getLongDescription() !== $sessionWithDetail->getLongDescription() ||
+            $this->getLocation() !== $sessionWithDetail->getLocation() ||
+            $this->getLocationLat() !== $sessionWithDetail->getLocationLat() ||
+            $this->getLocationLng() !== $sessionWithDetail->getLocationLng() ||
+            $this->getLink() !== $sessionWithDetail->getLink();
     }
 }
