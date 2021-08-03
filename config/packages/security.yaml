@@ -1,21 +1,26 @@
 security:
+    # https://symfony.com/doc/current/security/experimental_authenticators.html
+    enable_authenticator_manager: true
+
     encoders:
         App\Entity\User:
             algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
+        users_in_memory: { memory: null }
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
+            lazy: true
+            provider: users_in_memory
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
