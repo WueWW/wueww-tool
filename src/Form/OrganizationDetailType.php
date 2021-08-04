@@ -43,7 +43,7 @@ class OrganizationDetailType extends AbstractType
                 ],
             ])
             ->add('jobsUrl', TextType::class, [
-                'label' => 'Link zu Stellenangeboten',
+                'label' => 'Link zu Stellenangeboten oder eurer Karriere-Seite',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
