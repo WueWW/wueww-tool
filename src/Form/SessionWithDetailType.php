@@ -105,11 +105,13 @@ class SessionWithDetailType extends AbstractType
             ->add('locationLat', HiddenType::class)
             ->add('locationLng', HiddenType::class)
             ->add('link', TextType::class, [
-                'label' => 'Link (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)',
+                'label_html' => true,
+                'label' =>
+                    'Link oder E-Mail-Adresse (z. B. Anmeldeseite, weitere Informationen zur Veranstaltung etc.)<br/>' .
+                    'Wichtig, URLs müssen beginnend mit https:// erfasst werden.',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
-                    'placeholder' => 'https://example.org/wueww/event',
                 ],
             ]);
 

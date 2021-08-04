@@ -36,11 +36,10 @@ class OrganizationDetailType extends AbstractType
                 ],
             ])
             ->add('link', TextType::class, [
-                'label' => 'Link zur Homepage',
+                'label' => 'Link zur Homepage (wichtig, URLs müssen beginnend mit https:// erfasst werden)',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
-                    'placeholder' => 'https://example.org/',
                 ],
             ])
             ->add('jobsUrl', TextType::class, [
@@ -48,7 +47,6 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
-                    'placeholder' => 'https://example.org/jobs/',
                 ],
             ])
             ->add('facebookUrl', TextType::class, [
