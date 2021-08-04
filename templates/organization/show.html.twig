@@ -13,62 +13,70 @@
         </tr>
         </tbody>
         {% if organization.proposedOrganizationDetails %}
+        <tbody>
+        <tr>
+            <th>Titel</th>
+            <td>{{ organization.proposedOrganizationDetails.title }}</td>
+        </tr>
+        <tr>
+            <th>Ansprechpartner (wird nicht veröffentlicht)</th>
+            <td>{{ organization.proposedOrganizationDetails.contactName }}</td>
+        </tr>
+        <tr>
+            <th>Beschreibung</th>
+            <td>{{ organization.proposedOrganizationDetails.description | nl2br }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    {% if organization.proposedOrganizationDetails %}
+        <h2>Links</h2>
+
+        <table class="table">
             <tbody>
             <tr>
-                <th>Titel</th>
-                <td>{{ organization.proposedOrganizationDetails.title }}</td>
-            </tr>
-            <tr>
-                <th>Ansprechpartner (wird nicht veröffentlicht)</th>
-                <td>{{ organization.proposedOrganizationDetails.contactName }}</td>
-            </tr>
-            <tr>
-                <th>Beschreibung</th>
-                <td>{{ organization.proposedOrganizationDetails.description | nl2br }}</td>
-            </tr>
-            <tr>
-                <th>Link zur Homepage</th>
+                <th>Homepage</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.link }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.link }}</a></td>
             </tr>
             <tr>
-                <th>Link zu Stellenangeboten/Karriere-Seite</th>
+                <th>Stellenangebote oder Karriere-Seite</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.jobsUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.jobsUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zur Facebook-Seite</th>
+                <th>Facebook-Seite</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.facebookUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.facebookUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zum Twitter-Profil</th>
+                <th>Twitter-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.twitterUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.twitterUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zu Youtube-Profil</th>
+                <th>Youtube-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.youtubeUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.youtubeUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zum Instagram-Profil</th>
+                <th>Instagram-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zum Xing-Profil</th>
+                <th>Xing-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.xingUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.xingUrl }}</a></td>
             </tr>
             <tr>
-                <th>Link zum LinkedIn-Profil</th>
+                <th>LinkedIn-Profil</th>
                 <td><a href="{{ organization.proposedOrganizationDetails.linkedinUrl }}"
                        target="_blank">{{ organization.proposedOrganizationDetails.linkedinUrl }}</a></td>
             </tr>
             </tbody>
-        {% endif %}
-    </table>
+        </table>
+    {% endif %}
 
     {% if not organization.proposedOrganizationDetails %}
         <div class="alert alert-info clearfix" role="alert">

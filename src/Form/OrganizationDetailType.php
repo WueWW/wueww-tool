@@ -36,56 +36,56 @@ class OrganizationDetailType extends AbstractType
                 ],
             ])
             ->add('link', TextType::class, [
-                'label' => 'Link zur Homepage (wichtig, URLs müssen beginnend mit https:// erfasst werden)',
+                'label' => 'Homepage',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('jobsUrl', TextType::class, [
-                'label' => 'Link zu Stellenangeboten oder eurer Karriere-Seite',
+                'label' => 'Stellenangebote oder Karriere-Seite',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('facebookUrl', TextType::class, [
-                'label' => 'Link zur Facebook-Seite',
+                'label' => 'Facebook-Seite',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('twitterUrl', TextType::class, [
-                'label' => 'Link zum Twitter-Profil',
+                'label' => 'Twitter-Profil',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('youtubeUrl', TextType::class, [
-                'label' => 'Link zu Youtube-Profil',
+                'label' => 'Youtube-Profil',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('instagramUrl', TextType::class, [
-                'label' => 'Link zum Instagram-Profil',
+                'label' => 'Instagram-Profil',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('xingUrl', TextType::class, [
-                'label' => 'Link zum Xing-Profil',
+                'label' => 'Xing-Profil',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
                 ],
             ])
             ->add('linkedinUrl', TextType::class, [
-                'label' => 'Link zum LinkedIn-Profil',
+                'label' => 'LinkedIn-Profil',
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,

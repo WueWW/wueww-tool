@@ -1,5 +1,15 @@
 {{ form_start(form) }}
-{{ form_widget(form) }}
+
+{{ form_row(form.title) }}
+{{ form_row(form.contactName) }}
+{{ form_row(form.description) }}
+
+<h2>Links</h2>
+<div class="alert alert-info clearfix" role="alert">
+    Wichtig, sämtliche URLs müssen beginnend mit https:// erfasst werden.
+</div>
+
+{{ form_rest(form) }}
 
 <button class="btn btn-primary">Speichern</button>
 
