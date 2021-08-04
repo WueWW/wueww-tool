@@ -45,7 +45,7 @@ class FeedbackService
         $pdf->setPrintFooter(false);
         $pdf->AddPage();
 
-        $pdf->Image(__DIR__ . '/../../assets/images/wueww-logo-2020.jpg', 10, 10, 100);
+        $pdf->Image(__DIR__ . '/../../assets/images/WUEWW-2021_Logo_RGB.jpg', 10, 10, 100);
 
         $pdf->SetFont('dejavusans', 'B', 24);
         $pdf->SetXY(20, 50);
