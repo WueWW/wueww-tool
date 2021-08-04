@@ -40,6 +40,7 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
+                    'placeholder' => 'https://example.org/',
                 ],
             ])
             ->add('jobsUrl', TextType::class, [
@@ -47,6 +48,7 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
+                    'placeholder' => 'https://example.org/jobs/',
                 ],
             ])
             ->add('facebookUrl', TextType::class, [

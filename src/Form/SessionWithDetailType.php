@@ -109,6 +109,7 @@ class SessionWithDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
+                    'placeholder' => 'https://example.org/wueww/event',
                 ],
             ]);
 
