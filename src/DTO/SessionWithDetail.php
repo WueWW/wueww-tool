@@ -77,6 +77,12 @@ class SessionWithDetail
 
     /**
      * @var string|null
+     * @Assert\AtLeastOneOf(constraints={
+     *     @Assert\Email(),
+     *     @Assert\Url()
+     * },
+     *     message="Die erfasste URL ist ungültig (und es handelt sich auch nicht um eine E-Mail-Adresse).",
+     *     includeInternalMessages=false)
      */
     private $link;
 
