@@ -36,41 +36,49 @@ class OrganizationDetail
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $link;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $jobsUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $facebookUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $twitterUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $youtubeUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $instagramUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $xingUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
      */
     private $linkedinUrl;
 
@@ -191,6 +199,7 @@ class OrganizationDetail
     {
         return (new self())
             ->setTitle($this->getTitle())
+            ->setContactName($this->getContactName())
             ->setDescription($this->getDescription())
             ->setLink($this->getLink())
             ->setJobsUrl($this->getJobsUrl())
