@@ -62,16 +62,21 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session = (new Session())->applyDetails($sessionWithDetail);
+            $isDraft = $request->request->has('draft');
 
             if ($session->getOrganization()->getOwner() !== $this->getUser()) {
                 throw new AccessDeniedException();
+            }
+
+            if (!$isDraft) {
+                $session->propose();
             }
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($session);
             $entityManager->flush();
 
-            if ($this->isGranted(User::ROLE_EDITOR)) {
+            if ($this->isGranted(User::ROLE_EDITOR) || $isDraft) {
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } else {
                 $eventDispatcher->dispatch(new SessionModifiedEvent($session));
@@ -150,20 +155,25 @@ class SessionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $sessionWithDetail = $session->toSessionWithDetail();
+        $sessionWithDetail = $session->toSessionWithDetail($this->isGranted(User::ROLE_EDITOR));
 
         $form = $this->createForm(SessionWithDetailType::class, $sessionWithDetail);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session->applyDetails($sessionWithDetail);
+            $isDraft = $request->request->has('draft');
+
+            if (!$isDraft) {
+                $session->propose();
+            }
 
             if ($this->isGranted(User::ROLE_EDITOR)) {
                 $session->accept();
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } elseif ($session->getOrganization()->getOwner() !== $this->getUser()) {
                 throw new AccessDeniedException();
-            } elseif ($session->getAcceptedDetails() === $session->getProposedDetails()) {
+            } elseif ($session->getAcceptedDetails() === $session->getProposedDetails() || $isDraft) {
                 $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
             } else {
                 $eventDispatcher->dispatch(new SessionModifiedEvent($session));

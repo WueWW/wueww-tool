@@ -16,6 +16,12 @@
         </div>
     {% endif %}
 
+    {% if is_granted('ROLE_EDITOR') -%}
+        {% set detail = session.proposedDetails -%}
+    {% else -%}
+        {% set detail = session.draftDetails -%}
+    {% endif -%}
+
     <table class="table">
         <tbody>
         <tr>
@@ -34,36 +40,36 @@
         <tbody>
         <tr>
             <th>Titel</th>
-            <td>{{ session.proposedDetails.title }}</td>
+            <td>{{ detail.title }}</td>
         </tr>
         <tr>
             <th>Kurzbeschreibung</th>
-            <td>{{ session.proposedDetails.shortDescription | nl2br }}</td>
+            <td>{{ detail.shortDescription | nl2br }}</td>
         </tr>
         <tr>
             <th>Langbeschreibung</th>
-            <td>{{ session.proposedDetails.longDescription | nl2br }}</td>
+            <td>{{ detail.longDescription | nl2br }}</td>
         </tr>
         <tr>
             <th>Veranstaltungsort</th>
             <td>
-                {% if session.proposedDetails.onlineOnly %}
+                {% if detail.onlineOnly %}
                     <em>findet ausschließlich online statt</em>
                 {% else %}
-                    {{ session.proposedDetails.location.name }}, {{ session.proposedDetails.location.streetNo }},
-                    {{ session.proposedDetails.location.zipcode }} {{ session.proposedDetails.location.city }}
+                    {{ detail.location.name }}, {{ detail.location.streetNo }},
+                    {{ detail.location.zipcode }} {{ detail.location.city }}
                 {% endif %}
             </td>
         </tr>
-        {% if not session.proposedDetails.onlineOnly %}
+        {% if not detail.onlineOnly %}
             <tr>
                 <th>Karte</th>
                 <td>
                     <form autocomplete="off">
                         <input type="hidden" id="session_with_detail_locationLat"
-                               value="{{ session.proposedDetails.locationLat }}"/>
+                               value="{{ detail.locationLat }}"/>
                         <input type="hidden" id="session_with_detail_locationLng"
-                               value="{{ session.proposedDetails.locationLng }}"/>
+                               value="{{ detail.locationLng }}"/>
                         <div id="map" class="readonly"></div>
                     </form>
                 </td>
@@ -72,11 +78,11 @@
         <tr>
             <th>Link</th>
             <td>
-                {% if "@" in session.proposedDetails.link %}
+                {% if "@" in detail.link %}
                     <i class="fa fa-envelope"></i>
-                    <a href="mailto:{{ session.proposedDetails.link }}">{{ session.proposedDetails.link }}</a>
+                    <a href="mailto:{{ detail.link }}">{{ detail.link }}</a>
                 {% else %}
-                    <a href="{{ session.proposedDetails.link }}" target="_blank">{{ session.proposedDetails.link }}</a>
+                    <a href="{{ detail.link }}" target="_blank">{{ detail.link }}</a>
                 {% endif %}
             </td>
         </tr>
@@ -113,7 +119,13 @@
         <div class="alert alert-success" role="alert">
             Dieses Event ist bereits freigegeben.
         </div>
-    {% else %}
+
+        {% if session.hasDraft %}
+            <div class="alert alert-info" role="alert">
+                Zu diesem Event existieren Änderungen, die jedoch noch nicht zur Freigabe eingereicht wurden.
+            </div>
+        {% endif %}
+    {% elseif session.proposed %}
         <div class="alert alert-info clearfix" role="alert">
             Dieses Event wurde {% if session.acceptedDetails %}(in dieser Version){% endif %} bisher nicht freigegeben.
 
@@ -123,6 +135,10 @@
                     <button class="btn btn-primary"><i class="fa fa-check"></i> Event freigeben</button>
                 </form>
             {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Dieses Event wurde bisher nicht zur Freigabe eingereicht.
         </div>
     {% endif %}
 

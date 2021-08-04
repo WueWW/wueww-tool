@@ -53,7 +53,7 @@ class FeedbackService
 
         $pdf->SetFont('dejavusans', '', 16);
         $pdf->SetXY(20, 70);
-        $pdf->Cell(170, 0, $session->getProposedDetails()->getTitle(), 0, 0, 'C');
+        $pdf->Cell(170, 0, $session->getDraftDetails()->getTitle(), 0, 0, 'C');
 
         $url = $this->router->generate(
             'feedback_post',

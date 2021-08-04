@@ -85,14 +85,14 @@ class SessionJsonProcessor
                 ->setStop($sessionData->end ? new \DateTimeImmutable($sessionData->end) : null)
                 ->setCancelled($sessionData->cancelled);
 
-            $session->getProposedDetails()->setTitle($sessionData->title);
+            $session->getDraftDetails()->setTitle($sessionData->title);
 
             $locationInfo = explode("\n", trim($sessionData->location->name));
             [$zipcode, $city] = explode(' ', array_pop($locationInfo), 2);
             $streetNo = array_pop($locationInfo);
 
             $session
-                ->getProposedDetails()
+                ->getDraftDetails()
                 ->getLocation()
                 ->setName(implode(', ', $locationInfo))
                 ->setStreetNo($streetNo ?? '')
@@ -100,27 +100,29 @@ class SessionJsonProcessor
                 ->setCity($city ?? '');
 
             if (isset($sessionData->location->lat)) {
-                $session->getProposedDetails()->setLocationLat($sessionData->location->lat);
+                $session->getDraftDetails()->setLocationLat($sessionData->location->lat);
             }
 
             if (isset($sessionData->location->lng)) {
-                $session->getProposedDetails()->setLocationLng($sessionData->location->lng);
+                $session->getDraftDetails()->setLocationLng($sessionData->location->lng);
             }
 
             if (isset($sessionData->links) && isset($sessionData->links->event)) {
-                $session->getProposedDetails()->setLink($sessionData->links->event);
+                $session->getDraftDetails()->setLink($sessionData->links->event);
             }
 
             if (isset($sessionData->description) && isset($sessionData->description->short)) {
-                $session->getProposedDetails()->setShortDescription($sessionData->description->short);
+                $session->getDraftDetails()->setShortDescription($sessionData->description->short);
             }
 
             if (isset($sessionData->description) && isset($sessionData->description->long)) {
-                $session->getProposedDetails()->setLongDescription($sessionData->description->long);
+                $session->getDraftDetails()->setLongDescription($sessionData->description->long);
             }
 
             $session->setOrganization($this->processHost($sessionData));
+            $session->propose();
             $session->accept();
+
             $this->entityManager->flush();
         }
     }
