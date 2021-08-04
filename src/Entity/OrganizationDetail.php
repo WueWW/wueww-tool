@@ -42,6 +42,11 @@ class OrganizationDetail
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $jobsUrl;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $facebookUrl;
 
     /**
@@ -122,6 +127,18 @@ class OrganizationDetail
         return $this;
     }
 
+    public function getJobsUrl(): ?string
+    {
+        return $this->jobsUrl;
+    }
+
+    public function setJobsUrl(?string $jobsUrl): self
+    {
+        $this->jobsUrl = $jobsUrl;
+
+        return $this;
+    }
+
     public function getFacebookUrl(): ?string
     {
         return $this->facebookUrl;
@@ -176,6 +193,7 @@ class OrganizationDetail
             ->setTitle($this->getTitle())
             ->setDescription($this->getDescription())
             ->setLink($this->getLink())
+            ->setJobsUrl($this->getJobsUrl())
             ->setFacebookUrl($this->getFacebookUrl())
             ->setTwitterUrl($this->getTwitterUrl())
             ->setYoutubeUrl($this->getYoutubeUrl())

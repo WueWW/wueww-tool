@@ -31,11 +31,11 @@ class JsonExportController extends AbstractController
         }
 
         $json = [
-            'format' => '0.5.0',
+            'format' => '0.5.1',
             'sessions' => array_map([$this, 'mapSession'], $sessions),
         ];
 
-        return JsonResponse::create($json, Response::HTTP_OK, [
+        return new JsonResponse($json, Response::HTTP_OK, [
             'access-control-allow-origin' => '*',
             'Date' => \gmdate('D, d M Y H:i:s T', $latestUpdate),
         ]);
@@ -95,6 +95,10 @@ class JsonExportController extends AbstractController
 
         if ($details->getLink()) {
             $result['links']['host'] = $details->getLink();
+        }
+
+        if ($details->getJobsUrl()) {
+            $result['links']['jobs'] = $details->getJobsUrl();
         }
 
         if ($details->getFacebookUrl()) {

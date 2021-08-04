@@ -42,6 +42,13 @@ class OrganizationDetailType extends AbstractType
                     'maxlength' => 255,
                 ],
             ])
+            ->add('jobsUrl', TextType::class, [
+                'label' => 'Link zu Stellenangeboten',
+                'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                ],
+            ])
             ->add('facebookUrl', TextType::class, [
                 'label' => 'Link zur Facebook-Seite',
                 'required' => false,
