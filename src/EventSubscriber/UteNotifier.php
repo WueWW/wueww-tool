@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UteNotifier implements EventSubscriberInterface
 {
-    const TARGET_EMAIL_ADDRESS = 'ute.muendlein@wueww.de';
+    const TARGET_EMAIL_ADDRESS = 'event@wueww.de';
 
     /**
      * @var MailerService
