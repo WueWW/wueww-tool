@@ -106,4 +106,24 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countSessions($onlineOnly = null)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('count(1)')
+            ->innerJoin('s.organization', 'o')
+            ->andWhere('s.start IS NOT NULL')
+            ->andWhere('s.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->andWhere('s.cancelled = FALSE');
+
+        if ($onlineOnly !== null) {
+            $qb
+                ->innerJoin('s.acceptedDetails', 'sad')
+                ->andWhere('sad.onlineOnly = :onlineOnly')
+                ->setParameter('onlineOnly', $onlineOnly);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
