@@ -3,6 +3,10 @@
 {% block body %}
     <h1>Liste der Veranstalter</h1>
 
+    {% if is_granted('ROLE_EDITOR') %}
+    Filter: <a href="?">alle</a> | <a href="?has_changes">nicht freigegebene Änderungen</a> | <a href="?not_approved">ohne Freigabe</a>
+    {% endif %}
+
     <table class="table table-striped">
         <thead>
         <tr>

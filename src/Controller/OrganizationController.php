@@ -32,10 +32,13 @@ class OrganizationController extends AbstractController
      * @param OrganizationRepository $organizationRepository
      * @return Response
      */
-    public function index(OrganizationRepository $organizationRepository): Response
+    public function index(Request $request, OrganizationRepository $organizationRepository): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
-            $organizations = $organizationRepository->findAllWithProposedDetails();
+            $organizations = $organizationRepository->findAllWithProposedDetails(
+                $request->query->has('has_changes'),
+                $request->query->has('not_approved')
+            );
         } else {
             $organizations = $this->getUser()->getOrganizations();
         }

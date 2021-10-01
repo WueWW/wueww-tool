@@ -33,14 +33,22 @@ class OrganizationRepository extends ServiceEntityRepository
     /**
      * @return Organization[]
      */
-    public function findAllWithProposedDetails(): array
+    public function findAllWithProposedDetails(bool $hasChanges, bool $notApproved): array
     {
-        return $this->createQueryBuilder('o')
+        $qb = $this->createQueryBuilder('o')
             ->innerJoin('o.proposedOrganizationDetails', 'opd')
             ->addSelect('opd')
-            ->orderBy('opd.title')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('opd.title');
+
+        if ($hasChanges) {
+            $qb->andWhere('o.proposedOrganizationDetails != o.acceptedOrganizationDetails');
+        }
+
+        if ($notApproved) {
+            $qb->andWhere('o.acceptedOrganizationDetails IS NULL');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     public function countOrganizationsWithSessions()
