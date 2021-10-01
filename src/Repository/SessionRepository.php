@@ -134,4 +134,18 @@ class SessionRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function countSessionsByDate()
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select(["DATE_FORMAT(s.start, '%d.%m.%Y') AS date", 'COUNT(1) AS num'])
+            ->innerJoin('s.organization', 'o')
+            ->andWhere('s.start IS NOT NULL')
+            ->andWhere('s.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->andWhere('s.cancelled = FALSE')
+            ->groupBy('date');
+
+        return $qb->getQuery()->getScalarResult();
+    }
 }

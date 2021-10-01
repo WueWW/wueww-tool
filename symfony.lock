@@ -1,4 +1,7 @@
 {
+    "beberlei/doctrineextensions": {
+        "version": "v1.3.0"
+    },
     "blackknight467/star-rating-bundle": {
         "version": "v2.0.1"
     },

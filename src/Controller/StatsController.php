@@ -18,12 +18,11 @@ class StatsController extends AbstractController
      */
     public function show(OrganizationRepository $organizationRepository, SessionRepository $sessionRepository)
     {
-        $response = $this->render('stats/show.html.twig', [
+        return $this->render('stats/show.html.twig', [
             'num_sessions' => $sessionRepository->countSessions(),
             'num_sessions_online_only' => $sessionRepository->countSessions(true),
             'num_organizations' => $organizationRepository->countOrganizationsWithSessions(),
+            'num_sessions_by_date' => $sessionRepository->countSessionsByDate(),
         ]);
-
-        return $response;
     }
 }

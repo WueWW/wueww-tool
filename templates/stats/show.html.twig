@@ -10,4 +10,22 @@
     <p>
         Anzahl Veranstalter (mit mind. einem freigegebenen, nicht abgesagten Event): {{ num_organizations }}
     </p>
+
+    <h2>Events nach Tagen</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>Datum</td>
+            <td>Anzahl Events</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in num_sessions_by_date %}
+            <tr>
+                <td>{{ rec.date }}</td>
+                <td>{{ rec.num }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
