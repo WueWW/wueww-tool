@@ -219,7 +219,7 @@ class SessionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="session_remove_approval", methods={"POST"})
+     * @Route("/{id}/approval", name="session_remove_approval", methods={"DELETE"})
      * @param Request $request
      * @param Session $session
      * @return Response

@@ -1,4 +1,5 @@
 <form class="inline" method="post" action="{{ path('session_remove_approval', {'id': session.id}) }}" onsubmit="return confirm('Bist du sicher, dass du die Freigabe des Events zurückziehen möchtest?');">
+    <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('remove_approval' ~ session.id) }}">
     <button class="btn btn-sm btn-outline-danger" title="Freigabe zurückziehen"><i class="fa fa-undo"></i></button>
 </form>
