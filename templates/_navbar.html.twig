@@ -1,11 +1,5 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-    <a href="{{ path('welcome') }}"><span class="navbar-brand mb-0 h1">
-            {% if is_granted('ROLE_FRANZI') %}
-                <del>Utes</del>Franzis Helferlein
-            {% else %}
-                {{ app_name }}
-            {% endif %}
-        </span></a>
+    <a href="{{ path('welcome') }}"><span class="navbar-brand mb-0 h1">{{ app_name }}</span></a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
