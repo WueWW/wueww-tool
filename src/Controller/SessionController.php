@@ -28,10 +28,13 @@ class SessionController extends AbstractController
      * @param SessionRepository $sessionRepository
      * @return Response
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function index(Request $request, SessionRepository $sessionRepository): Response
     {
         if ($this->isGranted(User::ROLE_EDITOR)) {
-            $sessions = $sessionRepository->findAllWithProposedDetails();
+            $sessions = $sessionRepository->findAllWithProposedDetails(
+                $request->query->has('has_changes'),
+                $request->query->has('not_approved')
+            );
         } else {
             $sessions = $sessionRepository->findByUser($this->getUser());
         }

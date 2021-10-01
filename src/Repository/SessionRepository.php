@@ -74,14 +74,22 @@ class SessionRepository extends ServiceEntityRepository
     /**
      * @return Session[]
      */
-    public function findAllWithProposedDetails(): array
+    public function findAllWithProposedDetails(bool $hasChanges, bool $notApproved): array
     {
-        return $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.proposedDetails', 'sdp')
             ->addSelect('sdp')
-            ->orderBy('s.start')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('s.start');
+
+        if ($hasChanges) {
+            $qb->andWhere('s.proposedDetails != s.acceptedDetails');
+        }
+
+        if ($notApproved) {
+            $qb->andWhere('s.acceptedDetails IS NULL');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
