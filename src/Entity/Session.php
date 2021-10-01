@@ -184,6 +184,11 @@ class Session
         return $this->acceptedDetails === $this->proposedDetails && $this->acceptedDetails !== null;
     }
 
+    public function isAcceptedAndChanged(): bool
+    {
+        return $this->acceptedDetails !== null && $this->acceptedDetails !== $this->proposedDetails;
+    }
+
     public function isProposed(): bool
     {
         return $this->proposedDetails !== null;

@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    {{ include('session/_orgdata_missing_info.html.twig') }}
+    {{ include('session/_orgdata_not_accepted.html.twig') }}
+
+    <h1>Änderungen am Event</h1>
+
+    {% if session.start is null %}
+        <div class="alert alert-danger" role="alert">
+            <p>
+                Aktuell ist kein Beginn-Zeitpunkt erfasst. Das Event wird daher nicht veröffentlicht.
+            </p>
+        </div>
+    {% endif %}
+
+    <table class="table highlight-diff">
+        <tbody>
+        <tr>
+            <th>Beginn</th>
+            <td>{{ session.start ? session.start|date('d.m.Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Ende</th>
+            <td>{{ session.stop ? session.stop|date('d.m.Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Abgesagt?</th>
+            <td>{{ session.cancelled ? 'Ja' : 'Nein' }}</td>
+        </tr>
+        </tbody>
+        <tbody>
+        <tr>
+            <th>Titel</th>
+            <td>{{ session.proposedDetails.title | diff(session.acceptedDetails.title) }}</td>
+        </tr>
+        <tr>
+            <th>Kurzbeschreibung</th>
+            <td>{{ session.proposedDetails.shortDescription | diff(session.acceptedDetails.shortDescription) | nl2br }}</td>
+        </tr>
+        <tr>
+            <th>Langbeschreibung</th>
+            <td>{{ session.proposedDetails.longDescription | diff(session.acceptedDetails.longDescription) | nl2br }}</td>
+        </tr>
+        <tr>
+            <th>Veranstaltungsort</th>
+            <td>
+                {% if session.proposedDetails.onlineOnly %}
+                    <em>findet ausschließlich online statt</em>
+                {% else %}
+                    {{ session.proposedDetails.location.name | diff(session.acceptedDetails.location.name) }},
+                    {{ session.proposedDetails.location.streetNo | diff(session.acceptedDetails.location.streetNo) }},
+                    {{ session.proposedDetails.location.zipcode | diff(session.acceptedDetails.location.zipcode) }}
+                    {{ session.proposedDetails.location.city | diff(session.acceptedDetails.location.city) }}
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Link</th>
+            <td>
+                {% if "@" in session.proposedDetails.link %}
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ session.proposedDetails.link }}">{{ session.proposedDetails.link | diff(session.acceptedDetails.link) }}</a>
+                {% else %}
+                    <a href="{{ session.proposedDetails.link }}"
+                       target="_blank">{{ session.proposedDetails.link | diff(session.acceptedDetails.link) }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Veranstalter</h2>
+
+    <table class="table">
+        <tbody>
+        {% if session.organization.proposedOrganizationDetails %}
+            <tr>
+                <th>Titel</th>
+                <td>{{ session.organization.proposedOrganizationDetails.title }}</td>
+            </tr>
+            <tr>
+                <th>Ansprechpartner</th>
+                <td>{{ session.organization.proposedOrganizationDetails.contactName }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th>E-Mail-Adresse</th>
+            <td>
+                <i class="fa fa-envelope"></i>
+                <a href="mailto:{{ session.organization.owner.email }}">{{ session.organization.owner.email }}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form class="inline pull-right" method="post" action="{{ path('session_accept', {'id': session.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ session.id) }}">
+        <button class="btn btn-primary"><i class="fa fa-check"></i> Event freigeben</button>
+    </form>
+
+    <a href="{{ path('session_index') }}">zurück zur Eventliste</a>
+
+{% endblock %}

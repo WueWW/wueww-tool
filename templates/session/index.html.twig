@@ -42,6 +42,12 @@
                 <td class="session-actions">
                     <a class="btn btn-outline-secondary btn-sm" title="anzeigen"
                        href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
+
+                    {% if is_granted('ROLE_EDITOR') and session.acceptedAndChanged %}
+                        <a class="btn btn-outline-secondary btn-sm" title="Änderungen vergleichen"
+                           href="{{ path('session_diff', {'id': session.id}) }}"><i class="fa fa-search"></i></a>
+                    {% endif %}
+
                     {% if not session.cancelled %}
                         <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                            href="{{ path('session_edit', {'id': session.id}) }}"><i class="fa fa-pencil"></i></a>

@@ -152,7 +152,7 @@ class OrganizationController extends AbstractController
         }
 
         if (!$organization->isAcceptedAndChanged()) {
-            throw new \LogicException('cannot diff a non-accepted session');
+            throw new \LogicException('cannot diff a non-accepted organization');
         }
 
         return $this->render('organization/diff.html.twig', [

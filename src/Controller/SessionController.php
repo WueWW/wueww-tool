@@ -146,6 +146,26 @@ class SessionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/diff", name="session_diff", methods={"GET"})
+     * @param Session $session
+     * @return Response
+     */
+    public function diff(Session $session): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if (!$session->isAcceptedAndChanged()) {
+            throw new \LogicException('cannot diff a non-accepted session');
+        }
+
+        return $this->render('session/diff.html.twig', [
+            'session' => $session,
+        ]);
+    }
+
+    /**
      * @Route("/{id}/edit", name="session_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Session $session
