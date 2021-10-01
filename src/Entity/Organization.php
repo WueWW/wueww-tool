@@ -129,6 +129,12 @@ class Organization
             $this->acceptedOrganizationDetails === $this->proposedOrganizationDetails;
     }
 
+    public function isAcceptedAndChanged(): bool
+    {
+        return $this->acceptedOrganizationDetails !== null &&
+            $this->acceptedOrganizationDetails !== $this->proposedOrganizationDetails;
+    }
+
     public function getTitle(): ?string
     {
         return $this->proposedOrganizationDetails ? $this->proposedOrganizationDetails->getTitle() : null;

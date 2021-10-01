@@ -141,6 +141,26 @@ class OrganizationController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/diff", name="organization_diff", methods={"GET"})
+     * @param Organization $organization
+     * @return Response
+     */
+    public function diff(Organization $organization): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if (!$organization->isAcceptedAndChanged()) {
+            throw new \LogicException('cannot diff a non-accepted session');
+        }
+
+        return $this->render('organization/diff.html.twig', [
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
      * @Route("/{id}/logo", name="organization_logo", methods={"GET","POST"})
      * @param RequestStack $requestStack
      * @param Organization $organization

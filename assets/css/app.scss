@@ -83,3 +83,14 @@ footer {
 .red {
   color: red;
 }
+
+.highlight-diff {
+  del {
+    background-color: #ffbbbb;
+  }
+
+  ins {
+    background-color: #bbffbb;
+    text-decoration: none;
+  }
+}

@@ -40,6 +40,11 @@
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                        href="{{ path('organization_edit', {'id': organization.id}) }}"><i class="fa fa-pencil"></i></a>
 
+                    {% if organization.acceptedAndChanged %}
+                        <a class="btn btn-outline-secondary btn-sm" title="Änderungen vergleichen"
+                           href="{{ path('organization_diff', {'id': organization.id}) }}"><i class="fa fa-search"></i></a>
+                    {% endif %}
+
                     {% if is_granted('ROLE_EDITOR') %}
                         {{ include('organization/_delete_form.html.twig') }}
                         <a class="btn btn-outline-secondary btn-sm" title="Event anlegen"

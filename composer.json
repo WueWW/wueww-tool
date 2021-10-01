@@ -14,6 +14,7 @@
         "ext-json": "*",
         "beberlei/doctrineextensions": "^1.3",
         "blackknight467/star-rating-bundle": "dev-symfony5",
+        "cogpowered/finediff": "^0.3.1",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.6",
         "guzzlehttp/guzzle": "^6.4",

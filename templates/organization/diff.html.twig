@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Veranstalter{% endblock %}
+
+{% block body %}
+    <h1>Änderungen am Veranstalter</h1>
+
+    <table class="table highlight-diff">
+        <tbody>
+        <tr>
+            <th>E-Mail</th>
+            <td>{{ organization.owner.email }}</td>
+        </tr>
+        </tbody>
+        <tbody>
+        <tr>
+            <th>Titel</th>
+            <td>{{ organization.proposedOrganizationDetails.title | diff(organization.acceptedOrganizationDetails.title) }}</td>
+        </tr>
+        <tr>
+            <th>Ansprechpartner (wird nicht veröffentlicht)</th>
+            <td>{{ organization.proposedOrganizationDetails.contactName | diff(organization.acceptedOrganizationDetails.contactName) }}</td>
+        </tr>
+        <tr>
+            <th>Beschreibung</th>
+            <td>{{ organization.proposedOrganizationDetails.description | diff(organization.acceptedOrganizationDetails.description) | nl2br }}</td>
+        </tr>
+    </table>
+
+    <h2>Links</h2>
+
+    <table class="table highlight-diff">
+        <tbody>
+        <tr>
+            <th>Homepage</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.link }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.link | diff(organization.acceptedOrganizationDetails.link) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Stellenangebote oder Karriere-Seite</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.jobsUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.jobsUrl | diff(organization.acceptedOrganizationDetails.jobsUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Facebook-Seite</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.facebookUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.facebookUrl | diff(organization.acceptedOrganizationDetails.facebookUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Twitter-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.twitterUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.twitterUrl | diff(organization.acceptedOrganizationDetails.twitterUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Youtube-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.youtubeUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.youtubeUrl | diff(organization.acceptedOrganizationDetails.youtubeUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Instagram-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.instagramUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.instagramUrl | diff(organization.acceptedOrganizationDetails.instagramUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Xing-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.xingUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.xingUrl | diff(organization.acceptedOrganizationDetails.xingUrl) }}</a>
+            </td>
+        </tr>
+        <tr>
+            <th>LinkedIn-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.linkedinUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.linkedinUrl | diff(organization.acceptedOrganizationDetails.linkedinUrl) }}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form class="inline pull-right" method="post"
+          action="{{ path('organization_accept', {'id': organization.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ organization.id) }}">
+        <button class="btn btn-primary"><i class="fa fa-check"></i> Veranstalter freigeben</button>
+    </form>
+
+    <a href="{{ path('organization_index') }}">zurück zur Liste der Veranstalter</a>
+
+{% endblock %}

@@ -5,6 +5,9 @@
     "blackknight467/star-rating-bundle": {
         "version": "v2.0.1"
     },
+    "cogpowered/finediff": {
+        "version": "0.3.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
