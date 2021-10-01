@@ -39,12 +39,14 @@ class SessionWithDetail
 
     /**
      * @var string|null
+     * @Assert\NotBlank(message = "Die Kurzbeschreibung darf nicht leer sein.")
      * @Assert\Length(max = 250, maxMessage = "Die Kurzbeschreibung soll max. 250 Zeichen lang sein, da sie für Social Media Zwecke geeignet sein soll.")
      */
     private $shortDescription;
 
     /**
      * @var string|null
+     * @Assert\NotBlank(message = "Die Langbeschreibung darf nicht leer sein.")
      */
     private $longDescription;
 

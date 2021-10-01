@@ -86,14 +86,12 @@ class SessionWithDetailType extends AbstractType
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung (für Social Media)',
-                'required' => false,
                 'attr' => [
                     'maxlength' => 250,
                 ],
             ])
             ->add('longDescription', TextareaType::class, [
                 'label' => 'Langbeschreibung (für die Webseite, WueWW App etc.)',
-                'required' => false,
             ])
             ->add('onlineOnly', CheckboxType::class, [
                 'label' => 'Die Veranstaltung findet ausschließlich online statt',
