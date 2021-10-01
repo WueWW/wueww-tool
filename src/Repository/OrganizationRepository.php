@@ -36,7 +36,7 @@ class OrganizationRepository extends ServiceEntityRepository
     public function findAllWithProposedDetails(): array
     {
         return $this->createQueryBuilder('o')
-            ->leftJoin('o.proposedOrganizationDetails', 'opd')
+            ->innerJoin('o.proposedOrganizationDetails', 'opd')
             ->addSelect('opd')
             ->orderBy('opd.title')
             ->getQuery()
