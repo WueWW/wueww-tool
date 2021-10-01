@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_EDITOR = 'ROLE_EDITOR';
+    const ROLE_USER_APPROVER = 'ROLE_USER_APPROVER';
 
     /**
      * @ORM\Id()

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste neuer Benutzer</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>E-Mail</th>
+            <th>Aktionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td class="organization-actions">
+                        {{ include('user_approval/_manual_approval_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Keine neuen Benutzer gefunden.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

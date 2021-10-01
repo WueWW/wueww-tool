@@ -1,0 +1,4 @@
+<form class="inline" method="post" action="{{ path('user_approval_override', {'id': user.id}) }}" onsubmit="return confirm('Bist du sicher, dass du den Benutzer manuell freigeben möchtest und seine E-Mail-Adresse korrekt ist?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('user_approval' ~ user.id) }}">
+    <button class="btn btn-sm btn-outline-danger" title="Benutzer freigeben"><i class="fa fa-check"></i></button>
+</form>

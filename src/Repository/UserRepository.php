@@ -30,4 +30,12 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->persist($user);
         $this->_em->flush();
     }
+
+    /**
+     * @return User[]
+     */
+    public function findAllIncomplete(): array
+    {
+        return $this->findBy(['registrationComplete' => false]);
+    }
 }
