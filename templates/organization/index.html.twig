@@ -4,7 +4,8 @@
     <h1>Liste der Veranstalter</h1>
 
     {% if is_granted('ROLE_EDITOR') %}
-    Filter: <a href="?">alle</a> | <a href="?has_changes">nicht freigegebene Änderungen</a> | <a href="?not_approved">ohne Freigabe</a>
+        Filter: <a href="?">alle</a> | <a href="?has_changes">nicht freigegebene Änderungen</a> | <a
+            href="?not_approved">ohne Freigabe</a>
     {% endif %}
 
     <table class="table table-striped">
@@ -40,12 +41,13 @@
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                        href="{{ path('organization_edit', {'id': organization.id}) }}"><i class="fa fa-pencil"></i></a>
 
-                    {% if organization.acceptedAndChanged %}
-                        <a class="btn btn-outline-secondary btn-sm" title="Änderungen vergleichen"
-                           href="{{ path('organization_diff', {'id': organization.id}) }}"><i class="fa fa-search"></i></a>
-                    {% endif %}
-
                     {% if is_granted('ROLE_EDITOR') %}
+                        {% if organization.acceptedAndChanged %}
+                            <a class="btn btn-outline-secondary btn-sm" title="Änderungen vergleichen"
+                               href="{{ path('organization_diff', {'id': organization.id}) }}"><i
+                                        class="fa fa-search"></i></a>
+                        {% endif %}
+
                         {{ include('organization/_delete_form.html.twig') }}
                         <a class="btn btn-outline-secondary btn-sm" title="Event anlegen"
                            href="{{ path('session_editor_create', {'id': organization.id}) }}"><i
