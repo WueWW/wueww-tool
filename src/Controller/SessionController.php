@@ -219,6 +219,30 @@ class SessionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}", name="session_remove_approval", methods={"POST"})
+     * @param Request $request
+     * @param Session $session
+     * @return Response
+     */
+    public function removeApproval(Request $request, Session $session): Response
+    {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('remove_approval' . $session->getId(), $request->request->get('_token'))) {
+            $session->setAcceptedDetails(null)->setAcceptedAt(null);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Die Freigabe des Events wurde zurückgezogen.');
+        }
+
+        return $this->redirectToRoute('session_index');
+    }
+
+    /**
      * @Route("/{id}", name="session_cancel", methods={"POST"})
      * @param Request $request
      * @param Session $session
