@@ -21,7 +21,9 @@ class StatsController extends AbstractController
         return $this->render('stats/show.html.twig', [
             'num_sessions' => $sessionRepository->countSessions(),
             'num_sessions_online_only' => $sessionRepository->countSessions(true),
-            'num_organizations' => $organizationRepository->countOrganizationsWithSessions(),
+            'num_sessions_cancelled' => $sessionRepository->countSessions(null, true),
+            'num_organizations' => $organizationRepository->countOrganizationsWithSessions(false),
+            'num_organizations_with_cancelled' => $organizationRepository->countOrganizationsWithSessions(null),
             'num_sessions_by_date' => $sessionRepository->countSessionsByDate(),
         ]);
     }

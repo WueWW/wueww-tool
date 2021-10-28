@@ -51,15 +51,18 @@ class OrganizationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function countOrganizationsWithSessions()
+    public function countOrganizationsWithSessions(?bool $cancelled)
     {
         $qb = $this->createQueryBuilder('o')
             ->select('count(distinct o.id)')
             ->innerJoin('o.sessions', 's')
             ->andWhere('s.start IS NOT NULL')
             ->andWhere('s.acceptedDetails IS NOT NULL')
-            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
-            ->andWhere('s.cancelled = FALSE');
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL');
+
+        if ($cancelled !== null) {
+            $qb->andWhere('s.cancelled = :cancelled')->setParameter('cancelled', $cancelled);
+        }
 
         return $qb->getQuery()->getSingleScalarResult();
     }

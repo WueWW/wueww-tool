@@ -5,10 +5,16 @@
         Anzahl Events (vollständig freigegeben, nicht abgesagt): {{ num_sessions }}<br/>
         ... davon ausschließlich online: {{ num_sessions_online_only }}
         (= {{ (num_sessions_online_only * 100 / num_sessions) | round(1, 'common') }}%)
+
     </p>
 
+    <p>Anzahl abgesagter Events (vollständig freigegeben): {{ num_sessions_cancelled }}</p>
+
+    <p>Anzahl Events insgesamt (vollständig freigegeben): {{ num_sessions + num_sessions_cancelled }}</p>
+
     <p>
-        Anzahl Veranstalter (mit mind. einem freigegebenen, nicht abgesagten Event): {{ num_organizations }}
+        Anzahl Veranstalter (mit mind. einem freigegebenen, nicht abgesagten Event): {{ num_organizations }}<br/>
+        ... inkl. abgesagter Events: {{ num_organizations_with_cancelled }}
     </p>
 
     <h2>Events nach Tagen</h2>
@@ -17,6 +23,8 @@
         <tr>
             <td>Datum</td>
             <td>Anzahl Events</td>
+            <td>Abgesagte Events</td>
+            <td>Events gesamt</td>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +32,8 @@
             <tr>
                 <td>{{ rec.date }}</td>
                 <td>{{ rec.num }}</td>
+                <td>{% if rec.num_cancelled > 0 %}{{ rec.num_cancelled }}{% else %}-{% endif %}</td>
+                <td>{{ rec.num + rec.num_cancelled }}</td>
             </tr>
         {% endfor %}
         </tbody>

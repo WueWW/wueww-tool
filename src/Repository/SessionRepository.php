@@ -115,7 +115,7 @@ class SessionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function countSessions($onlineOnly = null)
+    public function countSessions($onlineOnly = null, bool $cancelled = false)
     {
         $qb = $this->createQueryBuilder('s')
             ->select('count(1)')
@@ -123,7 +123,8 @@ class SessionRepository extends ServiceEntityRepository
             ->andWhere('s.start IS NOT NULL')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
-            ->andWhere('s.cancelled = FALSE');
+            ->andWhere('s.cancelled = :cancelled')
+            ->setParameter('cancelled', $cancelled);
 
         if ($onlineOnly !== null) {
             $qb
@@ -138,12 +139,16 @@ class SessionRepository extends ServiceEntityRepository
     public function countSessionsByDate()
     {
         $qb = $this->createQueryBuilder('s')
-            ->select(["DATE_FORMAT(s.start, '%d.%m.%Y') AS date", 'COUNT(1) AS num'])
+            ->select([
+                "DATE_FORMAT(s.start, '%d.%m.%Y') AS date",
+                'COUNT(NULLIF(s.cancelled, TRUE)) AS num',
+                'COUNT(NULLIF(s.cancelled, FALSE)) AS num_cancelled',
+            ])
             ->innerJoin('s.organization', 'o')
             ->andWhere('s.start IS NOT NULL')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
-            ->andWhere('s.cancelled = FALSE')
+            //->andWhere('s.cancelled = FALSE')
             ->groupBy('date');
 
         return $qb->getQuery()->getScalarResult();
