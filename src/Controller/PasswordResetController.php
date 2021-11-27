@@ -65,7 +65,7 @@ class PasswordResetController extends AbstractController
             } catch (PasswordIsPwnedException $ex) {
                 $this->addFlash(
                     'danger',
-                    'Das verwendete Passwort steht auf der Liste bereits geleakten Passwörter von haveibeenpwned.com. Bitte verwende ein sicheres Passwort.'
+                    'Das verwendete Passwort steht auf der Liste bekannt schwacher Passwörter von haveibeenpwned.com. Bitte verwende ein sicheres Passwort.'
                 );
             }
         }
