@@ -6,6 +6,8 @@ use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\Token;
 use App\Entity\User;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 class MailerService
@@ -18,27 +20,27 @@ class MailerService
     private $twig;
 
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
-    public function __construct(Environment $twig, \Swift_Mailer $swiftMailer)
+    public function __construct(Environment $twig, MailerInterface $mailer)
     {
         $this->twig = $twig;
-        $this->mailer = $swiftMailer;
+        $this->mailer = $mailer;
     }
 
     public function sendUserRegistrationMail(User $user, Token $token): void
     {
-        $message = (new \Swift_Message('Deine Registrierung beim WueWW Tool'))
-            ->setFrom(self::FROM_ADDRESS)
-            ->setTo($user->getEmail())
-            ->setBody(
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to($user->getEmail())
+            ->subject('Deine Registrierung beim WueWW Tool')
+            ->text(
                 $this->twig->render('emails/user_registration.txt.twig', [
                     'user' => $user,
                     'token' => $token->getToken(),
-                ]),
-                'text/plain'
+                ])
             );
 
         $this->mailer->send($message);
@@ -46,15 +48,15 @@ class MailerService
 
     public function sendPasswordResetMail(?User $user, Token $token): void
     {
-        $message = (new \Swift_Message('WueWW Tool Passwort zurücksetzen'))
-            ->setFrom(self::FROM_ADDRESS)
-            ->setTo($user->getEmail())
-            ->setBody(
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to($user->getEmail())
+            ->subject('WueWW Tool Passwort zurücksetzen')
+            ->text(
                 $this->twig->render('emails/password_reset.txt.twig', [
                     'user' => $user,
                     'token' => $token->getToken(),
-                ]),
-                'text/plain'
+                ])
             );
 
         $this->mailer->send($message);
@@ -62,14 +64,14 @@ class MailerService
 
     public function sendSessionAwaitingApprovalMail(string $toAddress, Session $session): void
     {
-        $message = (new \Swift_Message('Event geändert'))
-            ->setFrom(self::FROM_ADDRESS)
-            ->setTo($toAddress)
-            ->setBody(
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to($toAddress)
+            ->subject('Event geändert')
+            ->text(
                 $this->twig->render('emails/session_awaiting_approval.txt.twig', [
                     'session' => $session,
-                ]),
-                'text/plain'
+                ])
             );
 
         $this->mailer->send($message);
@@ -77,14 +79,14 @@ class MailerService
 
     public function sendOrganizationAwaitingApprovalMail(string $toAddress, Organization $organization): void
     {
-        $message = (new \Swift_Message('Veranstalter geändert'))
-            ->setFrom(self::FROM_ADDRESS)
-            ->setTo($toAddress)
-            ->setBody(
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to($toAddress)
+            ->subject('Veranstalter geändert')
+            ->text(
                 $this->twig->render('emails/organization_awaiting_approval.txt.twig', [
                     'organization' => $organization,
-                ]),
-                'text/plain'
+                ])
             );
 
         $this->mailer->send($message);
@@ -92,14 +94,14 @@ class MailerService
 
     public function sendSessionCancelledMail(string $toAddress, Session $session): void
     {
-        $message = (new \Swift_Message('Event abgesagt'))
-            ->setFrom(self::FROM_ADDRESS)
-            ->setTo($toAddress)
-            ->setBody(
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to($toAddress)
+            ->subject('Event abgesagt')
+            ->text(
                 $this->twig->render('emails/session_cancelled.txt.twig', [
                     'session' => $session,
-                ]),
-                'text/plain'
+                ])
             );
 
         $this->mailer->send($message);
