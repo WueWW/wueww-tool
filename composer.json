@@ -17,7 +17,7 @@
         "cogpowered/finediff": "^0.3.1",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.6",
-        "guzzlehttp/guzzle": "^6.4",
+        "guzzlehttp/guzzle": "^7.4",
         "phpoffice/phpspreadsheet": "^1.18",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/console": "5.3.*",
