@@ -55,8 +55,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $organizations;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdAt;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->tokens = new ArrayCollection();
         $this->organizations = new ArrayCollection();
     }
@@ -230,4 +236,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+
 }
