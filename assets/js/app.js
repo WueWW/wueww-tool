@@ -22,6 +22,12 @@ $(document).ready(function () {
     $('input[maxlength], textarea[maxlength]').maxlengthIndicator();
     $('label.required').requiredIndicator();
 
+    $('.cancel-return').on('keypress', function(event) {
+        if (event.originalEvent.keyCode === 13) {
+            event.originalEvent.preventDefault();
+        }
+    });
+
     $('#map').each((index, el) => {
         const $lat = $('#session_with_detail_locationLat');
         const $lng = $('#session_with_detail_locationLng');

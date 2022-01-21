@@ -18,6 +18,7 @@ class LocationType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'maxlength' => 255,
+                    'class' => 'cancel-return',
                 ],
             ])
             ->add('streetNo', TextType::class, [
@@ -25,6 +26,7 @@ class LocationType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'maxlength' => 255,
+                    'class' => 'cancel-return',
                 ],
             ])
             ->add('zipcode', TextType::class, [
@@ -32,6 +34,7 @@ class LocationType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'maxlength' => 255,
+                    'class' => 'cancel-return',
                 ],
             ])
             ->add('city', TextType::class, [
@@ -39,6 +42,7 @@ class LocationType extends AbstractType
                 'empty_data' => '',
                 'attr' => [
                     'maxlength' => 255,
+                    'class' => 'cancel-return',
                 ],
             ]);
     }

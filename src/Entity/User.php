@@ -247,6 +247,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = $createdAt;
         return $this;
     }
-
-
 }

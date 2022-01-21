@@ -69,6 +69,7 @@ class SessionWithDetailType extends AbstractType
                 'html5' => false,
                 'invalid_message' =>
                     'Die erfasste Uhrzeit ist ungültig, bitte nur Stunden und Minuten eingeben (z. B. 18:00).',
+                'attr' => ['class' => 'cancel-return'],
             ])
             ->add('stop', TimeType::class, [
                 'label' => 'Ende',
@@ -77,17 +78,20 @@ class SessionWithDetailType extends AbstractType
                 'required' => false,
                 'invalid_message' =>
                     'Die erfasste Uhrzeit ist ungültig, bitte nur Stunden und Minuten eingeben (z. B. 18:00).',
+                'attr' => ['class' => 'cancel-return'],
             ])
             ->add('title', TextType::class, [
                 'label' => 'Titel',
                 'attr' => [
                     'maxlength' => 30,
+                    'class' => 'cancel-return',
                 ],
             ])
             ->add('shortDescription', TextareaType::class, [
                 'label' => 'Kurzbeschreibung (für Social Media)',
                 'attr' => [
                     'maxlength' => 250,
+                    'class' => 'cancel-return',
                 ],
             ])
             ->add('longDescription', TextareaType::class, [
@@ -110,6 +114,7 @@ class SessionWithDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 255,
+                    'class' => 'cancel-return',
                 ],
             ]);
 
