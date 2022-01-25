@@ -19,7 +19,9 @@
             <th>Ende</th>
             <th>Titel</th>
             <th>Freigabe</th>
+            {% if is_granted('ROLE_EDITOR') %}
             <th>Highlight</th>
+            {% endif %}
             <th>Aktionen</th>
         </tr>
         </thead>
@@ -40,11 +42,13 @@
                         <i class="fa fa-pencil" title="Entwurf"></i>
                     {% endif %}
                 </td>
+                {% if is_granted('ROLE_EDITOR') %}
                 <td>
                     {% if session.highlight %}
                         <i class="fa fa-star" title="Highlight"></i>
                     {% endif %}
                 </td>
+                {% endif %}
                 <td class="session-actions">
                     <a class="btn btn-outline-secondary btn-sm" title="anzeigen"
                        href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
@@ -74,7 +78,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">Keine Events gefunden.</td>
+                <td colspan="{% if is_granted('ROLE_EDITOR') -%}7{% else -%}6{% endif -%}">Keine Events gefunden.</td>
             </tr>
         {% endfor %}
         </tbody>
