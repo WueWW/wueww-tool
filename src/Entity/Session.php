@@ -41,6 +41,12 @@ class Session
     private $cancelled;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={ "default": false })
+     */
+    private $highlight;
+
+    /**
      * @var ?SessionDetail
      * @ORM\OneToOne(targetEntity="App\Entity\SessionDetail", cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
@@ -74,6 +80,7 @@ class Session
     public function __construct()
     {
         $this->setCancelled(false);
+        $this->setHighlight(false);
         $this->setDraftDetails(new SessionDetail());
     }
 
@@ -134,6 +141,17 @@ class Session
     {
         $this->cancelled = $cancelled;
 
+        return $this;
+    }
+
+    public function isHighlight(): bool
+    {
+        return $this->highlight;
+    }
+
+    public function setHighlight(bool $highlight): Session
+    {
+        $this->highlight = $highlight;
         return $this;
     }
 

@@ -19,6 +19,7 @@
             <th>Ende</th>
             <th>Titel</th>
             <th>Freigabe</th>
+            <th>Highlight</th>
             <th>Aktionen</th>
         </tr>
         </thead>
@@ -39,6 +40,11 @@
                         <i class="fa fa-pencil" title="Entwurf"></i>
                     {% endif %}
                 </td>
+                <td>
+                    {% if session.highlight %}
+                        <i class="fa fa-star" title="Highlight"></i>
+                    {% endif %}
+                </td>
                 <td class="session-actions">
                     <a class="btn btn-outline-secondary btn-sm" title="anzeigen"
                        href="{{ path('session_show', {'id': session.id}) }}"><i class="fa fa-eye"></i></a>
@@ -46,6 +52,10 @@
                     {% if is_granted('ROLE_EDITOR') and session.acceptedAndChanged %}
                         <a class="btn btn-outline-secondary btn-sm" title="Änderungen vergleichen"
                            href="{{ path('session_diff', {'id': session.id}) }}"><i class="fa fa-search"></i></a>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_EDITOR') and session.accepted %}
+                        {{ include('session/_toggle_highlight_form.html.twig') }}
                     {% endif %}
 
                     {% if not session.cancelled %}
@@ -64,7 +74,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">Keine Events gefunden.</td>
+                <td colspan="7">Keine Events gefunden.</td>
             </tr>
         {% endfor %}
         </tbody>

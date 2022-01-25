@@ -1,0 +1,4 @@
+<form class="inline" method="post" action="{{ path('session_toggle_highlight', {'id': session.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('toggle_highlight' ~ session.id) }}">
+    <button class="btn btn-sm btn-outline-secondary" title="{% if session.highlight %}Highlight-Markierung entfernen{% else %}als Highlight markieren{% endif %}"><i class="fa fa-star"></i></button>
+</form>

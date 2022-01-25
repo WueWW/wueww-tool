@@ -326,6 +326,32 @@ class SessionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/highlight", name="session_toggle_highlight", methods={"POST"})
+     * @param Request $request
+     * @param Session $session
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return Response
+     */
+    public function toggleHighlight(
+        Request $request,
+        Session $session,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('toggle_highlight' . $session->getId(), $request->request->get('_token'))) {
+            $session->setHighlight(!$session->isHighlight());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('session_index');
+    }
+
+    /**
      * @Route("/{id}/accept", name="session_accept", methods={"POST"})
      * @param Request $request
      * @param Session $session

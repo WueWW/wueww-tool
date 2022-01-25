@@ -59,6 +59,7 @@ class JsonExportController extends AbstractController
             'start' => $session->getStart()->format('Y-m-d\\TH:i:sP'),
             'end' => $session->getStop() ? $session->getStop()->format('Y-m-d\\TH:i:sP') : null,
             'cancelled' => $session->getCancelled(),
+            'highlight' => $session->isHighlight(),
             'onlineOnly' => $session->getAcceptedDetails()->getOnlineOnly(),
             'host' => $this->mapHost($session),
             'title' => trim(str_replace("\n", '', $session->getAcceptedDetails()->getTitle())),
