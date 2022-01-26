@@ -33,6 +33,7 @@ class OrganizationDetailType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'maxlength' => 500,
+                    'rows' => 5,
                 ],
             ])
             ->add('link', TextType::class, [
