@@ -23,6 +23,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                default_target_path: session_index
                 enable_csrf: true
                 username_parameter: email
                 password_parameter: password
