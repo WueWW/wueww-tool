@@ -57,8 +57,6 @@ class MyOrganizationController extends AbstractController
                     'Sofern nicht bereits geschehen, sende bitte noch eine Logo an kontakt@wueww.de. Bevorzugte Formate: EPS, PDF, AI, ggf. hochauflösendes JPEG.'
                 );
             }
-
-            return $this->redirectToRoute('session_index');
         }
 
         return $this->render('my_organization/edit.html.twig', [

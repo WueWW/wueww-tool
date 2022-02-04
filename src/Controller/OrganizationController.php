@@ -256,8 +256,6 @@ class OrganizationController extends AbstractController
             $this->getDoctrine()
                 ->getManager()
                 ->flush();
-
-            return $this->redirectToRoute('organization_index');
         }
 
         return $this->render('organization/edit.html.twig', [
