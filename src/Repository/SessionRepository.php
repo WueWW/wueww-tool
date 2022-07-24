@@ -24,8 +24,7 @@ class SessionRepository extends ServiceEntityRepository
     public function resetAllStartAndEndTimes(): void
     {
         $qb = $this->createQueryBuilder('s');
-        $qb
-            ->update()
+        $qb->update()
             ->set('s.start', 'null')
             ->set('s.stop', 'null')
             ->getQuery()
@@ -127,8 +126,7 @@ class SessionRepository extends ServiceEntityRepository
             ->setParameter('cancelled', $cancelled);
 
         if ($onlineOnly !== null) {
-            $qb
-                ->innerJoin('s.acceptedDetails', 'sad')
+            $qb->innerJoin('s.acceptedDetails', 'sad')
                 ->andWhere('sad.onlineOnly = :onlineOnly')
                 ->setParameter('onlineOnly', $onlineOnly);
         }
@@ -152,5 +150,36 @@ class SessionRepository extends ServiceEntityRepository
             ->groupBy('date');
 
         return $qb->getQuery()->getScalarResult();
+    }
+
+    public function countParallelSession(\DateTimeInterface $start, \DateTimeInterface $end, ?int $excludeId)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('COUNT(1)')
+            ->innerJoin('s.organization', 'o')
+            ->andWhere('s.start IS NOT NULL')
+            ->andWhere('s.acceptedDetails IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->andWhere('s.cancelled = FALSE');
+
+        $stop = "COALESCE( s.stop, DATE_ADD(s.start, 2, 'hour') )";
+
+        $qb->andWhere(
+            $qb
+                ->expr()
+                ->orX(
+                    $qb->expr()->andX($qb->expr()->lte('s.start', ':start'), $qb->expr()->gt($stop, ':start')),
+                    $qb->expr()->andX($qb->expr()->lt('s.start', ':end'), $qb->expr()->gte($stop, ':end')),
+                    $qb->expr()->andX($qb->expr()->gte('s.start', ':start'), $qb->expr()->lte($stop, ':end'))
+                )
+        )
+            ->setParameter(':start', $start)
+            ->setParameter(':end', $end);
+
+        if ($excludeId !== null) {
+            $qb->andWhere('s.id != :excludeId')->setParameter('excludeId', $excludeId);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

@@ -1,18 +1,18 @@
 {
     "devDependencies": {
-        "@prettier/plugin-php": "^0.12.0",
-        "@symfony/webpack-encore": "^0.28.2",
+        "@prettier/plugin-php": "^0.18.9",
+        "@symfony/webpack-encore": "^3.0.0",
         "bootstrap": "^4.4.1",
-        "core-js": "^3.6.1",
+        "core-js": "^3.23.5",
         "font-awesome": "^4.7.0",
-        "jquery": "^3.4.1",
-        "leaflet": "^1.6.0",
-        "node-sass": "^4.12.0",
+        "jquery": "^3.6.0",
+        "leaflet": "^1.8.0",
+        "node-sass": "^7.0.1",
         "popper.js": "^1.15.0",
-        "prettier": "^1.19.1",
-        "regenerator-runtime": "^0.13.2",
-        "sass-loader": "^7.0.1",
-        "webpack-notifier": "^1.6.0"
+        "prettier": "^2.7.1",
+        "regenerator-runtime": "^0.13.9",
+        "sass-loader": "^13.0.2",
+        "webpack-notifier": "^1.15.0"
     },
     "license": "AGPL-3.0-or-later",
     "private": true,
@@ -27,6 +27,6 @@
         "printWidth": 120,
         "tabWidth": 4,
         "singleQuote": true,
-        "trailingCommaPHP": "php7.2"
+        "trailingCommaPHP": true
     }
 }

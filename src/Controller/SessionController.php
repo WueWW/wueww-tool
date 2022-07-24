@@ -12,6 +12,8 @@ use App\Form\SessionWithDetailType;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,6 +42,36 @@ class SessionController extends AbstractController
         }
 
         return $this->render('session/index.html.twig', ['sessions' => $sessions]);
+    }
+
+    /**
+     * @Route("/{excludeId}/parallel/{date}/{startStr}/{endStr}", defaults={"endStr"="", "excludeId"=""})
+     * @return Response
+     */
+    public function countParallelSessions(
+        string $excludeId,
+        string $date,
+        string $startStr,
+        string $endStr,
+        SessionRepository $sessionRepository
+    ): Response {
+        $start = \DateTimeImmutable::createFromFormat('Y-m-d H:i', $date . ' ' . $startStr);
+
+        if (!$start) {
+            throw new BadRequestException('Invalid start date');
+        }
+
+        $end = $endStr
+            ? \DateTimeImmutable::createFromFormat('Y-m-d H:i', $date . ' ' . $endStr)
+            : $start->add(new \DateInterval('PT2H'));
+
+        return new JsonResponse([
+            'count' => $sessionRepository->countParallelSession(
+                $start,
+                $end,
+                $excludeId === '-' ? null : (int) $excludeId
+            ),
+        ]);
     }
 
     /**
