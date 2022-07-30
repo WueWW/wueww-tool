@@ -62,6 +62,19 @@
             "src/DataFixtures/AppFixtures.php"
         ]
     },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.1",
+            "ref": "ee609429c9ee23e22d6fa5728211768f51ed2818"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
     "doctrine/event-manager": {
         "version": "v1.0.0"
     },
@@ -73,6 +86,9 @@
     },
     "doctrine/lexer": {
         "version": "1.1.0"
+    },
+    "doctrine/migrations": {
+        "version": "3.4.2"
     },
     "doctrine/orm": {
         "version": "v2.6.3"
@@ -89,6 +105,9 @@
     "ezyang/htmlpurifier": {
         "version": "v4.13.0"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.12"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.4.1"
     },
@@ -97,6 +116,15 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
+    },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.4.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.4.1"
     },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
