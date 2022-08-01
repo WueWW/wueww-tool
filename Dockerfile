@@ -5,9 +5,12 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+    libpng-dev libjpeg-dev \
     git \
     unzip \
     yarnpkg
+
+RUN docker-php-ext-configure gd  --with-jpeg
 
 # copy app sources
 COPY / /app
