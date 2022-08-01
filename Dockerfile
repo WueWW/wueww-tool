@@ -10,7 +10,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     unzip \
     yarnpkg
 
-RUN docker-php-ext-configure gd  --with-jpeg
+RUN docker-php-ext-install gd
 
 # copy app sources
 COPY / /app
