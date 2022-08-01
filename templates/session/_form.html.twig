@@ -7,7 +7,30 @@
 <div id="parallel-session-hint-box"></div>
 
 <h2>Worum geht's?</h2>
+
+<div class="alert alert-info" role="alert">
+    <p>
+        In der Vergangenheit wurde häufig der Wunsch an uns heran getragen, die Events zu kategorisieren.
+        Falls deine Veranstaltung mehrere Kanälen betrifft, wähle bitte jenen, welcher am besten passt.
+    </p>
+    <p>
+        Wir möchten die Kanäle filterbar und farblich wiedererkennbar darstellen.
+        Daher ist eine eindeutige Zuordnung erforderlich.
+    </p>
+</div>
+
+{{ form_row(form.channel) }}
 {{ form_row(form.title) }}
+
+<div class="alert alert-info" role="alert" style="margin-top: 2rem">
+    <p>
+        Bitte beschreibe dein Event zunächst mit einem (kurzen) Teaser-Text.  Ein Absatz.  Worum geht's?
+        Wer ist die Zielgruppe?<br/>
+        In der Detailbeschreibung kannst du konkreter werden.  Im Veranstaltungskalender werden beide Texte
+        übereinander angezeigt.
+    </p>
+</div>
+
 {{ form_row(form.shortDescription) }}
 {{ form_row(form.longDescription) }}
 
