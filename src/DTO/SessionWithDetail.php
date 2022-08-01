@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Entity\Channel;
 use App\Entity\Location;
 use App\Entity\Organization;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,6 +50,12 @@ class SessionWithDetail
      * @Assert\NotBlank(message = "Die Langbeschreibung darf nicht leer sein.")
      */
     private $longDescription;
+
+    /**
+     * @var Channel|null
+     * @Assert\NotNull(message = "Es muss ein Channel ausgewählt sein.")
+     */
+    private $channel;
 
     /**
      * @var Organization|null
@@ -162,6 +169,17 @@ class SessionWithDetail
     public function setLongDescription(?string $longDescription): SessionWithDetail
     {
         $this->longDescription = $longDescription;
+        return $this;
+    }
+
+    public function getChannel(): ?Channel
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?Channel $channel): SessionWithDetail
+    {
+        $this->channel = $channel;
         return $this;
     }
 

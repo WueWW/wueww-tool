@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\DTO\SessionWithDetail;
+use App\Entity\Channel;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -117,6 +118,13 @@ class SessionWithDetailType extends AbstractType
                     'maxlength' => 255,
                     'class' => 'cancel-return',
                 ],
+            ])
+            ->add('channel', EntityType::class, [
+                'label' => 'Kanal',
+                'class' => Channel::class,
+                'required' => true,
+                'choice_label' => 'name',
+                'placeholder' => '-- bitte wählen --',
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {

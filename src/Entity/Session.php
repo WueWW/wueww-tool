@@ -203,6 +203,7 @@ class Session
             ->setStart($this->getStart())
             ->setStop($this->getStop())
             ->setOrganization($this->getOrganization())
+            ->setChannel($details->getChannel())
             ->setOnlineOnly($details->getOnlineOnly())
             ->setTitle($details->getTitle())
             ->setShortDescription($details->getShortDescription())

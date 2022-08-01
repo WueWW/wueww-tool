@@ -39,6 +39,16 @@
         </tbody>
         <tbody>
         <tr>
+            <th>Kanal</th>
+            <td>
+                {% if detail.channel %}
+                    {{ detail.channel.name }}
+                {% else %}
+                    <em>keine Angabe</em>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
             <th>Titel</th>
             <td>{{ detail.title }}</td>
         </tr>

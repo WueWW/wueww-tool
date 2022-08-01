@@ -57,6 +57,11 @@ class SessionDetail
      */
     private $onlineOnly;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Channel::class)
+     */
+    private $channel;
+
     public function __construct()
     {
         $this->location = new Location();
@@ -169,6 +174,7 @@ class SessionDetail
             ->setTitle($sessionWithDetail->getTitle())
             ->setShortDescription($sessionWithDetail->getShortDescription())
             ->setLongDescription($sessionWithDetail->getLongDescription())
+            ->setChannel($sessionWithDetail->getChannel())
             ->setLocation($sessionWithDetail->getLocation())
             ->setLocationLat($sessionWithDetail->getLocationLat())
             ->setLocationLng($sessionWithDetail->getLocationLng())
@@ -181,9 +187,22 @@ class SessionDetail
             $this->getTitle() !== $sessionWithDetail->getTitle() ||
             $this->getShortDescription() !== $sessionWithDetail->getShortDescription() ||
             $this->getLongDescription() !== $sessionWithDetail->getLongDescription() ||
+            $this->getChannel() !== $sessionWithDetail->getChannel() ||
             $this->getLocation() !== $sessionWithDetail->getLocation() ||
             $this->getLocationLat() !== $sessionWithDetail->getLocationLat() ||
             $this->getLocationLng() !== $sessionWithDetail->getLocationLng() ||
             $this->getLink() !== $sessionWithDetail->getLink();
+    }
+
+    public function getChannel(): ?Channel
+    {
+        return $this->channel;
+    }
+
+    public function setChannel(?Channel $channel): self
+    {
+        $this->channel = $channel;
+
+        return $this;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Channel;
 use App\Entity\Session;
+use App\Repository\ChannelRepository;
 use App\Repository\SessionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +19,7 @@ class JsonExportController extends AbstractController
      * @param SessionRepository $sessionRepository
      * @return Response
      */
-    public function index(SessionRepository $sessionRepository): Response
+    public function index(SessionRepository $sessionRepository, ChannelRepository $channelRepository): Response
     {
         $sessions = $sessionRepository->findFullyAccepted();
         $latestUpdate = time();
@@ -33,12 +35,21 @@ class JsonExportController extends AbstractController
         $json = [
             'format' => '0.5.1',
             'sessions' => array_map([$this, 'mapSession'], $sessions),
+            'channels' => array_map([$this, 'mapChannel'], $channelRepository->findAll()),
         ];
 
         return new JsonResponse($json, Response::HTTP_OK, [
             'access-control-allow-origin' => '*',
             'Date' => \gmdate('D, d M Y H:i:s T', $latestUpdate),
         ]);
+    }
+
+    function mapChannel(Channel $channel): array
+    {
+        return [
+            'id' => $channel->getId(),
+            'name' => $channel->getName(),
+        ];
     }
 
     function mapSession(Session $session): array
@@ -67,6 +78,11 @@ class JsonExportController extends AbstractController
 
         if ($session->getAcceptedDetails()->getLink()) {
             $result['links']['event'] = trim($session->getAcceptedDetails()->getLink());
+        }
+
+        $channel = $session->getAcceptedDetails()->getChannel();
+        if ($channel !== null) {
+            $result['channel'] = $this->mapChannel($channel);
         }
 
         return $result;
