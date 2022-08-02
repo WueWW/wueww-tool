@@ -4,11 +4,13 @@ FROM php:7.3-cli AS builder
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     zlib1g-dev libpng-dev libjpeg-dev libzip-dev \
     git \
     unzip \
-    yarnpkg
+    nodejs
 
 RUN docker-php-ext-install gd && \
 	docker-php-ext-install zip
@@ -19,8 +21,9 @@ WORKDIR /app
 
 RUN php /composer.phar install
 
-RUN yarnpkg install
-RUN yarnpkg build
+RUN npm -g install yarn
+RUN yarn install
+RUN yarn build
 
 #------------------------------------------------------------------------------
 
