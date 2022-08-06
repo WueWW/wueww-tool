@@ -39,7 +39,7 @@
         </tbody>
         <tbody>
         <tr>
-            <th>Kanal</th>
+            <th>Kategorie</th>
             <td>
                 {% if detail.channel %}
                     {{ detail.channel.name }}
@@ -53,12 +53,11 @@
             <td>{{ detail.title }}</td>
         </tr>
         <tr>
-            <th>Kurzbeschreibung</th>
-            <td>{{ detail.shortDescription | nl2br }}</td>
-        </tr>
-        <tr>
-            <th>Langbeschreibung</th>
-            <td>{{ detail.longDescription | nl2br }}</td>
+            <th>Beschreibung</th>
+            <td>
+                <p><strong>{{ detail.shortDescription | nl2br }}</strong></p>
+                <p>{{ detail.longDescription | nl2br }}</p>
+            </td>
         </tr>
         <tr>
             <th>Veranstaltungsort</th>

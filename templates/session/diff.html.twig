@@ -37,11 +37,11 @@
             <td>{{ session.proposedDetails.title | diff(session.acceptedDetails.title) }}</td>
         </tr>
         <tr>
-            <th>Kurzbeschreibung</th>
+            <th>Teaser-Text</th>
             <td>{{ session.proposedDetails.shortDescription | diff(session.acceptedDetails.shortDescription) | nl2br }}</td>
         </tr>
         <tr>
-            <th>Langbeschreibung</th>
+            <th>Detaillierte Beschreibung</th>
             <td>{{ session.proposedDetails.longDescription | diff(session.acceptedDetails.longDescription) | nl2br }}</td>
         </tr>
         <tr>

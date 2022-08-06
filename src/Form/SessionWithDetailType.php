@@ -120,7 +120,7 @@ class SessionWithDetailType extends AbstractType
                 ],
             ])
             ->add('channel', EntityType::class, [
-                'label' => 'Kanal',
+                'label' => 'Kategorie',
                 'class' => Channel::class,
                 'required' => true,
                 'choice_label' => 'name',
