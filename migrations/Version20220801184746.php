@@ -30,7 +30,8 @@ final class Version20220801184746 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_416D75CA72F5A1AA ON session_detail (channel_id)');
 
         $this->addSql(
-            "INSERT INTO channel (name) VALUES ('Science'), ('Tech & Nachhaltigkeit'), ('Digitale Gesellschaft'), ('eCommerce'), ('Consulting')"
+            "INSERT INTO channel (name) VALUES ('Digitale Gesellschaft'), ('Science & Tech'), ('Business'),
+                                  ('Nachhaltigkeit'), ('Gründen/Start-up'), ('(New) Work/HR'), ('Surprise')"
         );
     }
 
