@@ -22,7 +22,7 @@ $(document).ready(function () {
     $('input[maxlength], textarea[maxlength]').maxlengthIndicator();
     $('label.required').requiredIndicator();
 
-    $('.cancel-return').on('keypress', function(event) {
+    $('.cancel-return').on('keypress', function (event) {
         if (event.originalEvent.keyCode === 13) {
             event.originalEvent.preventDefault();
         }

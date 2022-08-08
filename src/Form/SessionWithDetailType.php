@@ -125,6 +125,9 @@ class SessionWithDetailType extends AbstractType
                 'required' => true,
                 'choice_label' => 'name',
                 'placeholder' => '-- bitte wählen --',
+                'attr' => [
+                    'class' => 'cancel-return',
+                ],
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
