@@ -82,6 +82,12 @@ class OrganizationDetail
      */
     private $linkedinUrl;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
+     */
+    private $fediverseUrl;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -231,6 +237,18 @@ class OrganizationDetail
     public function setLinkedinUrl(?string $linkedinUrl): self
     {
         $this->linkedinUrl = $linkedinUrl;
+
+        return $this;
+    }
+
+    public function getFediverseUrl(): ?string
+    {
+        return $this->fediverseUrl;
+    }
+
+    public function setFediverseUrl(?string $fediverseUrl): self
+    {
+        $this->fediverseUrl = $fediverseUrl;
 
         return $this;
     }

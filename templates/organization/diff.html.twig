@@ -79,6 +79,12 @@
                    target="_blank">{{ organization.proposedOrganizationDetails.linkedinUrl | diff(organization.acceptedOrganizationDetails.linkedinUrl) }}</a>
             </td>
         </tr>
+        <tr>
+            <th>Fediverse-Profil</th>
+            <td><a href="{{ organization.proposedOrganizationDetails.fediverseUrl }}"
+                   target="_blank">{{ organization.proposedOrganizationDetails.fediverseUrl | diff(organization.acceptedOrganizationDetails.fediverseUrl) }}</a>
+            </td>
+        </tr>
         </tbody>
     </table>
 

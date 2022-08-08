@@ -33,7 +33,7 @@ class JsonExportController extends AbstractController
         }
 
         $json = [
-            'format' => '0.5.1',
+            'format' => '0.5.2',
             'sessions' => array_map([$this, 'mapSession'], $sessions),
             'channels' => array_map([$this, 'mapChannel'], $channelRepository->findAll()),
         ];
@@ -140,6 +140,10 @@ class JsonExportController extends AbstractController
 
         if ($details->getLinkedinUrl()) {
             $result['links']['linkedIn'] = $details->getLinkedinUrl();
+        }
+
+        if ($details->getFediverseUrl()) {
+            $result['links']['fediverseUrl'] = $details->getFediverseUrl();
         }
 
         return $result;

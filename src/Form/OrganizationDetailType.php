@@ -91,6 +91,13 @@ class OrganizationDetailType extends AbstractType
                 'attr' => [
                     'maxlength' => 255,
                 ],
+            ])
+            ->add('fediverseUrl', TextType::class, [
+                'label' => 'Fediverse-Profil (Mastodon, wue.social o.ä.)',
+                'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                ],
             ]);
     }
 
