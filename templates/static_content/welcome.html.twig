@@ -40,7 +40,13 @@
         <div class="col-sm">
             <h2>Du warst schon mal hier?</h2>
 
-            <a class="btn btn-primary" href="{{ path('session_index') }}">Eventliste aufrufen</a>
+            <a class="btn btn-primary" href="{{ path('session_index') }}">
+                {% if app.user %}
+                    Eventliste aufrufen
+                {% else %}
+                    Login
+                {% endif %}
+            </a>
         </div>
 
     </div>
