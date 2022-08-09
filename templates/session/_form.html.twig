@@ -8,6 +8,20 @@
 
 <h2>Worum geht's?</h2>
 
+{{ form_row(form.title) }}
+
+<div class="alert alert-info" role="alert" style="margin-top: 2rem">
+    <p>
+        Bitte beschreibe dein Event zunächst mit einem (kurzen) Teaser-Text. Ein Absatz. Worum geht's?
+        Wer ist die Zielgruppe?<br/>
+        In der Detailbeschreibung kannst du konkreter werden. Im Veranstaltungskalender werden beide Texte
+        übereinander angezeigt.
+    </p>
+</div>
+
+{{ form_row(form.shortDescription) }}
+{{ form_row(form.longDescription) }}
+
 <div class="alert alert-info" role="alert">
     <p><strong>Kategorien – darum geht's</strong></p>
 
@@ -17,7 +31,7 @@
     </p>
 
     <p>
-        Wir haben uns daher entschieden, Events zu kategorisieren und sie entsprechend farblich im Progamm auf der
+        Wir haben uns daher entschieden, euch Kategorien vorzuschlagen und sie entsprechend farblich im Progamm auf der
         Webseite darzustellen.
     </p>
 
@@ -29,19 +43,6 @@
 </div>
 
 {{ form_row(form.channel) }}
-{{ form_row(form.title) }}
-
-<div class="alert alert-info" role="alert" style="margin-top: 2rem">
-    <p>
-        Bitte beschreibe dein Event zunächst mit einem (kurzen) Teaser-Text.  Ein Absatz.  Worum geht's?
-        Wer ist die Zielgruppe?<br/>
-        In der Detailbeschreibung kannst du konkreter werden.  Im Veranstaltungskalender werden beide Texte
-        übereinander angezeigt.
-    </p>
-</div>
-
-{{ form_row(form.shortDescription) }}
-{{ form_row(form.longDescription) }}
 
 <h2>Veranstaltungsort</h2>
 
@@ -55,20 +56,20 @@
 </div>
 
 <div id="offline-session-details">
-{{ form_widget(form.location) }}
+    {{ form_widget(form.location) }}
 
-<label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
-<div id="map"></div>
+    <label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
+    <div id="map"></div>
 </div>
 
 <h2>Sonstiges</h2>
 {{ form_rest(form) }}
 
 {% if is_granted('ROLE_EDITOR') %}
-<button class="btn btn-primary">Speichern</button>
+    <button class="btn btn-primary">Speichern</button>
 {% else %}
-<button class="btn btn-light" name="draft">Entwurf speichern</button>
-<button class="btn btn-primary">Speichern und zur Freigabe geben</button>
+    <button class="btn btn-light" name="draft">Entwurf speichern</button>
+    <button class="btn btn-primary">Speichern und zur Freigabe geben</button>
 {% endif %}
 
 {{ form_end(form) }}
