@@ -6,6 +6,7 @@ use App\Entity\Channel;
 use App\Entity\Location;
 use App\Entity\Organization;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SessionWithDetail
 {
@@ -94,6 +95,19 @@ class SessionWithDetail
      *     includeInternalMessages=false)
      */
     private $link;
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if ($this->stop !== null && $this->stop <= $this->start) {
+            $context
+                ->buildViolation('Event-Beginn muss vor dem Event-Ende liegen.')
+                ->atPath('stop')
+                ->addViolation();
+        }
+    }
 
     public function getId(): ?int
     {
