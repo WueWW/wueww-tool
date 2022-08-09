@@ -146,6 +146,7 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session = (new Session())->applyDetails($sessionWithDetail);
+            $session->propose();
             $session->accept();
 
             $entityManager = $this->getDoctrine()->getManager();
