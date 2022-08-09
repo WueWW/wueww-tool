@@ -80,9 +80,17 @@ $(document).ready(function () {
     const $detailStart = $('#session_with_detail_start');
     const $detailStop = $('#session_with_detail_stop');
     const $hintBox = $('#parallel-session-hint-box');
-    const sessionId = location.pathname.match(/\/session\/(new|\d+)/);
+    const sessionId = location.pathname.match(/\/session\/(?:organization\/\d+\/)?(new|\d+)/);
     if (sessionId && $detailDate.length && $detailStart.length && $detailStop.length && $hintBox.length) {
         function updateParallelSessionStats() {
+            if (
+                !$detailStart.val().match(/^[012]?\d:[0-5]\d$/) ||
+                !$detailStop.val().match(/^(?:|[012]?\d:[0-5]\d)$/)
+            ) {
+                $hintBox.html('');
+                return;
+            }
+
             let url =
                 '/session/' +
                 encodeURIComponent(sessionId[1]) +
@@ -95,51 +103,55 @@ $(document).ready(function () {
                 url += '/' + encodeURIComponent($detailStop.val());
             }
 
-            $.ajax(url).then((result) => {
-                const $hint = $('<div class="alert" role="alert">');
+            $.ajax(url)
+                .then((result) => {
+                    const $hint = $('<div class="alert" role="alert">');
 
-                switch (Number.parseInt(result.count, 10)) {
-                    case 0:
-                        $hint
-                            .addClass('alert-success')
-                            .text(
-                                'Sehr schön, parallel zu deinem Event findet (aktuell) keine weitere Veranstaltung statt.'
-                            );
-                        break;
+                    switch (Number.parseInt(result.count, 10)) {
+                        case 0:
+                            $hint
+                                .addClass('alert-success')
+                                .text(
+                                    'Sehr schön, parallel zu deinem Event findet (aktuell) keine weitere Veranstaltung statt.'
+                                );
+                            break;
 
-                    case 1:
-                        $hint
-                            .addClass('alert-info')
-                            .text('Parallel zu deinem Event findet (aktuell) eine weitere Veranstaltung statt.');
-                        break;
+                        case 1:
+                            $hint
+                                .addClass('alert-info')
+                                .text('Parallel zu deinem Event findet (aktuell) eine weitere Veranstaltung statt.');
+                            break;
 
-                    case 2:
-                        $hint
-                            .addClass('alert-info')
-                            .text('Parallel zu deinem Event finden (aktuell) zwei weitere Veranstaltungen statt.');
-                        break;
+                        case 2:
+                            $hint
+                                .addClass('alert-info')
+                                .text('Parallel zu deinem Event finden (aktuell) zwei weitere Veranstaltungen statt.');
+                            break;
 
-                    case 3:
-                        $hint
-                            .addClass('alert-info')
-                            .text('Parallel zu deinem Event finden (aktuell) drei weitere Veranstaltungen statt.');
-                        break;
+                        case 3:
+                            $hint
+                                .addClass('alert-info')
+                                .text('Parallel zu deinem Event finden (aktuell) drei weitere Veranstaltungen statt.');
+                            break;
 
-                    default:
-                        $hint
-                            .addClass('alert-danger')
-                            .text(
-                                'Zu deinem Event finden ' +
-                                    result.count +
-                                    ' weitere Veranstaltungen parallel statt. ' +
-                                    'Bitte versuche einen alternativen Termin zu finden.'
-                            )
-                            .prepend('<strong>Achtung!</strong> ');
-                }
+                        default:
+                            $hint
+                                .addClass('alert-danger')
+                                .text(
+                                    'Zu deinem Event finden ' +
+                                        result.count +
+                                        ' weitere Veranstaltungen parallel statt. ' +
+                                        'Bitte versuche einen alternativen Termin zu finden.'
+                                )
+                                .prepend('<strong>Achtung!</strong> ');
+                    }
 
-                console.log('generated $hint', $hint);
-                $hintBox.html('').append($hint);
-            });
+                    console.log('generated $hint', $hint);
+                    $hintBox.html('').append($hint);
+                })
+                .catch(() => {
+                    $hintBox.html('');
+                });
         }
 
         updateParallelSessionStats();
