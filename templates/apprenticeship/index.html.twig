@@ -37,6 +37,10 @@
                        href="{{ path('apprenticeship_edit', {'id': apprenticeship.id}) }}"><i class="fa fa-pencil"></i></a>
 
                     {{ include('apprenticeship/_delete_form.html.twig') }}
+
+                    {% if apprenticeship.accepted %}
+                        {{ include('apprenticeship/_undo_accept_form.html.twig') }}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

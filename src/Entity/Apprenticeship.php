@@ -27,11 +27,13 @@ class Apprenticeship
     /**
      * @ORM\OneToOne(targetEntity=ApprenticeshipDetail::class, cascade={"persist", "remove"}, orphanRemoval=false)
      * @ORM\JoinColumn(nullable=false)
+     * @var ApprenticeshipDetail
      */
     private $proposedDetails;
 
     /**
-     * @ORM\OneToOne(targetEntity=ApprenticeshipDetail::class, cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity=ApprenticeshipDetail::class, cascade={"persist", "remove"}, orphanRemoval=false)
+     * @var ApprenticeshipDetail|null
      */
     private $acceptedDetails;
 
@@ -69,7 +71,7 @@ class Apprenticeship
         return $this->acceptedDetails;
     }
 
-    public function setAcceptedDetails(ApprenticeshipDetail $acceptedDetails): self
+    public function setAcceptedDetails(?ApprenticeshipDetail $acceptedDetails): self
     {
         $this->acceptedDetails = $acceptedDetails;
 

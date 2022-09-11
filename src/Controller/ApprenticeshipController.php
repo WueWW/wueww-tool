@@ -154,4 +154,22 @@ class ApprenticeshipController extends AbstractController
 
         return $this->redirectToRoute('apprenticeship_index');
     }
+
+    #[Route('/{id}/accept', name: 'apprenticeship_undo_accept', methods: 'DELETE')]
+    public function removeApproval(Request $request, Apprenticeship $apprenticeship): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('undo_accept' . $apprenticeship->getId(), $request->request->get('_token'))) {
+            $apprenticeship->setAcceptedDetails(null);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Die Freigabe der Ausbildungsstätte wurde zurückgezogen.');
+        }
+
+        return $this->redirectToRoute('apprenticeship_index');
+    }
 }

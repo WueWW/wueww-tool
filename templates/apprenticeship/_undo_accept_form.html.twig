@@ -1,0 +1,5 @@
+<form class="inline" method="post" action="{{ path('apprenticeship_undo_accept', {'id': apprenticeship.id}) }}" onsubmit="return confirm('Bist du sicher, dass du die Freigabe der Ausbildungsstätte zurückziehen möchtest?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('undo_accept' ~ apprenticeship.id) }}">
+    <button class="btn btn-sm btn-outline-danger" title="Freigabe zurückziehen"><i class="fa fa-undo"></i></button>
+</form>
