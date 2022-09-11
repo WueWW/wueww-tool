@@ -1,0 +1,21 @@
+{{ form_start(form) }}
+
+<h2>Ausbildungsstätte</h2>
+
+{{ form_widget(form.location) }}
+
+<label>Position der Location auf der Karte (Eingang zum Gebäude, zum Festlegen Karte anklicken)</label>
+<div id="map"></div>
+
+<h2>Ausbildungsberufe</h2>
+{{ form_widget(form.jobs) }}
+
+{{ form_rest(form) }}
+
+{% if is_granted('ROLE_EDITOR') %}
+    <button class="btn btn-primary">Speichern</button>
+{% else %}
+    <button class="btn btn-primary">Speichern und zur Freigabe geben</button>
+{% endif %}
+
+{{ form_end(form) }}

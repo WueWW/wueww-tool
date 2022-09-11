@@ -9,3 +9,27 @@
         </span>
     {%- endif %}
 {%- endblock form_errors %}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- set options = choices -%}
+        {{- block('choice_widget_expanded_options') -}}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block choice_widget_expanded_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <h3>{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}</h3>
+                {% set options = choice %}
+                {{- block('choice_widget_expanded_options') -}}
+        {%- else -%}
+            <div class="form-check">
+                <label>
+                    <input type="checkbox" name="{{ full_name }}[]" class="form-check-input" value="{{ choice.value }}">
+                    {{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain) }}
+                </label>
+            </div>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock choice_widget_expanded_options -%}

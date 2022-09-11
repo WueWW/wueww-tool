@@ -29,8 +29,14 @@ $(document).ready(function () {
     });
 
     $('#map').each((index, el) => {
-        const $lat = $('#session_with_detail_locationLat');
-        const $lng = $('#session_with_detail_locationLng');
+        let $lat = $('#session_with_detail_locationLat');
+        let $lng = $('#session_with_detail_locationLng');
+
+        if (!$lat.length) {
+            $lat = $('#apprenticeship_with_detail_locationLat');
+            $lng = $('#apprenticeship_with_detail_locationLng');
+        }
+
         const readonly = el.classList.contains('readonly');
 
         let marker;

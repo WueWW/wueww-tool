@@ -21,6 +21,9 @@
                         <a class="nav-link" href="{{ path('my_organization') }}">Veranstalterangaben</a>
                     </li>
                 {% endif %}
+                <li>
+                    <a class="nav-link" href="{{ path('apprenticeship_index') }}">Ausbildungsstätten</a>
+                </li>
                 {% if is_granted('ROLE_USER_APPROVER') %}
                     <li>
                         <a class="nav-link" href="{{ path('user_approval_index') }}">Neubenutzer</a>
