@@ -66,4 +66,46 @@ class ApprenticeshipController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/{id}/edit', name: 'apprenticeship_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request,
+        Apprenticeship $apprenticeship,
+        EventDispatcherInterface $eventDispatcher
+    ): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $apprenticeship->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
+        $apprenticeshipWithDetail = $apprenticeship->toApprenticeshipWithDetail();
+
+        $form = $this->createForm(ApprenticeshipWithDetailType::class, $apprenticeshipWithDetail);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $apprenticeship->applyDetails($apprenticeshipWithDetail);
+
+            if ($this->isGranted(User::ROLE_EDITOR)) {
+                $apprenticeship->accept();
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
+            } elseif ($apprenticeship->getOwner() !== $this->getUser()) {
+                throw new AccessDeniedException();
+            } elseif ($apprenticeship->getAcceptedDetails() === $apprenticeship->getProposedDetails()) {
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert.');
+            } else {
+                $eventDispatcher->dispatch(new ApprenticeshipModifiedEvent($apprenticeship));
+                $this->addFlash('success', 'Die Änderungen wurden gespeichert und zum Review eingereicht.');
+            }
+
+            $this->getDoctrine()
+                ->getManager()
+                ->flush();
+            return $this->redirectToRoute('apprenticeship_index');
+        }
+
+        return $this->render('apprenticeship/edit.html.twig', [
+            'apprenticeship' => $apprenticeshipWithDetail,
+            'form' => $form->createView(),
+        ]);
+    }
 }

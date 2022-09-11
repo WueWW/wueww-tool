@@ -100,4 +100,15 @@ class Apprenticeship
 
         return $this;
     }
+
+    public function toApprenticeshipWithDetail()
+    {
+        $details = $this->getProposedDetails();
+
+        return (new ApprenticeshipWithDetail())
+            ->setLocation($details->getLocation())
+            ->setLocationLat($details->getLocationLat())
+            ->setLocationLng($details->getLocationLng())
+            ->setJobs($details->getJobs());
+    }
 }

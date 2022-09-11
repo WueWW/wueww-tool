@@ -26,7 +26,7 @@
         {%- else -%}
             <div class="form-check">
                 <label>
-                    <input type="checkbox" name="{{ full_name }}[]" class="form-check-input" value="{{ choice.value }}">
+                    <input type="checkbox" name="{{ full_name }}[]" class="form-check-input" value="{{ choice.value }}" {% if choice is selectedchoice(value) %} checked="checked"{% endif %}>
                     {{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans(choice.labelTranslationParameters, choice_translation_domain) }}
                 </label>
             </div>
