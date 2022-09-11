@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Event\ApprenticeshipModifiedEvent;
 use App\Event\OrganizationModifiedEvent;
 use App\Event\SessionCancelledEvent;
 use App\Event\SessionModifiedEvent;
@@ -20,6 +21,7 @@ class UteNotifier implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            ApprenticeshipModifiedEvent::class => 'onApprenticeshipModified',
             SessionModifiedEvent::class => 'onSessionModified',
             SessionCancelledEvent::class => 'onSessionCancelled',
             OrganizationModifiedEvent::class => 'onOrganizationModified',
@@ -29,6 +31,14 @@ class UteNotifier implements EventSubscriberInterface
     public function __construct(MailerService $mailerService)
     {
         $this->mailerService = $mailerService;
+    }
+
+    public function onApprenticeshipModified(ApprenticeshipModifiedEvent $event)
+    {
+        $this->mailerService->sendApprenticeshipAwaitingApprovalMail(
+            self::TARGET_EMAIL_ADDRESS,
+            $event->getApprenticeship()
+        );
     }
 
     public function onSessionModified(SessionModifiedEvent $event)
