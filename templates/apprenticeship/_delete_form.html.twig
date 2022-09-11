@@ -1,0 +1,5 @@
+<form class="inline" method="post" action="{{ path('apprenticeship_delete', {'id': apprenticeship.id}) }}" onsubmit="return confirm('Bist du sicher, dass du die Ausbildungsstätte löschen möchtest?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ apprenticeship.id) }}">
+    <button class="btn btn-sm btn-outline-danger" title="löschen"><i class="fa fa-trash"></i></button>
+</form>

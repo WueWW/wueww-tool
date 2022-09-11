@@ -119,4 +119,21 @@ class ApprenticeshipController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/{id}', name: 'apprenticeship_delete', methods: 'DELETE')]
+    public function delete(Request $request, Apprenticeship $apprenticeship): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $apprenticeship->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $apprenticeship->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($apprenticeship);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Die Ausbildungsstätte wurde gelöscht.');
+        }
+
+        return $this->redirectToRoute('apprenticeship_index');
+    }
 }
