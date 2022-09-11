@@ -136,4 +136,22 @@ class ApprenticeshipController extends AbstractController
 
         return $this->redirectToRoute('apprenticeship_index');
     }
+
+    #[Route('/{id}/accept', name: 'apprenticeship_accept', methods: 'POST')]
+    public function accept(Request $request, Apprenticeship $apprenticeship): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR)) {
+            throw new AccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('accept' . $apprenticeship->getId(), $request->request->get('_token'))) {
+            $apprenticeship->accept();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Die Ausbildungsstätte wurde freigegeben.');
+        }
+
+        return $this->redirectToRoute('apprenticeship_index');
+    }
 }

@@ -19,32 +19,23 @@ class ApprenticeshipRepository extends ServiceEntityRepository
         parent::__construct($registry, Apprenticeship::class);
     }
 
-    // /**
-    //  * @return Apprenticeship[] Returns an array of Apprenticeship objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Apprenticeship[]
+     */
+    public function findAllWithProposedDetails(bool $hasChanges, bool $notApproved): array
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('a')
+            ->innerJoin('a.proposedDetails', 'apd')
+            ->addSelect('apd');
 
-    /*
-    public function findOneBySomeField($value): ?Apprenticeship
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($hasChanges) {
+            $qb->andWhere('a.proposedDetails != a.acceptedDetails');
+        }
+
+        if ($notApproved) {
+            $qb->andWhere('a.acceptedDetails IS NULL');
+        }
+
+        return $qb->getQuery()->getResult();
     }
-    */
 }
