@@ -30,6 +30,9 @@
                     {% endif %}
                 </td>
                 <td class="apprenticeship-actions">
+                    <a class="btn btn-outline-secondary btn-sm" title="anzeigen"
+                       href="{{ path('apprenticeship_show', {'id': apprenticeship.id}) }}"><i class="fa fa-eye"></i></a>
+
                     <a class="btn btn-outline-secondary btn-sm" title="bearbeiten"
                        href="{{ path('apprenticeship_edit', {'id': apprenticeship.id}) }}"><i class="fa fa-pencil"></i></a>
 

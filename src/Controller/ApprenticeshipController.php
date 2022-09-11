@@ -67,6 +67,17 @@ class ApprenticeshipController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'apprenticeship_show', methods: 'GET')]
+    public function show(Apprenticeship $apprenticeship): Response {
+        if (!$this->isGranted(User::ROLE_EDITOR) && $apprenticeship->getOwner() !== $this->getUser()) {
+            throw new AccessDeniedException();
+        }
+
+        return $this->render('apprenticeship/show.html.twig', [
+            'apprenticeship' => $apprenticeship,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'apprenticeship_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,

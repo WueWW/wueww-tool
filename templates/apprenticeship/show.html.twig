@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <h1>Ausbildungsstätte</h1>
+
+    {% set detail = apprenticeship.proposedDetails -%}
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Ausbildungsstätte</th>
+            <td>
+                {{ detail.location.name }}, {{ detail.location.streetNo }},
+                {{ detail.location.zipcode }} {{ detail.location.city }}
+            </td>
+        </tr>
+        <tr>
+            <th>Karte</th>
+            <td>
+                <form autocomplete="off">
+                    <input type="hidden" id="apprenticeship_with_detail_locationLat"
+                           value="{{ detail.locationLat }}"/>
+                    <input type="hidden" id="apprenticeship_with_detail_locationLng"
+                           value="{{ detail.locationLng }}"/>
+                    <div id="map" class="readonly"></div>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th>Berufe</th>
+            <td>
+                <ul>
+                    {% for job in detail.jobs %}
+                        <li>{{ job }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_EDITOR') %}
+        <h2>Kontakt</h2>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>E-Mail-Adresse</th>
+                <td>
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ apprenticeship.owner.email }}">{{ apprenticeship.owner.email }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if apprenticeship.accepted %}
+        <div class="alert alert-success" role="alert">
+            Diese Ausbildungsstätte ist bereits freigegeben.
+        </div>
+
+    {% else %}
+        <div class="alert alert-info clearfix" role="alert">
+            Diese Ausbildungsstätte wurde {% if apprenticeship.acceptedDetails %}(in dieser Version){% endif %} bisher
+            nicht freigegeben.
+
+            {% if is_granted('ROLE_EDITOR') %}
+                <form class="inline pull-right" method="post"
+                      action="{{ path('apprenticeship_accept', {'id': apprenticeship.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ apprenticeship.id) }}">
+                    <button class="btn btn-primary"><i class="fa fa-check"></i> Ausbildungsstätte freigeben</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <a href="{{ path('apprenticeship_index') }}">zurück zur Liste der Ausbildungsstätten</a>
+
+{% endblock %}
