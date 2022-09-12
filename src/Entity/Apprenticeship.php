@@ -111,6 +111,7 @@ class Apprenticeship
             ->setLocation($details->getLocation())
             ->setLocationLat($details->getLocationLat())
             ->setLocationLng($details->getLocationLng())
-            ->setJobs($details->getJobs());
+            ->setJobs($details->getJobs())
+            ->setJobsUrl($details->getJobsUrl());
     }
 }

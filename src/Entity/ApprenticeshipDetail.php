@@ -38,6 +38,11 @@ class ApprenticeshipDetail
      */
     private $jobs = [];
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $jobsUrl;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,12 +95,24 @@ class ApprenticeshipDetail
         return $this;
     }
 
+    public function getJobsUrl(): ?string
+    {
+        return $this->jobsUrl;
+    }
+
+    public function setJobsUrl(string $jobsUrl): self
+    {
+        $this->jobsUrl = $jobsUrl;
+        return $this;
+    }
+
     public function differs(ApprenticeshipWithDetail $apprenticeshipWithDetail): bool
     {
         return $this->getLocation() !== $apprenticeshipWithDetail->getLocation() ||
             $this->getLocationLat() !== $apprenticeshipWithDetail->getLocationLat() ||
             $this->getLocationLng() !== $apprenticeshipWithDetail->getLocationLng() ||
-            $this->getJobs() !== $apprenticeshipWithDetail->getJobs();
+            $this->getJobs() !== $apprenticeshipWithDetail->getJobs() ||
+            $this->getJobsUrl() !== $apprenticeshipWithDetail->getJobsUrl();
     }
 
     public function apply(ApprenticeshipWithDetail $apprenticeshipWithDetail)
@@ -103,6 +120,7 @@ class ApprenticeshipDetail
         $this->setLocation($apprenticeshipWithDetail->getLocation())
             ->setLocationLat($apprenticeshipWithDetail->getLocationLat())
             ->setLocationLng($apprenticeshipWithDetail->getLocationLng())
-            ->setJobs($apprenticeshipWithDetail->getJobs());
+            ->setJobs($apprenticeshipWithDetail->getJobs())
+            ->setJobsUrl($apprenticeshipWithDetail->getJobsUrl());
     }
 }

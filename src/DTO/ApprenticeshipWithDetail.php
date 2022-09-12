@@ -39,6 +39,12 @@ class ApprenticeshipWithDetail
      */
     private $jobs;
 
+    /**
+     * @var string|null
+     * @Assert\Url(message = "Die erfasste URL ist ungültig.")
+     */
+    private $jobsUrl;
+
     public function getId(): int
     {
         return $this->id;
@@ -102,6 +108,17 @@ class ApprenticeshipWithDetail
     public function setJobs(?array $jobs): ApprenticeshipWithDetail
     {
         $this->jobs = $jobs;
+        return $this;
+    }
+
+    public function getJobsUrl(): ?string
+    {
+        return $this->jobsUrl;
+    }
+
+    public function setJobsUrl(string $jobsUrl): ApprenticeshipWithDetail
+    {
+        $this->jobsUrl = $jobsUrl;
         return $this;
     }
 }
