@@ -3,8 +3,6 @@
 {% block title %}Event{% endblock %}
 
 {% block body %}
-    <h1>Ausbildungsstätte</h1>
-
     {% set detail = apprenticeship.proposedDetails -%}
 
     <table class="table">
@@ -29,7 +27,7 @@
             </td>
         </tr>
         <tr>
-            <th>Berufe</th>
+            <th>Angebotene Ausbildungsberufe</th>
             <td>
                 <ul>
                     {% for job in detail.jobs %}

@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Liste der Ausbildungsstätten</h1>
-
     {% if is_granted('ROLE_EDITOR') %}
         Filter: <a href="?">alle</a> | <a href="?has_changes">nicht freigegebene Änderungen</a> | <a
             href="?not_approved">ohne Freigabe</a>

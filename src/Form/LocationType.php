@@ -14,7 +14,7 @@ class LocationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Location-/Gebäudename (ggf. Firmenname)',
+                'label' => 'Location-/Firmenname',
                 'empty_data' => '',
                 'attr' => [
                     'maxlength' => 255,

@@ -20,7 +20,7 @@
 {%- block choice_widget_expanded_options -%}
     {% for group_label, choice in options %}
         {%- if choice is iterable -%}
-            <h3>{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}</h3>
+            <h5>{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}</h5>
                 {% set options = choice %}
                 {{- block('choice_widget_expanded_options') -}}
         {%- else -%}

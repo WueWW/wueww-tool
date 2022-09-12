@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Neue Ausbildungsstätte vorschlagen</h1>
-
     {{ include('apprenticeship/_form.html.twig') }}
 
     <a href="{{ path('apprenticeship_index') }}">zurück zur Liste der Ausbildungsstätten</a>
