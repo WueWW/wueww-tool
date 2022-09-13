@@ -17,12 +17,15 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @method User getUser()
+ * @Route("/apprenticeship")
  */
-#[Route('/apprenticeship')]
 class ApprenticeshipController extends AbstractController
 {
-    #[Route('/', name: 'apprenticeship_index', methods: 'GET')]
-    public function index(Request $request, ApprenticeshipRepository $apprenticeshipRepository): Response {
+    /**
+     * @Route("/", name="apprenticeship_index", methods="GET")
+     */
+    public function index(Request $request, ApprenticeshipRepository $apprenticeshipRepository): Response
+    {
         if ($this->isGranted(User::ROLE_EDITOR)) {
             $apprenticeships = $apprenticeshipRepository->findAllWithProposedDetails(
                 $request->query->has('has_changes'),
@@ -35,8 +38,11 @@ class ApprenticeshipController extends AbstractController
         return $this->render('apprenticeship/index.html.twig', ['apprenticeships' => $apprenticeships]);
     }
 
-    #[Route('/new', name: 'apprenticeship_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EventDispatcherInterface $eventDispatcher): Response {
+    /**
+     * @Route("/new", name="apprenticeship_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, EventDispatcherInterface $eventDispatcher): Response
+    {
         if ($this->isGranted(User::ROLE_EDITOR)) {
             throw new \LogicException('apprenticeship_new route not expected to be called by editor');
         }
@@ -67,8 +73,11 @@ class ApprenticeshipController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'apprenticeship_show', methods: 'GET')]
-    public function show(Apprenticeship $apprenticeship): Response {
+    /**
+     * @Route("/{id}", name="apprenticeship_show", methods="GET")
+     */
+    public function show(Apprenticeship $apprenticeship): Response
+    {
         if (!$this->isGranted(User::ROLE_EDITOR) && $apprenticeship->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -78,7 +87,9 @@ class ApprenticeshipController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'apprenticeship_edit', methods: ['GET', 'POST'])]
+    /**
+     * @Route("/{id}/edit", name="apprenticeship_edit", methods={"GET", "POST"})
+     */
     public function edit(
         Request $request,
         Apprenticeship $apprenticeship,
@@ -120,8 +131,11 @@ class ApprenticeshipController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'apprenticeship_delete', methods: 'DELETE')]
-    public function delete(Request $request, Apprenticeship $apprenticeship): Response {
+    /**
+     * @Route("/{id}", name="apprenticeship_delete", methods="DELETE")
+     */
+    public function delete(Request $request, Apprenticeship $apprenticeship): Response
+    {
         if (!$this->isGranted(User::ROLE_EDITOR) && $apprenticeship->getOwner() !== $this->getUser()) {
             throw new AccessDeniedException();
         }
@@ -137,8 +151,11 @@ class ApprenticeshipController extends AbstractController
         return $this->redirectToRoute('apprenticeship_index');
     }
 
-    #[Route('/{id}/accept', name: 'apprenticeship_accept', methods: 'POST')]
-    public function accept(Request $request, Apprenticeship $apprenticeship): Response {
+    /**
+     * @Route("/{id}/accept", name="apprenticeship_accept", methods="POST")
+     */
+    public function accept(Request $request, Apprenticeship $apprenticeship): Response
+    {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
@@ -155,8 +172,11 @@ class ApprenticeshipController extends AbstractController
         return $this->redirectToRoute('apprenticeship_index');
     }
 
-    #[Route('/{id}/accept', name: 'apprenticeship_undo_accept', methods: 'DELETE')]
-    public function removeApproval(Request $request, Apprenticeship $apprenticeship): Response {
+    /**
+     * @Route("/{id}/accept", name="apprenticeship_undo_accept", methods="DELETE")
+     */
+    public function removeApproval(Request $request, Apprenticeship $apprenticeship): Response
+    {
         if (!$this->isGranted(User::ROLE_EDITOR)) {
             throw new AccessDeniedException();
         }
