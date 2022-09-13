@@ -7,7 +7,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ApprenticeshipModifiedEvent extends Event
 {
-    private Apprenticeship $apprenticeship;
+    /**
+     * @var Apprenticeship
+     */
+    private $apprenticeship;
 
     public function __construct(Apprenticeship $apprenticeship)
     {
