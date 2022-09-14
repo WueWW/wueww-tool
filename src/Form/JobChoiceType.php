@@ -38,6 +38,7 @@ class JobChoiceType extends ChoiceType
             'Weitere Berufe' => [
                 'Fachangestellte/-r für Medien- und Informationsdienste' =>
                     'Fachangestellte/-r für Medien- und Informationsdienste',
+                'Geomatiker' => 'Geomatiker',
                 'Mediengestalter/-in Digital und Print' => 'Mediengestalter/-in Digital und Print',
             ],
         ]);
