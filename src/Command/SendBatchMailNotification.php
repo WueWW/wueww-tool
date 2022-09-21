@@ -11,8 +11,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SendBatchMailNotification extends Command
 {
-    private OrganizationRepository $organizationRepository;
-    private MailerService $mailerService;
+    /**
+     * @var OrganizationRepository
+     */
+    private $organizationRepository;
+
+    /**
+     * @var MailerService
+     */
+    private $mailerService;
 
     public function __construct(OrganizationRepository $organizationRepository, MailerService $mailerService)
     {
