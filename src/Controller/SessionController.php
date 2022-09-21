@@ -55,14 +55,20 @@ class SessionController extends AbstractController
         string $endStr,
         SessionRepository $sessionRepository
     ): Response {
-        $start = \DateTimeImmutable::createFromFormat('Y-m-d H:i', $date . ' ' . $startStr);
+        $dateFmt = 'Y-m-d H:i';
+        $start = \DateTimeImmutable::createFromFormat($dateFmt, $date . ' ' . $startStr);
+
+        if ($start === false) {
+            $dateFmt = 'd.m.Y H:i';
+            $start = \DateTimeImmutable::createFromFormat($dateFmt, $date . ' ' . $startStr);
+        }
 
         if (!$start) {
             throw new BadRequestException('Invalid start date');
         }
 
         $end = $endStr
-            ? \DateTimeImmutable::createFromFormat('Y-m-d H:i', $date . ' ' . $endStr)
+            ? \DateTimeImmutable::createFromFormat($dateFmt, $date . ' ' . $endStr)
             : $start->add(new \DateInterval('PT2H'));
 
         return new JsonResponse([

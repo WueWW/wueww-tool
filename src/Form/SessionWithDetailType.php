@@ -5,6 +5,7 @@ namespace App\Form;
 use App\DTO\SessionWithDetail;
 use App\Entity\Channel;
 use App\Entity\Organization;
+use App\Entity\User;
 use App\Repository\OrganizationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SessionWithDetailType extends AbstractType
 {
@@ -28,15 +30,17 @@ class SessionWithDetailType extends AbstractType
      * @var bool
      */
     private $useFreeDateInput;
+    private TokenStorageInterface $tokenStorage;
 
-    public function __construct(ParameterBagInterface $params)
+    public function __construct(ParameterBagInterface $params, TokenStorageInterface $tokenStorage)
     {
         $this->useFreeDateInput = $params->get('app_free_date_input');
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if ($this->useFreeDateInput) {
+        if ($this->useFreeDateInput || \in_array(User::ROLE_EDITOR, $this->tokenStorage->getToken()->getRoleNames())) {
             $builder->add('date', TextType::class, [
                 'label' => 'Datum',
                 'attr' => [
