@@ -1,0 +1,14 @@
+Hej Ute, Hej Franzi,
+
+ihr wolltet (regelmäßig) eine Liste mit den E-Mail Adressen der zuletzt
+freigeschalteten Organisatoren.
+
+{% for addr in addrs %}
+-> {{ addr }}
+{% else %}
+Seit der letzten Benachrichtigung kamen keine neuen Adressen dazu.
+{% endfor %}
+
+Viele Grüße
+
+das WueWW-Tool :)

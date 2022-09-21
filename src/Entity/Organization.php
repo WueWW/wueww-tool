@@ -46,6 +46,11 @@ class Organization
      */
     private $logoFileName;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $sendBatchMailNotification = false;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -143,6 +148,7 @@ class Organization
     public function accept()
     {
         $this->setAcceptedOrganizationDetails($this->proposedOrganizationDetails);
+        $this->setSendBatchMailNotification(true);
     }
 
     public function getOwner(): ?User
@@ -165,6 +171,18 @@ class Organization
     public function setLogoFileName(?string $logoFileName): self
     {
         $this->logoFileName = $logoFileName;
+
+        return $this;
+    }
+
+    public function getSendBatchMailNotification(): ?bool
+    {
+        return $this->sendBatchMailNotification;
+    }
+
+    public function setSendBatchMailNotification(bool $sendBatchMailNotification): self
+    {
+        $this->sendBatchMailNotification = $sendBatchMailNotification;
 
         return $this;
     }

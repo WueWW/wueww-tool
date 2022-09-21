@@ -7,6 +7,7 @@ use App\Entity\Organization;
 use App\Entity\Session;
 use App\Entity\Token;
 use App\Entity\User;
+use App\EventSubscriber\UteNotifier;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
@@ -120,6 +121,16 @@ class MailerService
                 ])
             );
 
+        $this->mailer->send($message);
+    }
+
+    public function sendBatchMailNotification(array $mails)
+    {
+        $message = (new Email())
+            ->from(self::FROM_ADDRESS)
+            ->to(UteNotifier::TARGET_EMAIL_ADDRESS)
+            ->subject('E-Mail-Adressen neuer Organisatoren')
+            ->text($this->twig->render('emails/batch_mail_notification.txt.twig', ['addrs' => $mails]));
         $this->mailer->send($message);
     }
 }

@@ -66,4 +66,22 @@ class OrganizationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * @return Organization[]
+     */
+    public function findOrganizationsAwaitingMailNotification()
+    {
+        return $this->createQueryBuilder('o')
+            ->select('o', 'u')
+            ->innerJoin('o.owner', 'u')
+            ->andWhere('o.sendBatchMailNotification = TRUE')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
 }
