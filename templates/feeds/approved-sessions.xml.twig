@@ -14,11 +14,9 @@
                 <title>{{ session.acceptedDetails.title }}</title>
                 <description>
                     {% set htmlContent %}
-                        {% if session.acceptedDetails.longDescription %}
-                            {{ session.acceptedDetails.longDescription | nl2br }}
-                        {% else %}
-                            {{ session.acceptedDetails.shortDescription | nl2br }}
-                        {% endif %}
+                        <strong>{{ session.acceptedDetails.shortDescription | nl2br }}</strong>
+
+                        <p>{{ session.acceptedDetails.longDescription | nl2br }}</p>
 
                         <p><em>Wer?</em> {{ session.organization.title }}</p>
                         <p>
