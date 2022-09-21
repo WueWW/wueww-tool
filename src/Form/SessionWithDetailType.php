@@ -30,7 +30,11 @@ class SessionWithDetailType extends AbstractType
      * @var bool
      */
     private $useFreeDateInput;
-    private TokenStorageInterface $tokenStorage;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
 
     public function __construct(ParameterBagInterface $params, TokenStorageInterface $tokenStorage)
     {
