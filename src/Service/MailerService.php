@@ -124,11 +124,11 @@ class MailerService
         $this->mailer->send($message);
     }
 
-    public function sendBatchMailNotification(array $mails)
+    public function sendBatchMailNotification(string $toAddress, array $mails)
     {
         $message = (new Email())
             ->from(self::FROM_ADDRESS)
-            ->to(UteNotifier::TARGET_EMAIL_ADDRESS)
+            ->to($toAddress)
             ->subject('E-Mail-Adressen neuer Organisatoren')
             ->text($this->twig->render('emails/batch_mail_notification.txt.twig', ['addrs' => $mails]));
         $this->mailer->send($message);

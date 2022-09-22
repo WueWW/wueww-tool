@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SendBatchMailNotification extends Command
 {
+    const TARGET_EMAIL_ADDRESS = 'ute.muendlein@wueww.de';
+
     /**
      * @var OrganizationRepository
      */
@@ -43,7 +45,7 @@ class SendBatchMailNotification extends Command
             return $organization->getOwner()->getEmail();
         }, $orgs);
 
-        $this->mailerService->sendBatchMailNotification($mails);
+        $this->mailerService->sendBatchMailNotification(self::TARGET_EMAIL_ADDRESS, $mails);
 
         foreach ($orgs as $org) {
             $org->setSendBatchMailNotification(false);
