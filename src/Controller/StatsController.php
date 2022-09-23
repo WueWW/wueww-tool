@@ -25,6 +25,7 @@ class StatsController extends AbstractController
             'num_organizations' => $organizationRepository->countOrganizationsWithSessions(false),
             'num_organizations_with_cancelled' => $organizationRepository->countOrganizationsWithSessions(null),
             'num_sessions_by_date' => $sessionRepository->countSessionsByDate(),
+            'num_sessions_by_channel' => $sessionRepository->countSessionsByChannel(),
         ]);
     }
 }

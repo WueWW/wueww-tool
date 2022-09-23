@@ -38,4 +38,26 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <h2>Events nach Kategorie</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>Kategorie</td>
+            <td>Anzahl Events</td>
+            <td>Abgesagte Events</td>
+            <td>Events gesamt</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in num_sessions_by_channel %}
+            <tr>
+                <td>{{ rec.channel }}</td>
+                <td>{{ rec.num }}</td>
+                <td>{% if rec.num_cancelled > 0 %}{{ rec.num_cancelled }}{% else %}-{% endif %}</td>
+                <td>{{ rec.num + rec.num_cancelled }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

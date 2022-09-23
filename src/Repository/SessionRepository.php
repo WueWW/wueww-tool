@@ -146,8 +146,26 @@ class SessionRepository extends ServiceEntityRepository
             ->andWhere('s.start IS NOT NULL')
             ->andWhere('s.acceptedDetails IS NOT NULL')
             ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
-            //->andWhere('s.cancelled = FALSE')
             ->groupBy('date');
+
+        return $qb->getQuery()->getScalarResult();
+    }
+
+    public function countSessionsByChannel()
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select([
+                'c.name AS channel',
+                'COUNT(NULLIF(s.cancelled, TRUE)) AS num',
+                'COUNT(NULLIF(s.cancelled, FALSE)) AS num_cancelled',
+            ])
+            ->innerJoin('s.organization', 'o')
+            ->innerJoin('s.acceptedDetails', 'sad')
+            ->innerJoin('sad.channel', 'c')
+            ->andWhere('s.start IS NOT NULL')
+            ->andWhere('o.acceptedOrganizationDetails IS NOT NULL')
+            ->groupBy('channel')
+            ->orderBy('channel');
 
         return $qb->getQuery()->getScalarResult();
     }
